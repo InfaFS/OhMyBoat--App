@@ -1,0 +1,103 @@
+"use client"
+//VER COMO RECIBIR LOS ERRORES DEL ROUTE.JS
+//exportar desde ahi sino no funciona
+import 'primeicons/primeicons.css';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { CardWrapper } from "@/components/auth/CardWrapper";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form"
+import { useTransition } from "react";
+import { ResetSchema } from "@/schemas";
+import { FormError } from "../FormError";
+import { FormSuccess } from "../FormSuccess";
+
+
+import { reset } from "../../../actions/reset";
+
+export const ResetForm= () => {
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    const [isPending, startTransition] = useTransition(); //usamos esto para la login transition
+    const form = useForm({
+        resolver: zodResolver(ResetSchema),
+        defaultValues: {
+            email: "",
+        }
+    });
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    startTransition(() => {
+        reset(data).then((response) => {
+            setError(response?.error);
+            setSuccess(response?.success);
+        });
+    });    
+  
+
+
+    }
+
+    return (
+        <>
+        {!success && (<CardWrapper 
+            headerLabel="Ingresa el email asociado a tu cuenta." 
+            backButtonLabel="Ya tienes una cuenta?" 
+            backButtonHref="/auth/login"
+            headerTitle="Restablacer"
+        >
+            <Form {... form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+                >
+                
+                <div className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Email:</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        disabled={isPending}
+                                        placeholder="tinchotech@gmail.com"
+                                        type="email"
+                                        />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+
+    
+                </div>
+                {/* luego el error los mostrar */}
+                <FormError message={error}/>
+                <Button disabled={isPending}
+                type="submit" 
+                className="w-full">
+                    Confirmar
+                </Button>
+                </form>
+            </Form>
+        </CardWrapper>)
+        }
+        { success && (
+        <CardWrapper  
+        backButtonHref="/auth/login"
+        backButtonLabel="Volver al inicio de sesion"
+        headerTitle="Enviado">
+        <FormSuccess message={success}/>
+       </CardWrapper>
+        )}
+        
+        </>
+    );
+
+}
+
