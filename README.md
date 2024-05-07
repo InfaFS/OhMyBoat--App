@@ -43,3 +43,42 @@ npm install @auth/prisma-adapter
 Si llego a implementar google o otro medio de logeo, poner la db con ? para hacer opcionales los campos
 sudo npx prisma generate HACER ESTO!!!!!!!!!!!!!!!1
 npm install uuid# OhMyBoat--App
+
+APP OhMyBoat! 🛥️
+
+------------------  
+IMPORTANTE!!! USAR SUDO ANTES DE UN COMANDO SI ALGUNO TIRA ERROR(ej: sudo npx prisma init ).
+
+✍️ Pasos  
+ --> Cuando clonen el repositorio tienen que usar estos tres comandos (teniendo en cuenta que ya tienen npm/node)  
+ npm install react  
+ npm install next  
+ npm install prisma -D  
+ (una sola vez)  
+
+------------------  
+
+--> Manejo de la base de datos  
+ Usamos una local (sqlite,ya configurado)  
+ para inicializarla, usamos  
+ --> npx prisma init (si hay una carpeta prisma ya no sera necesario)
+ --> npx prisma migrate dev  
+ Si aplicamos algun cambio  
+ --> npx prisma migrate dev  
+ Si solo la queremos resetear  
+ --> npx prisma migrate reset  
+
+------------------  
+
+Por el momento estamos usando tambien  
+--> npm install next-auth  
+--> npm install react-hook-form  
+--> npm install bcrypt  
+aniadir mas data adelante...  
+
+PARA QUE NO DE ERORR LA BASE DE DATOS  
+(sudo) npx prisma db push  
+(sudo) npx prisma db pull  
+(sudo) npx prisma migrate dev  
+(sudo) npx prisma generate  
+PONER--> sudo chmod 777 A TODO LO QUE ESTA EN LA CARPETA PRISMA  
