@@ -35,7 +35,7 @@ const SettingsPage = async () => {
                 </Link>
     </li> */}
         </ul>
-     {/*   <CerrarSesion triggerLabel="Cerrar Sesion"/> */}  
+     {/*  <CerrarSesion triggerLabel="Cerrar Sesion"/> */}  
         </div>
   
     </div>
