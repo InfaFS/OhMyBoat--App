@@ -10,6 +10,9 @@ export const ResetSchema = z.object({
 export const NewPasswordSchema = z.object({
     password: z.string().min(6,{
         message: "Minimo 6 caracteres requeridos."
+    }), //no bloquear con min por ser login es buena practica
+    confirmPassword: z.string().min(6,{
+        message: "Minimo 6 caracteres requeridos."
     }), //no bloquear con min por ser login es buena practica    
 })
 
@@ -19,7 +22,10 @@ export const NewPasswordLoggedSchema = z.object({
     }),
     newPassword: z.string().min(6,{
         message: "Minimo 6 caracteres requeridos."
-    }), //no bloquear con min por ser login es buena practica    
+    }), //no bloquear con min por ser login es buena practica   
+    confirmPassword: z.string().min(6,{
+        message: "Minimo 6 caracteres requeridos."
+    }), //no bloquear con min por ser login es buena practica 
 })
 
 
@@ -61,7 +67,10 @@ export const RegisterSchema = z.object({
     }),
     password: z.string().min(6,{
         message: "Minimo 6 caracteres requeridos."
-    }), //no bloquear con min por ser login es buena practica    
+    }), //no bloquear con min por ser login es buena practica  
+    confirmPassword: z.string().min(6,{
+        message: "Minimo 6 caracteres requeridos."
+    }), //no bloquear con min por ser login es buena practica
 }) 
 
 const FileSchema = z.object({

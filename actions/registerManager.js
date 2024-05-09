@@ -6,9 +6,9 @@ import { getUserByEmail } from "../data/user";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
 import { getVerificationTokenByEmail } from "../data/verification-token";
-export const register = async (values) => {
-    const validateFields = RegisterSchema.safeParse(values);
+export const registerManager = async (values) => {
 
+    const validateFields = RegisterSchema.safeParse(values);
     if (!validateFields.success) {
         return { error : "Campos invalidos!"}
     }
@@ -16,6 +16,7 @@ export const register = async (values) => {
     if (password !== confirmPassword) {
         return { error : "Las contraseñas no coinciden!"}
     }
+
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
@@ -31,15 +32,16 @@ export const register = async (values) => {
             birthday,
             email,
             password,
-            role: "USER"
+            emailVerified: new Date(),
+            role: "MANAGER"
         }
     })
     console.log(usuarioCreado)
 
-    const verifcationToken = await generateVerificationToken(email);
-
-    await sendVerificationEmail(verifcationToken.email,verifcationToken.token);
-    return {success : "Email de confirmacion enviado!"}
+    //const verifcationToken = await generateVerificationToken(email); 
+    //await sendVerificationEmail(verifcationToken.email,verifcationToken.token); 
+    //como es gerente asumo que no necesita verificado de mail.
+    return {success : "Gerente registrado!"}
 
 }
 //no la encriptamos por el momento

@@ -27,13 +27,13 @@ const SettingsPage = async () => {
             <li>Su Email es: {email}</li>
             <li>Su ID es: {id}</li>
             <li>Su Rol es: {role}</li>
-{/*            <li>
+          <li>
                 <Link href="/auth/new-password-logged">
                 <button>
                     Restablecer contraseña
                 </button>
                 </Link>
-    </li> */}
+            </li> 
         </ul>
      {/* <CerrarSesion triggerLabel="Cerrar Sesion"/> */}  
         </div>

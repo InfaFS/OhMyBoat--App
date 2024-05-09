@@ -13,16 +13,20 @@ import { NewPasswordLoggedSchema} from "@/schemas";
 import { FormError } from "../FormError";
 import { FormSuccess } from "../FormSuccess";
 import { newPasswordLogged } from "../../../actions/new-password-logged";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 export const NewPasswordLoggedForm = ({email}) => {
     console.log(email)
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const router = useRouter();
     const [isPending, startTransition] = useTransition(); //usamos esto para la login transition
     const form = useForm({
         resolver: zodResolver(NewPasswordLoggedSchema),
         defaultValues: {
             previousPassword: "",
             newPassword: "",
+            confirmPassword: "",
         }
     });
 
@@ -32,6 +36,11 @@ export const NewPasswordLoggedForm = ({email}) => {
     console.log(data)
     startTransition(() => {newPasswordLogged({data,email})
         .then((response) => {
+            if(response?.success){
+                toast.success(response.success)
+                router.push("/settings")
+                
+            }
             setError(response?.error) //con el ? no le asigna indefinido si no le llega nada
             setSuccess(response?.success)
         })
@@ -43,7 +52,7 @@ export const NewPasswordLoggedForm = ({email}) => {
 
     return (
         <>
-        { !success && (
+        
              <CardWrapper 
              headerLabel="Ingrese los nuevos datos" 
              backButtonLabel="Volver al perfil" 
@@ -93,6 +102,25 @@ export const NewPasswordLoggedForm = ({email}) => {
                              </FormItem>
                          )}
                      />
+
+                    <FormField
+                         control={form.control}
+                         name="confirmPassword"
+                         render={({field}) => (
+                             <FormItem>
+                                 <FormLabel>Confirm Password:</FormLabel>
+                                 <FormControl>
+                                     <Input
+                                         {...field}
+                                         disabled={isPending}
+                                         placeholder="******"
+                                         type="password"
+                                         />
+                                 </FormControl>
+                                 <FormMessage/>
+                             </FormItem>
+                         )}
+                     />
      
                  </div>
                  {/* luego el error los mostrar */}
@@ -107,15 +135,14 @@ export const NewPasswordLoggedForm = ({email}) => {
                  </form>
              </Form>
          </CardWrapper> 
-        )}
-        { success && (
+        {/*{ success && (
         <CardWrapper  
         backButtonHref="/auth/login"
         backButtonLabel="Volver al inicio de sesion"
         headerTitle="Nueva contraseña">
         <FormSuccess message={success}/>
        </CardWrapper>
-        )}
+        )} */}
 
         </>   
     );

@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils"
 import { CreateComponent } from "@/components/WorkingComponent";
-
+import { Toaster } from "sonner";
 import {
   Pagination,
   PaginationContent,
@@ -60,13 +60,18 @@ export default function Home() {
 
 
   return (
-  <main className="flex flex-col items-center bg-ocean"> {/* h-full */}
+  <>
+  <main className="flex flex-col items-center bg-blancoahumado h-screen  "> {/* h-full */}
     <section className="space-y-6 text-center bg-cielo">
-      <h1 className="text-6xl font-semibold text-white drop-shadow-md mt-10">
+      <h1 className="text-6xl font-semibold text-black drop-shadow-md mt-10">
         Home OhMyBoat!🛥️
       </h1>
-      <CreateComponent titulo="Estamos trabajando para que puedas ver las publicaciones 📱"/>
-      { /* <>
+
+      { publicaciones.length === 0 && (
+        <div>
+          <p className="text-black font-semibold">No hay publicaciones por el momento, vuelve más tarde...</p>
+        </div>
+      )}
       <Button onClick={onClick}>Generador</Button>
       <section className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
         {publicaciones.slice(startIndex, endIndex).map((publicacion) => (
@@ -79,9 +84,9 @@ export default function Home() {
           />
         ))}
       </section>
-      </> */}
+      
     </section>
-    {/* <>
+    
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -107,8 +112,9 @@ export default function Home() {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </> */}
+    
   </main>
+  </>
 );
 
 }

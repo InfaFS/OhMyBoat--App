@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <div className="h-full flex items-center justify-center bg-ocean">
+    <div className="h-full flex items-center justify-center bg-blancoahumado">
         {children}
     </div>
   );

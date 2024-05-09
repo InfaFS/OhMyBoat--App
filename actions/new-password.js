@@ -16,7 +16,11 @@ export const newPassword = async (data,token) => {
         return { error: "Revisa los campos!" }
     }
 
-    const { password } = validatedFields.data
+    const { password,confirmPassword } = validatedFields.data
+
+    if (password !== confirmPassword) {
+        return { error: "Las contraseñas no coinciden!" }
+    }
 
     const existingToken = await getPasswordResetbyToken(token)
 

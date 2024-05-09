@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
                   </CardHeader>
                   <CardContent>
                       <div>
-                          <img src={img} width='300' height='300' alt='Image'/> {/*  */} 
+                          <img src={img} width='300' height='300' alt='Image' className="rounded-md"/> {/*  */} 
                       </div>
                   </CardContent>
                   <CardFooter>

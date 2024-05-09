@@ -8,19 +8,17 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { FormSuccess } from "@/components/FormSuccess";
 import { Toaster, toast } from 'sonner'; // Importa la función toast desde sonner
+import { useRouter } from "next/navigation";
 
 export const BoatForm = () => {
     const [imageError,setImageError] = useState("");
-    const [file, setFile] = useState(null);
-    const [url, setUrl] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-
+    const router = useRouter();
     const onSubmit = async (data) => {
-
         console.log(data);
         const { title, year, marine, image } = data;
         const file = image[0];
@@ -29,10 +27,14 @@ export const BoatForm = () => {
         archivo.append("image", file);
         const res = await publicarBarco({ title, year, marine, archivo });
         setSuccess(res?.success);
-        setUrl(res?.message);
+
         setError(res?.error);
-        console.log(res?.success, res?.message);
-        toast.success('¡Publicació creada!');
+        if (res.success) {
+            toast.success('¡Publicación creada!');
+            router.push("/");
+
+        }
+
 
         // Mostrar un toast de éxito cuando se envía el formulario correctamente
   
@@ -59,7 +61,6 @@ export const BoatForm = () => {
             reader.readAsDataURL(selectedFile);
         }
         else {
-            toast.error('Ops, algo salió mal!');
             setPreviewUrl(null); //hago esto para cuando no selecciono archivo me lo saque
             if (selectedFile === undefined){
                 setImageError("Imagen obligatoria");
@@ -71,11 +72,8 @@ export const BoatForm = () => {
 
 
     return (
-        <>
-            <Toaster richColors position='bottom-center'/>
-            {!success && (
-                <>
 
+            <>   
                 <CardWrapper
                     headerLabel="Crear una publicación de un barco rellenando los datos."
                     backButtonLabel="Cancelar y volver al inicio"
@@ -161,20 +159,6 @@ export const BoatForm = () => {
                         </Button>
                     </form>
                 </CardWrapper>
-                </>
-            )}
-
-            {success && (
-                <>
-                <CardWrapper
-                    backButtonHref="/"
-                    backButtonLabel="Volver a publicaciones"
-                    headerTitle="Publicar barco"
-                >
-                    <FormSuccess message={success} />
-                </CardWrapper>
-                </>
-            )}
         </>
     );
 };

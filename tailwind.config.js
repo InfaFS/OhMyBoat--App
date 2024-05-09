@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        "my-image ": "url('/oceano.jpg')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -53,6 +56,11 @@ module.exports = {
         },
         ocean: "#87CEEB",
         ocean2: "#3345B5",
+        blanco: "#FFFFFF",
+        blancoahumado: "#F8F8F8",
+        blancohumo: "#F5F5F5",
+        blancofloral: "#FFFAF0",
+        blancohueso: "#EAEAEA",
       },
       borderRadius: {
       customColor: {

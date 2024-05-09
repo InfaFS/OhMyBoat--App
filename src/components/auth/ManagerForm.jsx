@@ -11,11 +11,11 @@ import * as z from "zod"
 import { useTransition } from "react";
 import { RegisterSchema } from "@/schemas";
 import { FormError } from "../FormError";
-import { register } from "../../../actions/register";
+import { FormSuccess } from "../FormSuccess";
+import { registerManager } from "../../../actions/registerManager";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
-export const RegisterForm = () => {
+export const ManagerForm = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isPending, startTransition] = useTransition(); //usamos esto para la login transition
@@ -38,15 +38,10 @@ export const RegisterForm = () => {
   const onSubmit = async (data) => { //async poner
    setError("");
    setSuccess("");
-   console.log(data.password)
-    startTransition(() => {register(data)
+    startTransition(() => {registerManager(data)
         .then((response) => {
             setError(response.error)
             setSuccess(response.success)
-            if (response.success) {
-                toast.success(response.success)
-                router.push("/auth/login")
-            }
         })
     console.log(error)
     })
@@ -54,20 +49,19 @@ export const RegisterForm = () => {
    }
 
     return (
-        <div>
         <CardWrapper 
-            headerLabel="Crea una cuenta" 
-            backButtonLabel="Ya tienes una cuenta?" 
-            backButtonHref="/auth/login"
-            headerTitle="Registrarse"
+            headerLabel="Crea una cuenta para un gerente." 
+            backButtonLabel="Volver" 
+            backButtonHref="/settings"
+            headerTitle="Registrar gerente"
         >
-            <Form {... form} >
+            <Form {... form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} //form onSubmit={onSubmit}
                 className="space-y-6"
                 >
                 
                 <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4"> 
+                    
                 {/* NOMBRE */}   
                 <FormField
                         control={form.control}
@@ -105,10 +99,7 @@ export const RegisterForm = () => {
                             </FormItem>
                         )}
                     />
-                    
-                    </div> 
 
-                    <div className="grid grid-cols-2 gap-4"> 
                     {/* TELEFONO */}   
                     <FormField
                         control={form.control}
@@ -147,7 +138,7 @@ export const RegisterForm = () => {
                             </FormItem>
                         )}
                     />
-                    </div>
+                    
                     
                     {/* MAIL */}
                     <FormField
@@ -168,7 +159,7 @@ export const RegisterForm = () => {
                             </FormItem>
                         )}
                     />
-            
+
                     {/* PASSWORD */}
                     <FormField
                         control={form.control}
@@ -190,7 +181,7 @@ export const RegisterForm = () => {
                     />
 
                     {/* CONFIRM PASSWORD */}
-                                        <FormField
+                    <FormField
                         control={form.control}
                         name="confirmPassword"
                         render={({field}) => (
@@ -209,21 +200,20 @@ export const RegisterForm = () => {
                         )}
                     />
 
-
     
                 </div>
                 {/* luego el error los mostrar */}
                 <FormError message={error}/>
+                <FormSuccess message={success}/>
 
                 <Button disabled={isPending}
                 type="submit" 
                 className="w-full">
-                    Registrarse
+                    Registrar
                 </Button>
                 </form>
             </Form>
-        </CardWrapper> 
-        </div>    
+        </CardWrapper>     
     );
 }
 

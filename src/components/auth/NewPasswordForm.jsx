@@ -16,20 +16,24 @@ import { FormSuccess } from "../FormSuccess";
 import { newPassword } from "../../../actions/new-password";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 
 export const NewPasswordForm = () => {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const token = searchParams.get("token");
     console.log(token)
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isPending, startTransition] = useTransition(); //usamos esto para la login transition
-    const [response,setResponse] = useState("");
+
     const form = useForm({
         resolver: zodResolver(NewPasswordSchema),
         defaultValues: {
             password: "",
+            confirmPassword: "",
         }
     });
 
@@ -39,7 +43,10 @@ export const NewPasswordForm = () => {
     startTransition(() => {newPassword(data,token)
         .then((response) => {
             setError(response?.error) //con el ? no le asigna indefinido si no le llega nada
-            setSuccess(response?.success)
+            if(response?.success){
+                toast.success(response.success)
+                router.push("/auth/login")
+            }
         })
     })
   
@@ -49,7 +56,7 @@ export const NewPasswordForm = () => {
 
     return (
         <>
-        { !success && (
+        
              <CardWrapper 
              headerLabel="Ingrese los nuevos datos" 
              backButtonLabel="Iniciar sesión" 
@@ -81,12 +88,28 @@ export const NewPasswordForm = () => {
                          )}
                      />
  
+                    <FormField
+                         control={form.control}
+                         name="confirmPassword"
+                         render={({field}) => (
+                             <FormItem>
+                                 <FormLabel>Confirm password:</FormLabel>
+                                 <FormControl>
+                                     <Input
+                                         {...field}
+                                         disabled={isPending}
+                                         placeholder="******"
+                                         type="password"
+                                         />
+                                 </FormControl>
+                                 <FormMessage/>
+                             </FormItem>
+                         )}
+                     />
      
                  </div>
                  {/* luego el error los mostrar */}
-                 <FormError message={error}/>
-                 <FormSuccess message={success}/>
- 
+                 <FormError message={error}/> 
                  <Button disabled={isPending}
                  type="submit" 
                  className="w-full">
@@ -95,15 +118,8 @@ export const NewPasswordForm = () => {
                  </form>
              </Form>
          </CardWrapper> 
-        )}
-        { success && (
-        <CardWrapper  
-        backButtonHref="/auth/login"
-        backButtonLabel="Volver al inicio de sesion"
-        headerTitle="Nueva contraseña">
-        <FormSuccess message={success}/>
-       </CardWrapper>
-        )}
+     
+    
 
         </>   
     );

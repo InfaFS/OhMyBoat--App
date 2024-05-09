@@ -16,6 +16,10 @@
     animation: color-change 3s infinite alternate;
   }
 
+  
+  background-color: #31eeff;
+  opacity: 0.8;
+  background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #31eeff 10px ), repeating-linear-gradient( #ffffff55, #ffffff );
 
   @layer base {
     :root {

@@ -3,12 +3,10 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { User,LogOut, Settings } from 'lucide-react';
+import { Home} from 'lucide-react';
 import Link from 'next/link';
-import { CerradoDeSesion } from '../../../../actions/cerrarsession';
-import { toast } from 'sonner';
 
-export default function ProfileMenu() {
+export default function HomeMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -18,14 +16,7 @@ export default function ProfileMenu() {
 
   const handleClose = () => {
     setAnchorEl(null);
-
   };
-
-  const handleCloseAndLogout = async () => {
-    setAnchorEl(null);
-    const res = await CerradoDeSesion();
-    toast.info("Tu sesión ha sido cerrada");
-  }
 
   return (
     <div>
@@ -36,10 +27,10 @@ export default function ProfileMenu() {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <User height={20} width={20} />
+        <Home height={20} width={20} />
       </Button>
       <Menu
-        id="basic-menu"
+        id="home-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -47,21 +38,9 @@ export default function ProfileMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <Link href="/settings">
-        <MenuItem onClick={handleClose}>
-        <div className="flex items-center">
-            <Settings height={20} width={20} className="mr-2" />
-            <span>Ver perfil</span>
-          </div>
-        </MenuItem>
+        <Link href="/">
+        <MenuItem onClick={handleClose}>Ver publicaciones</MenuItem>
         </Link>
-        
-        <MenuItem onClick={handleCloseAndLogout}>
-          <div className="flex items-center">
-            <LogOut height={20} width={20} className="mr-2" />
-            <span>Cerrar Sesión</span>
-          </div>
-        </MenuItem>
       </Menu>
     </div>
   );

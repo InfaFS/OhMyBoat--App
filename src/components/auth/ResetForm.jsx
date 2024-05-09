@@ -12,13 +12,16 @@ import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/com
 import { useTransition } from "react";
 import { ResetSchema } from "@/schemas";
 import { FormError } from "../FormError";
+import { useRouter } from 'next/navigation';
 import { FormSuccess } from "../FormSuccess";
 
 
 import { reset } from "../../../actions/reset";
+import { toast } from 'sonner';
 
 export const ResetForm= () => {
     const [error, setError] = useState("");
+    const router=useRouter();
     const [success, setSuccess] = useState("");
     const [isPending, startTransition] = useTransition(); //usamos esto para la login transition
     const form = useForm({
@@ -33,7 +36,10 @@ export const ResetForm= () => {
     startTransition(() => {
         reset(data).then((response) => {
             setError(response?.error);
-            setSuccess(response?.success);
+            if(response?.success){
+                toast.success(response.success)
+                router.push("/auth/login")
+            }
         });
     });    
   
@@ -43,7 +49,7 @@ export const ResetForm= () => {
 
     return (
         <>
-        {!success && (<CardWrapper 
+        <CardWrapper 
             headerLabel="Ingresa el email asociado a tu cuenta." 
             backButtonLabel="Ya tienes una cuenta?" 
             backButtonHref="/auth/login"
@@ -85,16 +91,9 @@ export const ResetForm= () => {
                 </Button>
                 </form>
             </Form>
-        </CardWrapper>)
-        }
-        { success && (
-        <CardWrapper  
-        backButtonHref="/auth/login"
-        backButtonLabel="Volver al inicio de sesion"
-        headerTitle="Enviado">
-        <FormSuccess message={success}/>
-       </CardWrapper>
-        )}
+        </CardWrapper>
+    
+    
         
         </>
     );

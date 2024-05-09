@@ -10,7 +10,7 @@ function testOnly() {
   }
 
   return (
-    <div>
+    <div className='bg-blue-200 h-full'>
       {/* Coloca el componente Toaster en la parte superior de tu aplicación */}
       <Toaster richColors position='top-center'/>
 

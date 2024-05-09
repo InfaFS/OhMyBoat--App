@@ -12,9 +12,9 @@ import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/com
 import { useTransition } from "react";
 import { LoginSchema } from "@/schemas";
 import { FormError } from "../FormError";
-import { FormSuccess } from "../FormSuccess";
 import { login } from "../../../actions/login";
 import Link from "next/link";
+import { toast } from "sonner";
 
 
 export const LoginForm = () => {
@@ -36,7 +36,12 @@ export const LoginForm = () => {
     startTransition(() => {login(data)
         .then((response) => {
             setError(response?.error) //con el ? no le asigna indefinido si no le llega nada
-            setSuccess(response?.success)
+            console.log("hola")
+            if (response?.success) {
+                console.log("pito")
+                toast.success(response.success)
+            }
+            
         })
     })
   
@@ -45,7 +50,7 @@ export const LoginForm = () => {
     }
 
     return (
-
+        <>
         <CardWrapper 
             headerLabel="Bienvenido de vuelta!" 
             backButtonLabel="No tienes una cuenta?" 
@@ -93,7 +98,7 @@ export const LoginForm = () => {
                                 </FormControl>
                                 <Button size="sm" variant="link" className="px-0 font-normal">
                                     <Link href="/auth/reset-password">
-                                        Olvidaste tu contraseña?
+                                        Recuperar clave
                                     </Link>
                                 </Button>
                                 <FormMessage/>
@@ -105,7 +110,6 @@ export const LoginForm = () => {
                 </div>
                 {/* luego el error los mostrar */}
                 <FormError message={error}/>
-                <FormSuccess message={success}/>
 
                 <Button disabled={isPending}
                 type="submit" 
@@ -115,6 +119,7 @@ export const LoginForm = () => {
                 </form>
             </Form>
         </CardWrapper>    
+        </>
     );
 
 }

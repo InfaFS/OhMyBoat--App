@@ -7,6 +7,9 @@ import { newVerification } from "../../../actions/new-verification"
 import { useState } from "react"
 import { FormError } from "../FormError"
 import { FormSuccess } from "../FormSuccess"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { Button } from "../ui/button"
 
 export const NewVerificationForm = () => {
     const [error, setError] = useState("")
@@ -14,9 +17,9 @@ export const NewVerificationForm = () => {
 
     const searchParams = useSearchParams()
     const token = searchParams.get("token")
+    const router = useRouter();
 
-
-    const onSubmit = useCallback(() => {
+    const onSubmit = (() => {
         if (!token) {
             setError("Token invalido!")
         }
@@ -24,16 +27,18 @@ export const NewVerificationForm = () => {
         newVerification(token)
         .then((response) => {
             response.error ? setError(response.error) : setSuccess(response.success)
+            if (response.success) {
+                toast.success(response.success)
+                router.push("/auth/login")
+            }
         })
         .catch(() => {
             setError("Algo salio mal!")
         })
         console.log(token)
-    },[token])
+    })
 
-    useEffect(() => {
-        onSubmit()
-    },[onSubmit])
+    
 
     return (
         <CardWrapper
@@ -41,9 +46,12 @@ export const NewVerificationForm = () => {
         backButtonLabel="Inicia sesion"
         backButtonHref="/auth/login">
             <div className="flex items-center w-full justify-center">
-                { !error && !success && <PulseLoader/>}
+                { !error && !success && (
+                    <Button onClick={onSubmit}>
+                        Verificar mail
+                    </Button>
+                )}
          
-                <FormSuccess message={success}/>
                 <FormError message={error}/>
             </div>
         </CardWrapper>

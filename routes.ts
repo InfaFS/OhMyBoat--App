@@ -29,3 +29,13 @@ export const DEFAULT_LOGIN_REDIRECT = "/settings";
  * Ruta por defecto despues de cerrar sesion
  */
 export const DEFAULT_SINGOUT_REDIRECT = "/";
+
+export const DEFAULT_FIRST_LOGIN_REDIRECT ="/"
+/**
+ * Rutas accesibles solo si es admin
+ */
+
+export const adminRoutes = [
+    "/admin/auth/register-manager",
+
+];

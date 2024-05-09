@@ -17,13 +17,16 @@ export const newPasswordLogged = async ({data,email}) => {
         return { error: "Revisa los campos!" }
     }
 
-    const { previousPassword,newPassword } = validatedFields.data
+    const { previousPassword,newPassword,confirmPassword } = validatedFields.data
+    if (newPassword !== confirmPassword) {
+        return { error: "La nueva contraseña no coincide con la confirmacion!" }
+    }
 
     const user = await getUserByEmail(email)
     console.log(user.password)
     console.log(previousPassword)
     if( user.password !== previousPassword) {
-        return { error: "La contraseña no es valida, intente nuevamente" }
+        return { error: "La contraseña original no es valida, intente nuevamente" }
     }
 
     const resetedPassword = await db.user.update({
