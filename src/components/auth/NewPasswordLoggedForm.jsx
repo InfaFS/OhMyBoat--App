@@ -70,7 +70,7 @@ export const NewPasswordLoggedForm = ({email}) => {
                          name="previousPassword"
                          render={({field}) => (
                              <FormItem>
-                                 <FormLabel>Password:</FormLabel>
+                                 <FormLabel>Contraseña:</FormLabel>
                                  <FormControl>
                                      <Input
                                          {...field}
@@ -89,7 +89,7 @@ export const NewPasswordLoggedForm = ({email}) => {
                          name="newPassword"
                          render={({field}) => (
                              <FormItem>
-                                 <FormLabel>New Password:</FormLabel>
+                                 <FormLabel>Nueva contraseña:</FormLabel>
                                  <FormControl>
                                      <Input
                                          {...field}
@@ -108,7 +108,7 @@ export const NewPasswordLoggedForm = ({email}) => {
                          name="confirmPassword"
                          render={({field}) => (
                              <FormItem>
-                                 <FormLabel>Confirm Password:</FormLabel>
+                                 <FormLabel>Confirm la contraseña:</FormLabel>
                                  <FormControl>
                                      <Input
                                          {...field}
@@ -130,7 +130,7 @@ export const NewPasswordLoggedForm = ({email}) => {
                  <Button disabled={isPending}
                  type="submit" 
                  className="w-full">
-                     Confirmar datos
+                     Confirmar
                  </Button>
                  </form>
              </Form>

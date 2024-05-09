@@ -28,6 +28,7 @@ export const ResetForm= () => {
         resolver: zodResolver(ResetSchema),
         defaultValues: {
             email: "",
+            emailConfirmation: "",
         }
     });
 
@@ -67,6 +68,25 @@ export const ResetForm= () => {
                         render={({field}) => (
                             <FormItem>
                                 <FormLabel>Email:</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        disabled={isPending}
+                                        placeholder="tinchotech@gmail.com"
+                                        type="email"
+                                        />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="emailConfirmation"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Confirma tu email:</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}

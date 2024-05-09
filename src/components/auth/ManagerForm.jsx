@@ -49,19 +49,20 @@ export const ManagerForm = () => {
    }
 
     return (
+        <div>
         <CardWrapper 
-            headerLabel="Crea una cuenta para un gerente." 
-            backButtonLabel="Volver" 
-            backButtonHref="/settings"
-            headerTitle="Registrar gerente"
+            headerLabel="Crea una cuenta" 
+            backButtonLabel="Ya tienes una cuenta?" 
+            backButtonHref="/auth/login"
+            headerTitle="Registrarse"
         >
-            <Form {... form}>
+            <Form {... form} >
                 <form onSubmit={form.handleSubmit(onSubmit)} //form onSubmit={onSubmit}
                 className="space-y-6"
                 >
                 
                 <div className="space-y-4">
-                    
+                <div className="grid grid-cols-2 gap-4"> 
                 {/* NOMBRE */}   
                 <FormField
                         control={form.control}
@@ -99,7 +100,10 @@ export const ManagerForm = () => {
                             </FormItem>
                         )}
                     />
+                    
+                    </div> 
 
+                    <div className="grid grid-cols-2 gap-4"> 
                     {/* TELEFONO */}   
                     <FormField
                         control={form.control}
@@ -138,7 +142,7 @@ export const ManagerForm = () => {
                             </FormItem>
                         )}
                     />
-                    
+                    </div>
                     
                     {/* MAIL */}
                     <FormField
@@ -159,14 +163,14 @@ export const ManagerForm = () => {
                             </FormItem>
                         )}
                     />
-
+            
                     {/* PASSWORD */}
                     <FormField
                         control={form.control}
                         name="password"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Password:</FormLabel>
+                                <FormLabel>Contraseña:</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -181,12 +185,12 @@ export const ManagerForm = () => {
                     />
 
                     {/* CONFIRM PASSWORD */}
-                    <FormField
+                                        <FormField
                         control={form.control}
                         name="confirmPassword"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Confirm Password:</FormLabel>
+                                <FormLabel>Confirma la contraseña:</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -200,20 +204,21 @@ export const ManagerForm = () => {
                         )}
                     />
 
+
     
                 </div>
                 {/* luego el error los mostrar */}
                 <FormError message={error}/>
-                <FormSuccess message={success}/>
 
                 <Button disabled={isPending}
                 type="submit" 
                 className="w-full">
-                    Registrar
+                    Registrarse
                 </Button>
                 </form>
             </Form>
-        </CardWrapper>     
+        </CardWrapper> 
+        </div>        
     );
 }
 

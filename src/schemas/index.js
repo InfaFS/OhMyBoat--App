@@ -4,6 +4,10 @@ export const ResetSchema = z.object({
     email: z.string().email({
         message: "Email requerido",
     }),
+    emailConfirmation: z.string().email({
+        message: "Email requerido",
+    
+    }),
 
 }) 
 

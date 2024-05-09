@@ -12,7 +12,11 @@ export const reset = async (data)  => {
         return { error: "Revisa el formato!" }
     }
 
-    const { email } = validatedFields.data
+    const { email,emailConfirmation} = validatedFields.data
+
+    if (email !== emailConfirmation) {
+        return {error: "Los emails no coinciden!"}
+    }
 
     const existingUser = await getUserByEmail(email)
 

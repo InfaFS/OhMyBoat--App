@@ -175,7 +175,7 @@ export const RegisterForm = () => {
                         name="password"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Password:</FormLabel>
+                                <FormLabel>Contraseña:</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -195,7 +195,7 @@ export const RegisterForm = () => {
                         name="confirmPassword"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Confirm Password:</FormLabel>
+                                <FormLabel>Confirma la contraseña:</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
