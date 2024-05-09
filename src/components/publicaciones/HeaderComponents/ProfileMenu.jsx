@@ -23,10 +23,21 @@ export default function ProfileMenu() {
 
   const handleCloseAndLogout = async () => {
     setAnchorEl(null);
+    toast.dismiss();
     const res = await CerradoDeSesion();
     toast.info("Tu sesión ha sido cerrada");
   }
-
+  //{label:"Cerrar Sesión",onPress:()=>{handleCloseAndLogout()}}
+  const handleConfirmation = () => {
+    toast.error("Estás seguro de cerrar sesión?", {
+      action: <>
+      <div>
+        <button onClick={handleCloseAndLogout} className='hover:text-rose-600 text-red-900'>Confirmar</button>
+        <button onClick={() => {toast.dismiss()}} className='hover:text-rose-600 text-red-900 '>Cancelar</button>
+        </div>
+      </> ,
+  })
+  }
   return (
     <div>
       <Button
@@ -56,7 +67,7 @@ export default function ProfileMenu() {
         </MenuItem>
         </Link>
         
-        <MenuItem onClick={handleCloseAndLogout}>
+        <MenuItem onClick={handleConfirmation}>
           <div className="flex items-center">
             <LogOut height={20} width={20} className="mr-2" />
             <span>Cerrar Sesión</span>
