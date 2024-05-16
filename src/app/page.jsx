@@ -78,9 +78,8 @@ export default function Home() {
         {publicaciones.slice(startIndex, endIndex).map((publicacion) => (
           <CardPublicacion
             key={publicacion.id}
-            marina={publicacion.marina}
             modelo={publicacion.modelo}
-            nombre={publicacion.title}
+            titulo={publicacion.title}
             img={publicacion.img}
           />
         ))}

@@ -56,45 +56,10 @@ model PasswordResetToken {
   @@unique([email, token])
 }
 
-model CardPost {
-  id             String  @id @default(cuid())
-  idCompletePost String
-  boat           Boolean
-  img            String
-  title          String
-  modelo         String
-}
-
-model VehiclePost {
-  id          String @id @default(cuid())
-  idPublisher String
-  img         String
-  title       String
-  modelo      String
-  descripcion String
-  patente     String
-  kilometraje String
-  cantPuertas String
-}
-
-model BoatPost {
-  id          String @id @default(cuid())
-  idPublisher String
-  img         String
-  title       String
-  modelo      String
-  descripcion String
-  matricula   String
-  eslora      String
-  manga       String
-  metros      String
-  deuda       String
-}
-
-model Review {
-  id          String @id @default(cuid())
-  idPublisher String
-  idReviewed  String
-  stars       Int
-  description String
+model Post {
+  id     Int    @id @default(autoincrement())
+  title  String
+  img    String
+  modelo String
+  marina String
 }

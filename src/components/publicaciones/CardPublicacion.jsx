@@ -7,12 +7,12 @@ import {     Card,
     
 import { Button } from "../ui/button";
 
-  export default function CardPublicacion({marina, modelo, nombre, img}) {
+  export default function CardPublicacion({modelo, titulo, img}) {
       return (
           <div>
               <Card style={{ width: "100%", height: "100%" }}>
                   <CardHeader>
-                      <CardTitle>{nombre}</CardTitle>
+                      <CardTitle>{titulo}</CardTitle>
                       <CardDescription>{modelo}</CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -22,7 +22,6 @@ import { Button } from "../ui/button";
                   </CardContent>
                   <CardFooter>
                       <Button>Ver detalle</Button>
-                      <p>📍{marina}</p>
                   </CardFooter>
               </Card>
           </div>

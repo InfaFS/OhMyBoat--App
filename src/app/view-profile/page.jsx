@@ -1,5 +1,5 @@
 
-function viewPageDefault ({params}) {
+function viewPageDefault () {
 
     return (
         <div>
