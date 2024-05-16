@@ -82,18 +82,7 @@ const FileSchema = z.object({
     size: z.number().min(1).max(10485760), // Validar el tamaño del archivo (1 byte mínimo, 10 MB máximo)
   });
 
-export const BoatSchema = z.object({
-    title: z.string().min(1,{
-        message: "Ingresa un titulo",
-    }),
-    year: z.string().min(1,{
-        message: "Ingresa un modelo"
-    }), 
-    marine: z.string().min(1,{
-        message: "Ingresa una marina",
-    }),
-    image: FileSchema,
-}) 
+
 
 export const UpdateProfileSchema = z.object({
     firstname: z.string().min(1,{
@@ -110,4 +99,32 @@ export const UpdateProfileSchema = z.object({
     }),
 
 })
+
+export const BoatSchema = z.object({
+    title: z.string().min(1,{
+        message: "Ingresa un titulo",
+    }),
+    modelo: z.string().min(1,{
+        message: "Ingresa un modelo"
+    }), 
+    descripcion: z.string().min(1,{
+        message: "Ingresa una descripcion"
+    }), 
+    matricula: z.string().min(1,{
+        message: "Ingresa una matricula"
+    }),
+    eslora: z.string().min(1,{
+        message: "Ingresa una eslora"
+    }),
+    manga: z.string().min(1,{
+        message: "Ingresa una manga"
+    }),
+    metros: z.string().min(1,{
+        message: "Ingresa los metros"
+    }),
+    deuda: z.string().min(1,{
+        message: "Ingresa la deuda"
+    }),
+    image: FileSchema,
+}) 
 

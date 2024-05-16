@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardWrapper } from "@/components/auth/CardWrapper";
 import { useForm } from "react-hook-form";
-import { publicarBarco } from "../../../../actions/publicar-barco";
+import { publicarVehiculo } from "../../../../actions/publicar-vehiculo";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { FormSuccess } from "@/components/FormSuccess";
 import { Toaster, toast } from 'sonner'; // Importa la función toast desde sonner
 import { useRouter } from "next/navigation";
 
-export const BoatForm = () => {
+export const VehicleForm = () => {
     const [imageError,setImageError] = useState("");
     const [previewUrl, setPreviewUrl] = useState(null);
     const [success, setSuccess] = useState("");
@@ -21,12 +21,12 @@ export const BoatForm = () => {
 
     const onSubmit = async (data) => {
         console.log(data);
-        const { title,modelo,descripcion,matricula,eslora,manga,metros,deuda,image} = data;
+        const { title,modelo,descripcion,patente,kilometraje,cantpuertas,image} = data;
         const file = image[0];
         console.log(file);
         const archivo = new FormData();
         archivo.append("image", file);
-        const res = await publicarBarco({ title,modelo,descripcion,matricula,eslora,manga,metros,deuda,archivo });
+        const res = await publicarVehiculo({ title,modelo,descripcion,patente,kilometraje,cantpuertas,archivo});
         setError(res?.error);
         if (res.success) {
             toast.success('¡Publicación creada!');
@@ -74,10 +74,10 @@ export const BoatForm = () => {
 
             <>   
                 <CardWrapper
-                    headerLabel="Crear una publicación de un barco rellenando los datos."
+                    headerLabel="Crear una publicación de un vehiculo rellenando los datos."
                     backButtonLabel="Cancelar y volver al inicio"
                     backButtonHref="/"
-                    headerTitle="Publicar Barco"
+                    headerTitle="Publicar Vehículo"
                 >
                     <form onSubmit={onSubmitWithEvent}>
                         <div className="space-y-4">
@@ -117,68 +117,42 @@ export const BoatForm = () => {
                                 <span className="text-red-500 text-sm">{errors.descripcion.message}</span>
                             )}
 
-                            <label htmlFor="matricula" className="text-slate-500 block text-sm">
-                                Matrícula:
+                            <label htmlFor="patente" className="text-slate-500 block text-sm">
+                                Patente:
                             </label>
                             <Input
                                 type="text"
-                                {...register("matricula", { required: { value: true, message: "Matrícula obligatoria" } })}
+                                {...register("patente", { required: { value: true, message: "Patente obligatoria" } })}
                                 placeholder="..."
                             />
-                            {errors.matricula && (
-                                <span className="text-red-500 text-sm">{errors.matricula.message}</span>
+                            {errors.patente && (
+                                <span className="text-red-500 text-sm">{errors.patente.message}</span>
                             )}
 
-                            <label htmlFor="eslora" className="text-slate-500 block text-sm">
-                                Eslora:
+                            <label htmlFor="kilometraje" className="text-slate-500 block text-sm">
+                                Kilometraje
                             </label>
                             <Input
                                 type="text"
-                                {...register("eslora", { required: { value: true, message: "Eslora obligatoria" } })}
+                                {...register("kilometraje", { required: { value: true, message: "Kilometraje obligatorio" } })}
                                 placeholder="..."
                             />
-                            {errors.eslora && (
-                                <span className="text-red-500 text-sm">{errors.eslora.message}</span>
+                            {errors.kilometraje && (
+                                <span className="text-red-500 text-sm">{errors.kilometraje.message}</span>
                             )}
 
-                            <label htmlFor="manga" className="text-slate-500 block text-sm">
-                                Manga:
+                            <label htmlFor="cantpuertas" className="text-slate-500 block text-sm">
+                                Cantidad de puertas:
                             </label>
                             <Input
                                 type="text"
-                                {...register("manga", { required: { value: true, message: "Manga obligatoria" } })}
+                                {...register("cantpuertas", { required: { value: true, message: "Cantidad de puertas obligatoria" } })}
                                 placeholder="..."
                             />
-                            {errors.manga && (
-                                <span className="text-red-500 text-sm">{errors.manga.message}</span>
-                            )}
-
-                            <label htmlFor="metros" className="text-slate-500 block text-sm">
-                                Metros:
-                            </label>
-                            <Input
-                                type="text"
-                                {...register("metros", { required: { value: true, message: "Metros obligatorios" } })}
-                                placeholder="..."
-                            />
-                            {errors.metros && (
-                                <span className="text-red-500 text-sm">{errors.metros.message}</span>
-                            )}
-
-                            
-                            <label htmlFor="deuda" className="text-slate-500 block text-sm">
-                                Deuda:
-                            </label>
-                            <Input
-                                type="text"
-                                {...register("deuda", { required: { value: true, message: "Deuda obligatoria" } })}
-                                placeholder="..."
-                            />
-                            {errors.deuda && (
-                                <span className="text-red-500 text-sm">{errors.deuda.message}</span>
+                            {errors.cantpuertas && (
+                                <span className="text-red-500 text-sm">{errors.cantpuertas.message}</span>
                             )}
                             
-
                             <label htmlFor="image" className="text-slate-500 block text-sm">
                                 Imagen:
                             </label>
@@ -207,7 +181,7 @@ export const BoatForm = () => {
 
                             {previewUrl && (
                                 <div>
-                                    <img className="rounded-md" src={previewUrl} alt="Inválido" style={{ maxWidth: "100px", maxHeight: "100px" }} />
+                                    <img className="rounded-md" src={previewUrl} alt="Inválido" style={{ maxWidth: "100px", maxHeight: "100px" }}/>
                                 </div>
                             )}
                         </div>

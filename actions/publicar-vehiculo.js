@@ -2,10 +2,10 @@
 import { writeFile} from "fs/promises"
 import { auth } from "../auth"
 import { db } from "@/lib/db"
-export const publicarBarco = async (values) => {
+export const publicarVehiculo = async (values) => {
 
     console.log(values)
-    const { title,modelo,descripcion,matricula,eslora,manga,metros,deuda,archivo } = values;
+    const { title,modelo,descripcion,patente,kilometraje,cantpuertas,archivo } = values;
     console.log(archivo)
     const file = archivo.get("image"); //obtengo la imagen que fue comprimida
     console.log(file)
@@ -26,17 +26,15 @@ export const publicarBarco = async (values) => {
     const pathUsar = `/${file.name}`; //el path que va a usar el componente que renderiza las publis
     await writeFile(path,buffer); //escribo la imagen en mi compu
 
-    const publicacionCreada = await db.boatPost.create({ //crep la publicacion
+    const publicacionCreada = await db.vehiclePost.create({ //crep la publicacion
         data: {
           img: pathUsar,
           title: title,
           modelo:modelo,
           descripcion:descripcion,
-          matricula:matricula,
-          eslora:eslora,
-          manga:manga,
-          metros:metros,
-          deuda:deuda,
+          patente: patente,
+          kilometraje:kilometraje,
+          cantPuertas:cantpuertas,
           idPublisher: session.user.id,
         }
       })
@@ -44,7 +42,7 @@ export const publicarBarco = async (values) => {
     const cardPublicacionCreada = await db.cardPost.create({
         data: {
           idCompletePost: publicacionCreada.id,
-          boat: true,
+          boat: false,
           img: pathUsar,
           title: title,
           modelo:modelo,

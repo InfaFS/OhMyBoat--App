@@ -81,6 +81,8 @@ export default function Home() {
             modelo={publicacion.modelo}
             titulo={publicacion.title}
             img={publicacion.img}
+            isBoat={publicacion.boat}
+            idCompletePost={publicacion.idCompletePost}
           />
         ))}
       </section>

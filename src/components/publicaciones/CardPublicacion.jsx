@@ -1,3 +1,5 @@
+"use client"
+import Link from "next/link";
 import {     Card,
     CardContent,
     CardDescription,
@@ -7,7 +9,7 @@ import {     Card,
     
 import { Button } from "../ui/button";
 
-  export default function CardPublicacion({modelo, titulo, img}) {
+  export default function CardPublicacion({modelo, titulo, img, isBoat, idCompletePost}) {
       return (
           <div>
               <Card style={{ width: "100%", height: "100%" }}>
@@ -21,7 +23,16 @@ import { Button } from "../ui/button";
                       </div>
                   </CardContent>
                   <CardFooter>
-                      <Button>Ver detalle</Button>
+                      {isBoat ? (
+                        <Link href={`/viewPosts/view-ship/${idCompletePost}`}>
+                            <Button>Ampliar publicación</Button>
+                        </Link>
+                      ) : (
+                        <Link href={`/viewPosts/view-vehicle/${idCompletePost}`}>
+                        <Button>Ampliar publicación</Button>
+                    </Link>
+                      )}
+
                   </CardFooter>
               </Card>
           </div>
