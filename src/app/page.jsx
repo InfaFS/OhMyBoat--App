@@ -73,6 +73,7 @@ export default function Home() {
         </div>
       )}
       <Button onClick={onClick}>Generador</Button>
+  
       <section className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
         {publicaciones.slice(startIndex, endIndex).map((publicacion) => (
           <CardPublicacion

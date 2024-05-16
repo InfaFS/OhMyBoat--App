@@ -9,7 +9,6 @@ export const BackButton = ({href,label}) => {
             <Link href={href}>
                 {label}
             </Link>
-   
         </Button>
     )
 }

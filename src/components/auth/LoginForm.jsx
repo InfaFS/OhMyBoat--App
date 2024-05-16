@@ -36,9 +36,7 @@ export const LoginForm = () => {
     startTransition(() => {login(data)
         .then((response) => {
             setError(response?.error) //con el ? no le asigna indefinido si no le llega nada
-            console.log("hola")
             if (response?.success) {
-                console.log("pito")
                 toast.success(response.success)
             }
             
@@ -87,7 +85,7 @@ export const LoginForm = () => {
                         name="password"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Password:</FormLabel>
+                                <FormLabel>Contraseña:</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}

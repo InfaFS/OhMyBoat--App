@@ -11,13 +11,15 @@ import * as z from "zod"
 import { useTransition } from "react";
 import { RegisterSchema } from "@/schemas";
 import { FormError } from "../FormError";
-import { FormSuccess } from "../FormSuccess";
-import { registerManager } from "../../../actions/registerManager";
+import { register } from "../../../actions/register";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-export const ManagerForm = () => {
+
+export const UpdateProfileForm = () => {
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [isPending, startTransition] = useTransition(); //usamos esto para la login transition
+    const currentDate = new Date();
     const router = useRouter();
 
     const form = useForm({
@@ -34,27 +36,30 @@ export const ManagerForm = () => {
     });
 
   const onSubmit = async (data) => { //async poner
-    setError("");
-    startTransition(() => {registerManager(data)
+   setError("");
+   setSuccess("");
+   console.log(data.password)
+    startTransition(() => {register(data)
         .then((response) => {
-            if (response.success) {
-                toast.success(response.success);
-                router.push("/settings");
-            }
             setError(response.error)
+            setSuccess(response.success)
+            if (response.success) {
+                toast.success(response.success)
+                router.push("/auth/login")
+            }
         })
-    
+    console.log(error)
     })
-
+    console.log(data)
    }
 
     return (
         <div>
         <CardWrapper 
-            headerLabel="Crea una cuenta para un gerente." 
-            backButtonLabel="Volver" 
-            backButtonHref="/settings"
-            headerTitle="Registrar gerente"
+            headerLabel="Crea una cuenta" 
+            backButtonLabel="Ya tienes una cuenta?" 
+            backButtonHref="/auth/login"
+            headerTitle="Registrarse"
         >
             <Form {... form} >
                 <form onSubmit={form.handleSubmit(onSubmit)} //form onSubmit={onSubmit}
@@ -218,7 +223,7 @@ export const ManagerForm = () => {
                 </form>
             </Form>
         </CardWrapper> 
-        </div>        
+        </div>    
     );
 }
 

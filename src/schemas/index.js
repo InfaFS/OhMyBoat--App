@@ -93,6 +93,21 @@ export const BoatSchema = z.object({
         message: "Ingresa una marina",
     }),
     image: FileSchema,
-    
 }) 
+
+export const UpdateProfileSchema = z.object({
+    firstname: z.string().min(1,{
+        message: "Ingresa un nombre."
+    }),
+    lastname: z.string().min(1,{
+        message: "Ingresa un apellido."
+    }),
+    cellphone: z.string().min(1,{
+        message: "Ingresa un telefono."
+    }),
+    email: z.string().email({
+        message: "Email requerido.",
+    }),
+
+})
 

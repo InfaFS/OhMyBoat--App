@@ -56,7 +56,7 @@ export const NewPasswordLoggedForm = ({email}) => {
              <CardWrapper 
              headerLabel="Ingrese los nuevos datos" 
              backButtonLabel="Volver al perfil" 
-             backButtonHref="/settings"
+             backButtonHref="/profile"
              headerTitle="Nueva contraseña"
          >
              <Form {... form}>
@@ -108,7 +108,7 @@ export const NewPasswordLoggedForm = ({email}) => {
                          name="confirmPassword"
                          render={({field}) => (
                              <FormItem>
-                                 <FormLabel>Confirm la contraseña:</FormLabel>
+                                 <FormLabel>Confirma la contraseña:</FormLabel>
                                  <FormControl>
                                      <Input
                                          {...field}

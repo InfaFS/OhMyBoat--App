@@ -62,7 +62,7 @@ export const { handlers, auth, signIn, signOut} = NextAuth({
       if (!existingUser) return token; //si no existe el usuario, retorno token
 
       token.role=existingUser.role; //agrego el rol al token si es que el usuario existe
-
+      
       return token; //siempre retonar el token, ya que lo puede usar directamente el middleware para detectar tipo de usuario
     }
   }
