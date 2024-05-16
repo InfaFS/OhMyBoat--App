@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {Lock } from 'lucide-react';
+import {ShieldCheckIcon} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { borrarPublicaciones } from '../../../../actions/borrarPublicaciones';
@@ -53,7 +53,7 @@ export default function SpecialActionsMenu() {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <Lock height={20} width={20} />
+      <ShieldCheckIcon height={20} width={20} />
       </Button>
       <Menu
         id="special-menu"
@@ -66,6 +66,9 @@ export default function SpecialActionsMenu() {
       >
 
         <MenuItem onClick={handleConfirmation}>Borrar publicaciones</MenuItem>
+        <Link href="/admin/view-employees">
+        <MenuItem onClick={handleClose}>Ver empleados</MenuItem>
+        </Link>
 
       </Menu>
     </div>
