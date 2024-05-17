@@ -24,7 +24,7 @@ import CardPublicacion from "@/components/publicaciones/CardPublicacion";
 import Header from "next/head";
 import { obtenerPublicaciones } from "../../actions/publicacion";
 import { Button } from "@/components/ui/button";
-import { fakeDataGenerator } from "../../actions/fakeDataGenerator";
+import { fakeBoatGenerator,fakeVehicleGenerator } from "../../actions/fakeDataGenerator";
 
 
 export default function Home() {
@@ -52,16 +52,22 @@ export default function Home() {
   }, []);
 
 
-  const onClick = async () => {
-    const res = await fakeDataGenerator(1);
+  const onClickBoat = async () => {
+    const res = await fakeBoatGenerator();
+    console.log(res);
+  }
+
+  const onClickVehicle= async () => {
+    const res = await fakeVehicleGenerator();
     console.log(res);
   }
 
 
 
+
   return (
   <>
-  <main className="flex flex-col items-center bg-blancoahumado h-screen  "> {/* h-full */}
+  <main className="flex flex-col items-center bg-blancoahumado min-h-screen"> {/* h-full */}
     <section className="space-y-6 text-center bg-cielo">
       <h1 className="text-6xl font-semibold text-black drop-shadow-md mt-10">
         Home OhMyBoat!🛥️
@@ -72,7 +78,11 @@ export default function Home() {
           <p className="text-black font-semibold">No hay publicaciones por el momento, vuelve más tarde...</p>
         </div>
       )}
-      <Button onClick={onClick}>Generador</Button>
+      <div className="flex justify-center mb-6">
+      <Button className="mr-2" onClick={onClickBoat}>Generador Barcos</Button>
+      <Button onClick={onClickVehicle}>Generador Vehiculos</Button>
+      </div>
+  
   
       <section className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
         {publicaciones.slice(startIndex, endIndex).map((publicacion) => (

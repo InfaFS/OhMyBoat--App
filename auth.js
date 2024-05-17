@@ -49,6 +49,9 @@ export const { handlers, auth, signIn, signOut} = NextAuth({
         session.user.role = token.role //asigno a la session el rol del token
       }
 
+      if(session.user && token.firstname){
+        session.user.firstname = token.firstname //asigno a la session el rol del token
+      }
 
 
 
@@ -62,7 +65,7 @@ export const { handlers, auth, signIn, signOut} = NextAuth({
       if (!existingUser) return token; //si no existe el usuario, retorno token
 
       token.role=existingUser.role; //agrego el rol al token si es que el usuario existe
-      
+      token.firstname=existingUser.firstname; //agrego el nombre al token si es que el usuario existe
       return token; //siempre retonar el token, ya que lo puede usar directamente el middleware para detectar tipo de usuario
     }
   }
