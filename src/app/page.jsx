@@ -69,8 +69,8 @@ export default function Home() {
   <>
   <main className="flex flex-col items-center bg-blancoahumado min-h-screen"> {/* h-full */}
     <section className="space-y-6 text-center bg-cielo">
-      <h1 className="text-6xl font-semibold text-black drop-shadow-md mt-10">
-        Home OhMyBoat!🛥️
+      <h1 className="text-4xl font-semibold text-black drop-shadow-md mt-10">
+        Publicaciones
       </h1>
 
       { publicaciones.length === 0 && (
@@ -78,10 +78,11 @@ export default function Home() {
           <p className="text-black font-semibold">No hay publicaciones por el momento, vuelve más tarde...</p>
         </div>
       )}
-      <div className="flex justify-center mb-6">
+      {/*  <div className="flex justify-center mb-6">
       <Button className="mr-2" onClick={onClickBoat}>Generador Barcos</Button>
       <Button onClick={onClickVehicle}>Generador Vehiculos</Button>
-      </div>
+      </div> */}
+
   
   
       <section className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">

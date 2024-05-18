@@ -40,10 +40,10 @@ export async function HeaderTincho() {
           {!session ? (
             <>
               <Link href="/auth/login">
-                <Button variant="ghost">Iniciar sesión</Button>
+                <Button variant="ghost" className='text-blue-900'>Iniciar sesión</Button>
               </Link>
               <Link href="/auth/register">
-                <Button variant="ghost">Registrarse</Button>
+                <Button variant="ghost" className='text-blue-900'>Registrarse</Button>
               </Link>
             </>
           ) : (

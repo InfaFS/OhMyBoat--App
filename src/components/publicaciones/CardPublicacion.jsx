@@ -25,11 +25,11 @@ import { Button } from "../ui/button";
                   <CardFooter>
                       {isBoat ? (
                         <Link href={`/viewPosts/view-ship/${idCompletePost}`}>
-                            <Button>Ampliar publicación</Button>
+                            <Button className="bg-sky-500">Ampliar publicación</Button>
                         </Link>
                       ) : (
                         <Link href={`/viewPosts/view-vehicle/${idCompletePost}`}>
-                        <Button>Ampliar publicación</Button>
+                        <Button className="bg-sky-500">Ampliar publicación</Button>
                     </Link>
                       )}
 

@@ -60,19 +60,14 @@ export default function ProfileMenu() {
         }}
       >
         <Link href="/profile">
-        <MenuItem onClick={handleClose}>
-        <div className="flex items-center">
-            <Settings height={20} width={20} className="mr-2" />
-            <span>Ver perfil</span>
-          </div>
+        <MenuItem onClick={handleClose} className='text-sm'>
+            <Settings height={20} width={20} className="mr-2" /> Ver perfil
         </MenuItem>
         </Link>
         
-        <MenuItem onClick={handleConfirmation}>
-          <div className="flex items-center">
-            <LogOut height={20} width={20} className="mr-2" />
-            <span>Cerrar Sesión</span>
-          </div>
+        <MenuItem onClick={handleConfirmation} className='text-sm'>
+            <LogOut height={20} width={20} className="mr-2" /> Cerrar Sesión
+
         </MenuItem>
       </Menu>
     </div>

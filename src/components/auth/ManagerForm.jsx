@@ -213,7 +213,7 @@ export const ManagerForm = () => {
                 <Button disabled={isPending}
                 type="submit" 
                 className="w-full">
-                    Registrarse
+                    Registrar gerente
                 </Button>
                 </form>
             </Form>

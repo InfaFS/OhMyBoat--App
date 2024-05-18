@@ -1,14 +1,14 @@
-import { ProfileManager } from "@/components/profile/ProfileManager"
+import ViewComponent from "@/components/admin-components/viewEmployeesComponent2"
 import { auth } from "../../../auth"
 import { getUserById } from "../../../data/user"
+import { getAllEmployees } from "../../../actions/getEmployees";
 export default async function testOnly() {
-  const session = await auth()
-  const userData = await getUserById(session.user.id)
-  console.log(userData)
-
+  const empleados = await getAllEmployees();
+  console.log(empleados)
   return (
     <div>
-      <ProfileManager userData={userData}/>
+      <h1>Test Only</h1>
+      <ViewComponent empleados={empleados}/>
     </div>
   )
 }

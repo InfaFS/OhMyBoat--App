@@ -42,20 +42,15 @@ export default function AddPublicationMenu() {
         }}
       >
         <Link href="/create/create-vehicle">
-        <MenuItem onClick={handleClose}>
-        <div className="flex items-center">
-            <CarFront height={20} width={20} className="mr-2" />
-            <span>Publicar vehículo</span>
-          </div>
+        <MenuItem onClick={handleClose} className='text-sm'>
+            <CarFront height={20} width={20} className="mr-2" /> Publicar vehículo
         </MenuItem>
         </Link>
 
         <Link href="/create/create-boat">
-        <MenuItem onClick={handleClose}>
-          <div className="flex items-center">
-            <Ship height={20} width={20} className="mr-2" />
-            <span>Publicar embarcación</span>
-          </div>
+        <MenuItem onClick={handleClose} className='text-sm'>
+            <Ship height={20} width={20} className="mr-2" /> Publicar embarcación
+
         </MenuItem>
         </Link>
 

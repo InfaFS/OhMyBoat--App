@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {ShieldCheckIcon} from 'lucide-react';
+import {Contact, ShieldCheckIcon,Trash2,UserPlus} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { borrarPublicaciones } from '../../../../actions/borrarPublicaciones';
@@ -65,11 +65,13 @@ export default function SpecialActionsMenu() {
         }}
       >
 
-        <MenuItem onClick={handleConfirmation}>Borrar publicaciones</MenuItem>
+        <MenuItem onClick={handleConfirmation} className="text-sm"> <Trash2 height={20} width={20} className='mr-2' />Borrar publicaciones</MenuItem>
         <Link href="/admin/view-employees">
-        <MenuItem onClick={handleClose}>Ver empleados</MenuItem>
+        <MenuItem onClick={handleClose} className="text-sm"> <Contact height={20} width={20} className='mr-2' />Ver empleados</MenuItem>
         </Link>
-
+        <Link href="/admin/auth/register-manager">
+        <MenuItem onClick={handleClose} className="text-sm"> <UserPlus height={20} width={20} className='mr-2' />Registrar empleado</MenuItem>
+        </Link>
       </Menu>
     </div>
   );
