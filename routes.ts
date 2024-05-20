@@ -39,3 +39,9 @@ export const adminRoutes = [
     "/admin/auth/register-manager",
 
 ];
+
+/**
+ * API PARA EL RESEND, CAMBIAR ACÁ
+ */
+
+export const RESEND_API_KEY = "re_NvqzqthW_Fr7iFzQtHJTZkFN7Msqt1o1T"

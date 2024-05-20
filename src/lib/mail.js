@@ -1,5 +1,6 @@
 import { Resend } from "resend";
-const resend = new Resend("re_NvqzqthW_Fr7iFzQtHJTZkFN7Msqt1o1T")
+import { RESEND_API_KEY } from "../../routes";
+const resend = new Resend(RESEND_API_KEY);
 
 export const sendResetEmail = async (email, token) => {
     const resetLink = `http://localhost:3000/auth/new-password?token=${token}`;

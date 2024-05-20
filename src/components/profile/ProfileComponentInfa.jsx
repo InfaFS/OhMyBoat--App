@@ -16,7 +16,7 @@
     return (
       <div className="flex items-center justify-center h-screen">
         <div style={{ width: "50%", height: "85%" }}>
-          <div className="bg-sky-700 rounded-lg shadow-md p-4">
+          <div className="bg-sky-600 rounded-lg shadow-md p-4">
             <Card>
               <CardHeader>
                 <CardTitle className="hover:text-blue-500 cursor-pointer">
@@ -44,12 +44,10 @@
                   <span className="font-semibold hover:text-blue-500 cursor-pointer">Email:</span> {email}
                 </p>
                 <p className="mb-2">
-                  <section>
                   <span className="font-semibold hover:text-blue-500 cursor-pointer">Contraseña:</span> {showedPassword}
                   <Link href="/auth/new-password-logged">
                   <button className="ml-2 text-sm font-semibold transition duration-300 ease-in-out hover:text-blue-700 cursor-pointer">Cambiar contraseña</button>
                   </Link>
-                  </section>
                 </p>
                 <p className="mb-2">
                   <span className="font-semibold hover:text-blue-500 cursor-pointer">Rol:</span> {role}
@@ -59,8 +57,9 @@
               </CardContent>
               <CardFooter>
                 <div>
+                <Link href="/profile/update-profile">
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Editar perfil</Button>
-
+                </Link>
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Historial de trueques</Button>
 
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Mis reseñas</Button>

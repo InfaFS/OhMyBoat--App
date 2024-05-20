@@ -1,6 +1,7 @@
-import { ProfileManager } from "@/components/profile/ProfileManager"
-import { auth } from "../../../../../auth"
+import { UpdateProfileManager } from "@/components/profile/updateProfile/UpdateProfileManager"
 import { getUserById } from "../../../../../data/user"
+import { auth } from "../../../../../auth"
+
 export default async function updateProfile() {
   const session = await auth()
   const userData = await getUserById(session.user.id)
@@ -8,8 +9,10 @@ export default async function updateProfile() {
 
   return (
     <div>
-      <h1>aca se actualiza el perfil</h1>
+      <UpdateProfileManager userData={userData}/>
     </div>
   )
 }
+
+
 

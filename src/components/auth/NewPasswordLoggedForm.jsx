@@ -38,7 +38,7 @@ export const NewPasswordLoggedForm = ({email}) => {
         .then((response) => {
             if(response?.success){
                 toast.success(response.success)
-                router.push("/settings")
+                router.push("/profile") //o /?
                 
             }
             setError(response?.error) //con el ? no le asigna indefinido si no le llega nada

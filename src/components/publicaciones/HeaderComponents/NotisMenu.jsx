@@ -37,7 +37,7 @@ export default function NotisMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Notificaciones</MenuItem>
+        <MenuItem onClick={handleClose} className='text-sm'>Notificaciones</MenuItem>
       </Menu>
     </div>
   );

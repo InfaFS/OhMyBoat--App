@@ -109,7 +109,7 @@ export const VehicleForm = () => {
         </form>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <BackButton label="Cancelar y volver al inicio" href="/" />
+        <BackButton label="Volver" href="/" />
       </CardFooter>
     </Card>
   );

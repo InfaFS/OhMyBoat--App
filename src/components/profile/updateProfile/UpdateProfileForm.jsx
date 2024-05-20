@@ -1,229 +1,110 @@
 "use client"
-//exportar desde ahi sino no funciona
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { CardWrapper } from "@/components/auth/CardWrapper";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form"
-import * as z from "zod"
-import { useTransition } from "react";
-import { RegisterSchema } from "@/schemas";
-import { FormError } from "../FormError";
-import { register } from "../../../actions/register";
-import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useRouter} from "next/navigation"
 
-export const UpdateProfileForm = () => {
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
-    const [isPending, startTransition] = useTransition(); //usamos esto para la login transition
-    const currentDate = new Date();
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+  import Link from "next/link";
+  import { Button } from "@/components/ui/button";
+  import { Separator } from "@/components/ui/separator";
+
+  import { updateProfileData } from "../../../../actions/actualizarDatosPerfil";
+  export default function UpdateProfileForm({ firstname, lastname, cellphone, birthday, email, password, role }) {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const showedPassword = password.replace(/./g, "*");
     const router = useRouter();
+    
+    const onSumbit = async (data) => {
+      console.log(email)
+      const res = await updateProfileData({data,email})
+      console.log(data)
+      if (res.success) {
+        toast.success(res.success);
+        router.push("/profile");
+        router.refresh();
+      }
+    }
 
-    const form = useForm({
-        resolver: zodResolver(RegisterSchema),
-        defaultValues: {
-            firstname: "",
-            lastname: "",
-            cellphone: "",
-            birthday: "00/00/0000", //no se si esta bien "00/00/0000
-            email: "",
-            password: "",
-            confirmPassword: "",
-        }
-    });
-
-  const onSubmit = async (data) => { //async poner
-   setError("");
-   setSuccess("");
-   console.log(data.password)
-    startTransition(() => {register(data)
-        .then((response) => {
-            setError(response.error)
-            setSuccess(response.success)
-            if (response.success) {
-                toast.success(response.success)
-                router.push("/auth/login")
-            }
-        })
-    console.log(error)
+    const handleConfirmation = (data) => {
+      toast.info("Estás seguro que quieres aplicar los cambios?", {
+        action: <>
+        <div>
+          <button onClick={() => {onSumbit(data);toast.dismiss()}} className='hover:text-emerald-500 text-blue-600'>Confirmar</button>
+          <button onClick={() => {toast.dismiss()}} className='hover:text-rose-600 text-blue-600 '>Cancelar</button>
+          </div>
+        </> ,
     })
-    console.log(data)
-   }
+    }
 
     return (
-        <div>
-        <CardWrapper 
-            headerLabel="Crea una cuenta" 
-            backButtonLabel="Ya tienes una cuenta?" 
-            backButtonHref="/auth/login"
-            headerTitle="Registrarse"
-        >
-            <Form {... form} >
-                <form onSubmit={form.handleSubmit(onSubmit)} //form onSubmit={onSubmit}
-                className="space-y-6"
-                >
+      <div className="flex items-center justify-center h-screen">
+        <div style={{ width: "50%", height: "85%" }}>
+          <div className="bg-sky-600 rounded-lg shadow-md p-4">
+            <Card>
+            <form onSubmit={handleSubmit(handleConfirmation)}>
+              <CardHeader>
+                <CardTitle className="hover:text-blue-500 cursor-pointer">
+                    Actualiza tu perfil
+                    </CardTitle>
+                <CardDescription>Ingresa datos en los campos que quieras actualizar:</CardDescription>
+                {(errors.firstname || errors.lastname || errors.cellphone )&& ( <span className="text-red-500 text-xs mt-2">¡Faltan datos por ingresar!</span>)}
+              </CardHeader>
+              <CardContent>
+                <div>
                 
-                <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4"> 
-                {/* NOMBRE */}   
-                <FormField
-                        control={form.control}
-                        name="firstname"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Nombre:</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="tincho"
-                                        />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
+                <p className="mb-2 flex items-center space-x-2">
+                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Nombre:</span> 
+                  <Input type="text" {...register("firstname", { required: true })} defaultValue={firstname} className="block w-1/3" />
+                </p>
 
-                    {/* APELLIDO */}   
-                    <FormField
-                        control={form.control}
-                        name="lastname"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Apellido:</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="tech"
-                                        />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    
-                    </div> 
+                <p className="mb-2 flex items-center space-x-2 mt-3">
+                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Apellido:</span> 
+                  <Input type="text" {...register("lastname", { required: true })} defaultValue={lastname}  className="block w-1/3" />
+                </p>
 
-                    <div className="grid grid-cols-2 gap-4"> 
-                    {/* TELEFONO */}   
-                    <FormField
-                        control={form.control}
-                        name="cellphone"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Teléfono:</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="+54 9 221 --- ----"
-                                        />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    
-                    {/* BIRTHDAY */}   
-                    <FormField
-                        control={form.control}
-                        name="birthday"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Fecha de Nacimiento:</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        //placeholder="+54 9 221 --- ----"
-                                        type="date"
-                                        />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    </div>
-                    
-                    {/* MAIL */}
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Email:</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="tinchotech@gmail.com"
-                                        type="email"
-                                        />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-            
-                    {/* PASSWORD */}
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Contraseña:</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="******"
-                                        type="password"
-                                        />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-
-                    {/* CONFIRM PASSWORD */}
-                                        <FormField
-                        control={form.control}
-                        name="confirmPassword"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Confirma la contraseña:</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="******"
-                                        type="password"
-                                        />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-
-
-    
+                <p className="mb-2 flex items-center space-x-2 mt-3">
+                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Teléfono:</span>
+                  <Input type="text" {...register("cellphone", { required: true })} defaultValue={cellphone} className="block w-1/3" />
+                </p>
+                <p className="mb-2">
+                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Fecha de Nacimiento:</span> {birthday}
+                </p>
+                <p className="mb-2">
+                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Email:</span> {email}
+                </p>
+                <p className="mb-2">
+                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Contraseña:</span> {showedPassword}
+                  <Link href="/auth/new-password-logged">
+                  <button className="ml-2 text-sm font-semibold transition duration-300 ease-in-out hover:text-blue-700 cursor-pointer">Cambiar contraseña</button>
+                  </Link>
+                </p>
+                <p className="mb-2">
+                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Rol:</span> {role}
+                </p>
                 </div>
-                {/* luego el error los mostrar */}
-                <FormError message={error}/>
-
-                <Button disabled={isPending}
-                type="submit" 
-                className="w-full">
-                    Registrarse
-                </Button>
-                </form>
-            </Form>
-        </CardWrapper> 
-        </div>    
+                <Separator />
+              </CardContent>
+              <CardFooter>
+                <div>
+                <Button className="mr-2 hover:text-blue-700" variant="ghost">Aplicar cambios</Button>
+                <Link href="/profile">
+                <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver</Button>
+                </Link>
+                </div>
+              </CardFooter>
+              </form>
+            </Card>
+          </div>
+        </div>
+      </div>
     );
-}
-
+  }
+  

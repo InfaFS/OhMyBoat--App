@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { CarFront,Ship,PlusCircle } from 'lucide-react';
+import { CarFront,Ship,Plus } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AddPublicationMenu() {
@@ -28,7 +28,7 @@ export default function AddPublicationMenu() {
         onClick={handleClick}
       >
         <div className="flex items-center">
-          <PlusCircle height={20} width={20} className="mr-2" />
+          <Plus height={20} width={20} className="mr-2" />
           {/*<span>Publicar</span>*/}
         </div>
       </Button>

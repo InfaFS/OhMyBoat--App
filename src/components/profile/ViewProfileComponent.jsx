@@ -67,8 +67,8 @@ import {
               </CardContent>
               <CardFooter>
                 <div>
-                <Link href="/view-profile">
-                <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver</Button>
+                <Link href="/">
+                <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver al inicio</Button>
                 </Link>
                 </div>
      
