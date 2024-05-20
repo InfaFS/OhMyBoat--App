@@ -75,7 +75,6 @@ export const LoginForm = () => {
                                         type="email"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -94,16 +93,15 @@ export const LoginForm = () => {
                                         type="password"
                                         />
                                 </FormControl>
-                                <Button size="sm" variant="link" className="px-0 font-normal">
-                                    <Link href="/auth/reset-password">
-                                        Recuperar clave
-                                    </Link>
-                                </Button>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
-
+                    
+                    <Button size="sm" variant="link" className="px-0 font-normal">
+                        <Link href="/auth/reset-password">
+                            Recuperar clave
+                        </Link>
+                    </Button>
     
                 </div>
                 {/* luego el error los mostrar */}
@@ -111,7 +109,7 @@ export const LoginForm = () => {
 
                 <Button disabled={isPending}
                 type="submit" 
-                className="w-full">
+                className="w-full bg-sky-500">
                     Iniciar Sesión
                 </Button>
                 </form>

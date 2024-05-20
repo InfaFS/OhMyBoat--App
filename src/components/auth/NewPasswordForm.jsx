@@ -83,7 +83,6 @@ export const NewPasswordForm = () => {
                                          type="password"
                                          />
                                  </FormControl>
-                                 <FormMessage/>
                              </FormItem>
                          )}
                      />
@@ -102,7 +101,6 @@ export const NewPasswordForm = () => {
                                          type="password"
                                          />
                                  </FormControl>
-                                 <FormMessage/>
                              </FormItem>
                          )}
                      />
@@ -112,15 +110,12 @@ export const NewPasswordForm = () => {
                  <FormError message={error}/> 
                  <Button disabled={isPending}
                  type="submit" 
-                 className="w-full">
+                 className="w-full bg-sky-500">
                      Confirmar datos
                  </Button>
                  </form>
              </Form>
          </CardWrapper> 
-     
-    
-
         </>   
     );
 

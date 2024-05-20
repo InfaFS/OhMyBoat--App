@@ -51,9 +51,9 @@ export const ManagerForm = () => {
     return (
         <div>
         <CardWrapper 
-            headerLabel="Crea una cuenta para un gerente." 
+            headerLabel="Crea una cuenta para un gerente rellenando los campos." 
             backButtonLabel="Volver" 
-            backButtonHref="/settings"
+            backButtonHref="/profile"
             headerTitle="Registrar gerente"
         >
             <Form {... form} >
@@ -77,7 +77,6 @@ export const ManagerForm = () => {
                                         placeholder="tincho"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -96,7 +95,6 @@ export const ManagerForm = () => {
                                         placeholder="tech"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -118,7 +116,6 @@ export const ManagerForm = () => {
                                         placeholder="+54 9 221 --- ----"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -138,7 +135,6 @@ export const ManagerForm = () => {
                                         type="date"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -159,7 +155,6 @@ export const ManagerForm = () => {
                                         type="email"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -199,7 +194,6 @@ export const ManagerForm = () => {
                                         type="password"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -212,7 +206,7 @@ export const ManagerForm = () => {
 
                 <Button disabled={isPending}
                 type="submit" 
-                className="w-full">
+                className="w-full bg-sky-500">
                     Registrar gerente
                 </Button>
                 </form>

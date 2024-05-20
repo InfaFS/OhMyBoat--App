@@ -42,12 +42,12 @@ export const NewVerificationForm = () => {
 
     return (
         <CardWrapper
-        headerLabel="Confirmando tu verificacion!"
+        headerLabel="Confirma tu cuenta!"
         backButtonLabel="Inicia sesion"
         backButtonHref="/auth/login">
             <div className="flex items-center w-full justify-center">
                 { !error && !success && (
-                    <Button onClick={onSubmit}>
+                    <Button onClick={onSubmit} className="bg-sky-500">
                         Verificar mail
                     </Button>
                 )}

@@ -14,7 +14,7 @@ import { FormError } from "../FormError";
 import { register } from "../../../actions/register";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
+//<FormMessage/> para mostrarl os mensajes abajo de <Formcontrol/>
 export const RegisterForm = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -56,10 +56,10 @@ export const RegisterForm = () => {
     return (
         <div>
         <CardWrapper 
-            headerLabel="Crea una cuenta" 
+            headerLabel="Crea una cuenta rellenando los campos" 
             backButtonLabel="Ya tienes una cuenta?" 
             backButtonHref="/auth/login"
-            headerTitle="Registrarse"
+            headerTitle="Registro"
         >
             <Form {... form} >
                 <form onSubmit={form.handleSubmit(onSubmit)} //form onSubmit={onSubmit}
@@ -82,7 +82,6 @@ export const RegisterForm = () => {
                                         placeholder="tincho"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -101,7 +100,6 @@ export const RegisterForm = () => {
                                         placeholder="tech"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -123,7 +121,6 @@ export const RegisterForm = () => {
                                         placeholder="+54 9 221 --- ----"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -143,7 +140,6 @@ export const RegisterForm = () => {
                                         type="date"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -204,7 +200,6 @@ export const RegisterForm = () => {
                                         type="password"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -217,7 +212,7 @@ export const RegisterForm = () => {
 
                 <Button disabled={isPending}
                 type="submit" 
-                className="w-full">
+                className="w-full bg-sky-500">
                     Registrarse
                 </Button>
                 </form>

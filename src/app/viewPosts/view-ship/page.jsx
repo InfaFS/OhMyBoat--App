@@ -1,9 +1,10 @@
+import { CreateComponent } from "@/components/WorkingComponent"
 
 function viewShips () {
 
     return (
         <div>
-        <h1>Esta pagina es para ver barquitos</h1>
+            <CreateComponent titulo="Estamos trabajando para que puedas ver todos los barcos 🚢" backLink={"/"}/>
         </div>
     )
 }

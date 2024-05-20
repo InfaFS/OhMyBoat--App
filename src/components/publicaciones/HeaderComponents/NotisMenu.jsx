@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Bell} from 'lucide-react';
+import Link from 'next/link';
 
 export default function NotisMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -37,7 +38,10 @@ export default function NotisMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose} className='text-sm'>Notificaciones</MenuItem>
+        <Link href="/profile/notifications">
+          <MenuItem onClick={handleClose} className='text-sm'>Notificaciones</MenuItem>
+        </Link>
+
       </Menu>
     </div>
   );

@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   return (
-    <div className="h-full flex items-center justify-center bg-blancohueso">
+    <div className="h-full flex items-center justify-center ">
         {children}
     </div>
   );

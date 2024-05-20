@@ -1,9 +1,9 @@
-
+import { CreateComponent } from "@/components/WorkingComponent"
 function viewPosts () {
 
     return (
         <div>
-        <h1>Esta pagina es para ver posteos</h1>
+            <CreateComponent titulo="Estamos trabajando para que puedas ver todas las publicaciones 🌎" backLink={"/"}/>
         </div>
     )
 }

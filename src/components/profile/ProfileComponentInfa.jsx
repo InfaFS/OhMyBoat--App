@@ -60,13 +60,24 @@
                 <Link href="/profile/update-profile">
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Editar perfil</Button>
                 </Link>
+                { role==="USER" && (
+                <>
+                <Link href="/profile/exchanges">
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Historial de trueques</Button>
+                </Link>
 
+                <Link href="/profile/reviews">
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Mis reseñas</Button>
+                </Link>
 
+                <Link href="/profile/own-posts">
                 <Button className="hover:text-blue-700" variant="ghost">Mis publicaciones</Button>
+                </Link>
+                </>
+                )}
                 </div>
      
+
               </CardFooter>
             </Card>
           </div>

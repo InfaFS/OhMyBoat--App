@@ -68,7 +68,7 @@ export default function Home() {
   return (
   <>
   <main className="flex flex-col items-center bg-blancoahumado min-h-screen"> {/* h-full */}
-    <section className="space-y-6 text-center bg-cielo">
+    <section className="space-y-6 text-center">
       <h1 className="text-4xl font-semibold text-black drop-shadow-md mt-10">
         Publicaciones
       </h1>

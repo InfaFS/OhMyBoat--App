@@ -3,7 +3,7 @@ import { useReactTable, getCoreRowModel, flexRender,getPaginationRowModel } from
 import { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card"; // Asegúrate de ajustar la ruta según tu estructura de proyecto
 import { Button } from "../ui/button";
-
+import { useRouter } from "next/navigation";
 const columns = [
   {
     header: "Nombre",
@@ -49,6 +49,11 @@ const empleadosFake = [ //solo para fines de testing
 ]
 function ViewEmployeesComponent2({ empleados }) {
   console.log(empleados);
+  console.log(empleados.length)
+  const router = useRouter();
+  useEffect(() => {
+    router.refresh();
+  },[]);
   const table = useReactTable({
     data: empleados,
     columns,
@@ -57,8 +62,8 @@ function ViewEmployeesComponent2({ empleados }) {
   });
 
   return (
-    <div className="flex justify-center items-center p-6 rounded-lg bg-ocean">
-      {empleados && (
+    <div className="flex justify-center items-center p-6 rounded-lg bg-sky-600">
+      {(empleados && empleados.length) !== 0 && (
         <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
           <CardHeader>
             <CardTitle className="text-center text-xl font-semibold hover:text-gray-300">Empleados</CardTitle>
@@ -101,7 +106,7 @@ function ViewEmployeesComponent2({ empleados }) {
         </CardFooter>
         </Card>
       )}
-      {!empleados && (
+      {(empleados.length === 0 || !empleados) && (
                 <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
                 <CardHeader>
                   <CardTitle className="text-center text-xl font-semibold">Lista de Empleados</CardTitle>

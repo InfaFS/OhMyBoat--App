@@ -76,7 +76,6 @@ export const ResetForm= () => {
                                         type="email"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -95,7 +94,6 @@ export const ResetForm= () => {
                                         type="email"
                                         />
                                 </FormControl>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -106,7 +104,7 @@ export const ResetForm= () => {
                 <FormError message={error}/>
                 <Button disabled={isPending}
                 type="submit" 
-                className="w-full">
+                className="w-full bg-sky-500">
                     Confirmar
                 </Button>
                 </form>
