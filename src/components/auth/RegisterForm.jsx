@@ -140,6 +140,7 @@ export const RegisterForm = () => {
                                         type="date"
                                         />
                                 </FormControl>
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />

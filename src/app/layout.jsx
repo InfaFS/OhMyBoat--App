@@ -17,8 +17,8 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/Oh_My_Boat_logo_4.jpg" type="jpg" />
       </head>
       <body className="bg-blancoahumado">
-        <Toaster richColors position="top-center"/>
         <HeaderTincho/>
+        <Toaster richColors position="top-center"/>
         {children}
         </body>
     </html>

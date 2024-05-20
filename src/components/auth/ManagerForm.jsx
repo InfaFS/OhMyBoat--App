@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form"
 import * as z from "zod"
 import { useTransition } from "react";
-import { RegisterSchema } from "@/schemas";
+import { RegisterManagerSchema } from "@/schemas";
 import { FormError } from "../FormError";
 import { FormSuccess } from "../FormSuccess";
 import { registerManager } from "../../../actions/registerManager";
@@ -21,7 +21,7 @@ export const ManagerForm = () => {
     const router = useRouter();
 
     const form = useForm({
-        resolver: zodResolver(RegisterSchema),
+        resolver: zodResolver(RegisterManagerSchema),
         defaultValues: {
             firstname: "",
             lastname: "",
@@ -39,7 +39,7 @@ export const ManagerForm = () => {
         .then((response) => {
             if (response.success) {
                 toast.success(response.success);
-                router.push("/settings");
+                router.push("/admin/view-employees");
             }
             setError(response.error)
         })
@@ -135,6 +135,7 @@ export const ManagerForm = () => {
                                         type="date"
                                         />
                                 </FormControl>
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />

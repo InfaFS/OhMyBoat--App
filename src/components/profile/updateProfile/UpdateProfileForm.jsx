@@ -34,10 +34,23 @@ import {
     }
 
     const handleConfirmation = (data) => {
+      console.log(data)
       toast.info("Estás seguro que quieres aplicar los cambios?", {
         action: <>
         <div>
           <button onClick={() => {onSumbit(data);toast.dismiss()}} className='hover:text-emerald-500 text-blue-600'>Confirmar</button>
+          <button onClick={() => {toast.dismiss()}} className='hover:text-rose-600 text-blue-600 '>Cancelar</button>
+          </div>
+        </> ,
+    })
+    }
+
+    const handleExit = (event) => {
+      event.preventDefault();
+      toast.info("Estás seguro que no quieres aplicar los cambios?", {
+        action: <>
+        <div>
+          <button onClick={() => {router.push("/profile");toast.dismiss()}} className='hover:text-emerald-500 text-blue-600'>Confirmar</button>
           <button onClick={() => {toast.dismiss()}} className='hover:text-rose-600 text-blue-600 '>Cancelar</button>
           </div>
         </> ,
@@ -94,10 +107,8 @@ import {
               </CardContent>
               <CardFooter>
                 <div>
-                <Button className="mr-2 hover:text-blue-700" variant="ghost">Aplicar cambios</Button>
-                <Link href="/profile">
-                <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver</Button>
-                </Link>
+                <Button className="mr-2 hover:text-blue-700" variant="ghost" type="submit">Aplicar cambios</Button>
+                <Button className="hover:text-blue-700" variant="ghost" onClick={handleExit}>Volver</Button>
                 </div>
               </CardFooter>
               </form>

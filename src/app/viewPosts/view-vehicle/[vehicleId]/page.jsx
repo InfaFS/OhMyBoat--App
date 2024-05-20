@@ -23,6 +23,7 @@ async function viewVehicle({ params }) {
   return (
     <div className="flex items-center justify-center h-screen">
       {vehiclePost && (
+              <div className="bg-sky-600 rounded-md shadow-md p-1">
               <Card className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6">
               <CardHeader>
                 <h1 className="font-semibold text-2xl text-center">
@@ -42,7 +43,7 @@ async function viewVehicle({ params }) {
                       />
                       <div className="p-6">
                         <Link href={`/view-profile/${vehiclePost.idPublisher}`}>
-                          <Button>Ver perfil publicante</Button>
+                          <Button className="bg-sky-500">Ver perfil publicador</Button>
                         </Link>
                       </div>
                     </div>
@@ -68,6 +69,10 @@ async function viewVehicle({ params }) {
                             <TableCell className="font-medium">Puertas</TableCell>
                             <TableCell>{vehiclePost.cantPuertas}</TableCell>
                           </TableRow>
+                          <TableRow>
+                            <TableCell className="font-medium">Tipo de vehículo</TableCell>
+                            <TableCell>{vehiclePost.type}</TableCell>
+                          </TableRow>
                         </TableBody>
                       </Table>
                       <Separator />
@@ -76,6 +81,7 @@ async function viewVehicle({ params }) {
                 )}
               </CardContent>
             </Card>
+            </div>
       )}
 
       {!vehiclePost && (

@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 export const publicarBarco = async (values) => {
 
     console.log(values)
-    const { title,modelo,descripcion,matricula,eslora,manga,metros,deuda,archivo } = values;
+    const { title,modelo,descripcion,matricula,eslora,manga,metros,deuda,type,archivo } = values;
     console.log(archivo)
     const file = archivo.get("image"); //obtengo la imagen que fue comprimida
     console.log(file)
@@ -38,6 +38,7 @@ export const publicarBarco = async (values) => {
           metros:metros,
           deuda:deuda,
           idPublisher: session.user.id,
+          type: type,
         }
       })
 

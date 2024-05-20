@@ -22,7 +22,8 @@ async function viewShip({ params }) {
   return (
     <div className="flex items-center justify-center h-screen">
       {boatPost && (
-      <Card className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6">
+      <div className="bg-sky-600 rounded-md shadow-md p-1">
+      <Card className="w-full max-w-3xl bg-white shadow-lg rounded-md p-6">
       <CardHeader>
         <h1 className="font-semibold text-2xl text-center">{boatPost.title}</h1>
       </CardHeader>
@@ -32,7 +33,7 @@ async function viewShip({ params }) {
               <img src={boatPost.img} width="300" height="300" alt="Image" className="rounded-md" />
               <div className="p-6">
                 <Link href={`/view-profile/${boatPost.idPublisher}`}>
-                  <Button>Ver perfil publicante</Button>
+                  <Button className="bg-sky-500">Ver perfil publicador</Button>
                 </Link>
               </div>
             </div>
@@ -66,6 +67,10 @@ async function viewShip({ params }) {
                     <TableCell className="font-medium">Metros</TableCell>
                     <TableCell>{boatPost.metros}m</TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">Tipo de embarcación</TableCell>
+                    <TableCell>{boatPost.type}</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </div>
@@ -73,6 +78,7 @@ async function viewShip({ params }) {
       </CardContent>
       <CardFooter></CardFooter>
     </Card>
+    </div>
       )}
     {!boatPost && (
       <CreateComponent titulo="No pudimos encontrar la embarcación, vuelve más tarde ⛴️" backLink="/" />

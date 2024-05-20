@@ -75,6 +75,7 @@ model VehiclePost {
   patente     String
   kilometraje String
   cantPuertas String
+  type        String
 }
 
 model BoatPost {
@@ -89,6 +90,7 @@ model BoatPost {
   manga       String
   metros      String
   deuda       String
+  type        String
 }
 
 model Review {

@@ -1,4 +1,12 @@
 "use client";
+//para el selector
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+//para el formulario
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/auth/BackButton";
@@ -22,13 +30,21 @@ export const VehicleForm = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
+  const [type, setType] = useState('');
+  const [typeError,setTypeError] = useState(false);
 
   const onSubmit = async (data) => {
+    if (!type) {
+      setTypeError(true);
+      return;
+    } else {
+      setTypeError(false);
+    }
     const {title, descripcion, patente, modelo, kilometraje, cantpuertas, image} = data;
     const file = image[0];
     const archivo = new FormData();
     archivo.append("image", file);
-    const res = await publicarVehiculo({title, descripcion, patente, modelo, kilometraje, cantpuertas, archivo});
+    const res = await publicarVehiculo({title, descripcion, patente, modelo, kilometraje, cantpuertas, type,archivo});
     if (res.success) {
       toast.success("¡Publicación creada!");
       router.push("/");
@@ -62,6 +78,11 @@ export const VehicleForm = () => {
     }
   };
 
+  const handleChange = (event) => {
+    setType(event.target.value);
+    setTypeError(false)
+  };
+
   return (
     <Card className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
       <CardHeader>
@@ -80,6 +101,27 @@ export const VehicleForm = () => {
           <div className="flex space-x-2 mt-3">
             <Input type="text" {...register("kilometraje", { required: true })} placeholder="Kilometraje" className="block w-1/2" />
             <Input type="text" {...register("cantpuertas", { required: true })} placeholder="Cantidad de puertas" className="block w-1/2" />
+          </div>
+
+          <div className="flex mt-3">
+            <Box sx={{ minWidth: 203 }}>
+              <FormControl fullWidth>
+                <InputLabel id="vehicle-type-input" className='text-sm'> Tipo</InputLabel>
+                <Select
+                  className='text-sm'
+                  labelId="vehicle-input"
+                  id="vehicle-type-selector"
+                  value={type}
+                  label="type"
+                  onChange={handleChange}
+                  sx={{ height: 50 }}
+                >
+                  <MenuItem value={"Automóvil"} className='text-sm'>Automóvil</MenuItem>
+                  <MenuItem value={"Camioneta"} className='text-sm'>Camioneta</MenuItem>
+                  <MenuItem value={"Motocicleta"} className='text-sm'>Motocicleta</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </div>
           <div className="mt-4">
             <label htmlFor="image" className="block text-sm font-medium text-gray-700">Seleccione una imágen:</label>
@@ -104,7 +146,7 @@ export const VehicleForm = () => {
             {previewUrl && <img className="mt-2 rounded-md" src={previewUrl} alt="Vista previa" style={{ maxWidth: "100px", maxHeight: "100px" }} />}
             {imageError && <p className="text-red-500 text-xs mt-1">{imageError}</p>}
           </div>
-          {(errors.title || errors.descripcion || errors.patente|| errors.modelo || errors.kilometraje || errors.cantpuertas || imageError) && <p className="text-red-500 text-xs mt-2">¡Todos los campos son obligatorios!</p>}
+          {(errors.title || errors.descripcion || errors.patente|| errors.modelo || errors.kilometraje || errors.cantpuertas || imageError === "Imagen no encontrada" || typeError) && <p className="text-red-500 text-xs mt-2">¡Todos los campos son obligatorios!</p>}
           <Button type="submit" className="w-full mt-4 bg-sky-500 hover:bg-sky-600 text-white">Publicar</Button>
         </form>
       </CardContent>

@@ -66,7 +66,7 @@ function ViewEmployeesComponent2({ empleados }) {
       {(empleados && empleados.length) !== 0 && (
         <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
           <CardHeader>
-            <CardTitle className="text-center text-xl font-semibold hover:text-gray-300">Empleados</CardTitle>
+            <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Empleados</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">

@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/lib/db";
 import { getRandomUrlBoat,getRandomUrlVehicle} from "@/lib/urlgenerator";
+
 export const fakeBoatGenerator = async () => {
   
   try {
@@ -18,6 +19,7 @@ export const fakeBoatGenerator = async () => {
         metros:'100',
         deuda:'50000',
         idPublisher: '???',
+        type: 'f4k3 t1p3',
       }
     })
     console.log(publicacionCreada);
@@ -53,6 +55,7 @@ export const fakeVehicleGenerator = async () => {
         kilometraje:'26000',
         cantPuertas:'4',
         idPublisher: '???',
+        type: 'f4k3 t1p3',
       }
     })
     console.log(publicacionCreada);
