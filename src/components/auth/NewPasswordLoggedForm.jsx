@@ -130,7 +130,7 @@ export const NewPasswordLoggedForm = ({email}) => {
  
                  <Button disabled={isPending}
                  type="submit" 
-                 className="w-full">
+                 className="w-full bg-sky-500">
                      Confirmar
                  </Button>
                  </form>
