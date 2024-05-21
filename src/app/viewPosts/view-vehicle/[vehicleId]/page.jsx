@@ -45,7 +45,7 @@ async function viewVehicle({ params }) {
                         className="rounded-md"
                       />
                       <div className="p-6">
-                        <Link href={`/view-profile/${vehiclePost.idPublisher}/${vehiclePost.id + 'boat=false'}`}>
+                        <Link href={`/view-profile/${vehiclePost.idPublisher}`}>
                           <Button className="bg-sky-500">Ver perfil publicador</Button>
                         </Link>
                       </div>

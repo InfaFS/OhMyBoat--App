@@ -1,3 +1,4 @@
+"use client"
 import {
     Card,
     CardContent,
@@ -11,9 +12,11 @@ import {
   import { Separator } from "../ui/separator";
   import RatingComponent from "./RatingComponent";
   import { intRandomizer } from "../../../data/extra-stuff";
-  
-  export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,role,id, postIdBackLink="optional"}) {
+  import { useRouter } from "next/navigation";
+  export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,role,id,}) {
+    const router = useRouter();
     let rol = null
+    
     if (role === "ADMIN") {
         rol = "Administrador"
     }
@@ -23,7 +26,9 @@ import {
     if (role === "MANAGER") {
         rol = "Gerente"
     }
-
+    const handleBack = () => {
+      router.back();
+    }
 
     return (
       <div className="flex items-center justify-center h-screen">
@@ -69,18 +74,7 @@ import {
               </CardContent>
               <CardFooter>
                 <div>
-                {/* Si el postId es opcional, entonces no se muestra el botón de ver publicación. */}
-                {postIdBackLink === "optional" && (
-                <Link href="/">
-                <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver al inicio</Button>
-                </Link>
-
-                )}
-                {postIdBackLink !== "optional" && (
-                  <Link href={postIdBackLink}>
-                  <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver</Button>
-                  </Link>
-                )}
+                  <Button className="mr-2 hover:text-blue-700" variant="ghost" onClick={handleBack}>Volver</Button>
                 </div>
      
               </CardFooter>

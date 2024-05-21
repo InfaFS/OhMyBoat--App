@@ -21,6 +21,14 @@ export const authRoutes = [
 export const apiAuthPrefix = "/api/auth";
 
 /**
+ * Nunca se van a bloquear porque son rutas solo de vista
+ */
+
+export const viewPostsPrefix = "/viewPosts";
+export const viewProfilePrefix = "/view-profile";
+export const viewReviewsPrefix = "/view-reviews";
+
+/**
  * Ruta por defecto despues de logearte
  */
 export const DEFAULT_LOGIN_REDIRECT = "/settings";

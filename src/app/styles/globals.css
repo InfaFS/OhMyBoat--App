@@ -16,6 +16,18 @@
     animation: color-change 3s infinite alternate;
   }
 
+  @keyframes colorOscillation {
+    0%, 100% {
+      color: #0ea5e9; /* sky-500 */
+    }
+    50% {
+      color: #0369a1; /* sky-900 */
+    }
+  }
+  
+  .oscillating-sky-text {
+    animation: colorOscillation 1s infinite;
+  }
   
   background-color: #31eeff;
   opacity: 0.8;

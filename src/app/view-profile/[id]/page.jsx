@@ -1,9 +1,6 @@
-import { ProfileManager } from "@/components/profile/ProfileManager"
-import { auth } from "../../../../auth"
 import { getUserById } from "../../../../data/user"
 import {ViewProfileComponentInfa} from "@/components/profile/ViewProfileComponent"
 import { CreateComponent } from "@/components/WorkingComponent"
-import { NextURL } from "next/dist/server/web/next-url"
 async function viewPage ({params}) { 
     console.log(params)
     const userData = await getUserById(params.id)

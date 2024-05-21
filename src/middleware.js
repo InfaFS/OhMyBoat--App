@@ -1,16 +1,17 @@
 import { auth } from "../auth"
  
-import {DEFAULT_LOGIN_REDIRECT,apiAuthPrefix,publicRoutes,authRoutes} from "../routes"
+import {DEFAULT_LOGIN_REDIRECT,apiAuthPrefix,publicRoutes,authRoutes,viewPostsPrefix,viewProfilePrefix, viewReviewsPrefix} from "../routes"
 
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname) || nextUrl.pathname.startsWith(viewPostsPrefix) || nextUrl.pathname.startsWith(viewProfilePrefix) || nextUrl.pathname.startsWith(viewReviewsPrefix)
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
   const Role = req.auth?.user?.role
   const isAdminRoute = nextUrl.pathname.startsWith("/admin") //para saber si es una ruta de admin
-
+  console.log("Ruta actual",nextUrl.pathname)
+  console.log("Es ruta publica?",isPublicRoute);
   console.log("Es ruta de admin?",isAdminRoute)
 
   if (isApiAuthRoute){ //se hace para que no entre en un loop de redireccionamiento

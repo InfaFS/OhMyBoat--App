@@ -36,7 +36,7 @@ async function viewShip({ params }) {
             <div className="w-1/2 p-2 items-center justify-center flex flex-col p-6">
               <img src={boatPost.img} width="300" height="300" alt="Image" className="rounded-md" />
               <div className="p-6">
-                <Link href={`/view-profile/${boatPost.idPublisher}/${boatPost.id + 'boat=true'}`}>
+                <Link href={`/view-profile/${boatPost.idPublisher}`}>
                   <Button className="bg-sky-500">Ver perfil publicador</Button>
                 </Link>
               </div>

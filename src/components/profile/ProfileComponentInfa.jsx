@@ -13,14 +13,15 @@
   
   export default function ProfileComponentInfa({ firstname, lastname, cellphone, birthday, email, password, role }) {
     const showedPassword = password.replace(/./g, "*");
+    let rol = "";
     if (role === "ADMIN") {
-      role = "Dueño";
+      rol = "Dueño";
     }
     if (role === "USER") {
-      role = "Usuario"
+      rol = "Usuario"
     }
     if (role === "MANAGER") {
-      role = "Gerente"
+      rol  = "Gerente"
     }
     return (
       <div className="flex items-center justify-center h-screen">
@@ -59,7 +60,7 @@
                   </Link>
                 </p>
                 <p className="mb-2">
-                  <span className="font-semibold hover:text-sky-500">Rol:</span> {role}
+                  <span className="font-semibold hover:text-sky-500">Rol:</span> {rol}
                 </p>
                 </div>
                 <Separator />
