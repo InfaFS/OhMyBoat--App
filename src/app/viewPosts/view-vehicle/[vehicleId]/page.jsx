@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
+import { MoveLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -25,6 +25,9 @@ async function viewVehicle({ params }) {
       {vehiclePost && (
               <div className="bg-sky-600 rounded-md shadow-md p-1">
               <Card className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6">
+                <Link href="/">
+                <button variant="ghost" className="hover:text-sky-500"><MoveLeft height={20} width={20}/></button>
+                </Link>
               <CardHeader>
                 <h1 className="font-semibold text-2xl text-center">
                   {vehiclePost.title}
@@ -42,7 +45,7 @@ async function viewVehicle({ params }) {
                         className="rounded-md"
                       />
                       <div className="p-6">
-                        <Link href={`/view-profile/${vehiclePost.idPublisher}`}>
+                        <Link href={`/view-profile/${vehiclePost.idPublisher}/${vehiclePost.id + 'boat=false'}`}>
                           <Button className="bg-sky-500">Ver perfil publicador</Button>
                         </Link>
                       </div>

@@ -66,7 +66,7 @@ function ViewEmployeesComponent2({ empleados }) {
       {(empleados && empleados.length) !== 0 && (
         <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
           <CardHeader>
-            <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Empleados</CardTitle>
+            <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Gerentes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -109,10 +109,10 @@ function ViewEmployeesComponent2({ empleados }) {
       {(empleados.length === 0 || !empleados) && (
                 <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
                 <CardHeader>
-                  <CardTitle className="text-center text-xl font-semibold">Lista de Empleados</CardTitle>
+                  <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Gerentes</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    Parece que no hay empleados registrados. 😔
+                  No hay gerentes registrados por el momento 👨‍💼
                 </CardContent>
                 </Card>
       )}

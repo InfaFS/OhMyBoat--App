@@ -12,7 +12,7 @@ import {
   import RatingComponent from "./RatingComponent";
   import { intRandomizer } from "../../../data/extra-stuff";
   
-  export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,role}) {
+  export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,role,id, postIdBackLink="optional"}) {
     let rol = null
     if (role === "ADMIN") {
         rol = "Administrador"
@@ -58,7 +58,9 @@ import {
               { role === "USER" && (
                 <section className="flex items-center space-x-4 space-y-5">
                   <RatingComponent number={intRandomizer(6)} />
+                  <Link href={`/view-reviews/${id}`}>
                   <Button variant="ghost" className="hover:text-blue-500">Ver reseñas</Button>
+                  </Link>
                 </section>
               )}
 
@@ -67,9 +69,18 @@ import {
               </CardContent>
               <CardFooter>
                 <div>
+                {/* Si el postId es opcional, entonces no se muestra el botón de ver publicación. */}
+                {postIdBackLink === "optional" && (
                 <Link href="/">
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver al inicio</Button>
                 </Link>
+
+                )}
+                {postIdBackLink !== "optional" && (
+                  <Link href={postIdBackLink}>
+                  <Button className="mr-2 hover:text-blue-700" variant="ghost">Volver</Button>
+                  </Link>
+                )}
                 </div>
      
               </CardFooter>

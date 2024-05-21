@@ -67,10 +67,10 @@ export default function SpecialActionsMenu() {
 
         <MenuItem onClick={handleConfirmation} className="text-sm"> <Trash2 height={20} width={20} className='mr-2' />Borrar publicaciones</MenuItem>
         <Link href="/admin/view-employees">
-        <MenuItem onClick={handleClose} className="text-sm"> <Contact height={20} width={20} className='mr-2' />Ver empleados</MenuItem>
+        <MenuItem onClick={handleClose} className="text-sm"> <Contact height={20} width={20} className='mr-2' />Ver gerentes</MenuItem>
         </Link>
         <Link href="/admin/auth/register-manager">
-        <MenuItem onClick={handleClose} className="text-sm"> <UserPlus height={20} width={20} className='mr-2' />Registrar empleado</MenuItem>
+        <MenuItem onClick={handleClose} className="text-sm"> <UserPlus height={20} width={20} className='mr-2' />Registrar gerente</MenuItem>
         </Link>
       </Menu>
     </div>

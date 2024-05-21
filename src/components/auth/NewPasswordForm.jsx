@@ -83,6 +83,7 @@ export const NewPasswordForm = () => {
                                          type="password"
                                          />
                                  </FormControl>
+                                <FormMessage/>
                              </FormItem>
                          )}
                      />
@@ -101,6 +102,7 @@ export const NewPasswordForm = () => {
                                          type="password"
                                          />
                                  </FormControl>
+                                 <FormMessage/>
                              </FormItem>
                          )}
                      />

@@ -1,5 +1,6 @@
 import { getBoatPostById } from "../../../../../data/posts"
-import Link from "next/link"
+
+import Link from "next/link";
 
 import {
   Table,
@@ -10,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
+import { MoveLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
@@ -24,6 +25,9 @@ async function viewShip({ params }) {
       {boatPost && (
       <div className="bg-sky-600 rounded-md shadow-md p-1">
       <Card className="w-full max-w-3xl bg-white shadow-lg rounded-md p-6">
+        <Link href="/">
+        <button variant="ghost" className="hover:text-sky-500"><MoveLeft height={20} width={20}/></button>
+        </Link>
       <CardHeader>
         <h1 className="font-semibold text-2xl text-center">{boatPost.title}</h1>
       </CardHeader>
@@ -32,7 +36,7 @@ async function viewShip({ params }) {
             <div className="w-1/2 p-2 items-center justify-center flex flex-col p-6">
               <img src={boatPost.img} width="300" height="300" alt="Image" className="rounded-md" />
               <div className="p-6">
-                <Link href={`/view-profile/${boatPost.idPublisher}`}>
+                <Link href={`/view-profile/${boatPost.idPublisher}/${boatPost.id + 'boat=true'}`}>
                   <Button className="bg-sky-500">Ver perfil publicador</Button>
                 </Link>
               </div>
@@ -76,7 +80,8 @@ async function viewShip({ params }) {
             </div>
           </div>
       </CardContent>
-      <CardFooter></CardFooter>
+      <CardFooter>
+      </CardFooter>
     </Card>
     </div>
       )}

@@ -13,6 +13,15 @@
   
   export default function ProfileComponentInfa({ firstname, lastname, cellphone, birthday, email, password, role }) {
     const showedPassword = password.replace(/./g, "*");
+    if (role === "ADMIN") {
+      role = "Dueño";
+    }
+    if (role === "USER") {
+      role = "Usuario"
+    }
+    if (role === "MANAGER") {
+      role = "Gerente"
+    }
     return (
       <div className="flex items-center justify-center h-screen">
         <div style={{ width: "50%", height: "85%" }}>
@@ -27,30 +36,30 @@
               <CardContent>
                 <div>
                 <p className="mb-2 ">
-                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Nombre:</span> {firstname} 
+                  <span className="font-semibold hover:text-sky-500">Nombre:</span> {firstname} 
                 </p>
   
                 <p className="mb-2">
-                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Apellido:</span> {lastname} 
+                  <span className="font-semibold hover:text-sky-500">Apellido:</span> {lastname} 
                 </p>
   
                 <p className="mb-2">
-                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Teléfono:</span> {cellphone}
+                  <span className="font-semibold hover:text-sky-500">Teléfono:</span> {cellphone}
                 </p>
                 <p className="mb-2">
-                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Fecha de Nacimiento:</span> {birthday}
+                  <span className="font-semibold hover:text-sky-500">Fecha de Nacimiento:</span> {birthday}
                 </p>
                 <p className="mb-2">
-                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Email:</span> {email}
+                  <span className="font-semibold hover:text-sky-500">Email:</span> {email}
                 </p>
                 <p className="mb-2">
-                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Contraseña:</span> {showedPassword}
+                  <span className="font-semibold hover:text-sky-500">Contraseña:</span> {showedPassword}
                   <Link href="/auth/new-password-logged">
                   <button className="ml-2 text-sm font-semibold transition duration-300 ease-in-out hover:text-blue-700 cursor-pointer">Cambiar contraseña</button>
                   </Link>
                 </p>
                 <p className="mb-2">
-                  <span className="font-semibold hover:text-blue-500 cursor-pointer">Rol:</span> {role}
+                  <span className="font-semibold hover:text-sky-500">Rol:</span> {role}
                 </p>
                 </div>
                 <Separator />
