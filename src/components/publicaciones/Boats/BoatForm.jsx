@@ -121,7 +121,7 @@ export const BoatForm = () => {
                   sx={{ height: 50 }}
                 >
                   <MenuItem value={"Lancha"} className='text-sm'>Lancha</MenuItem>
-                  <MenuItem value={"Camarán"} className='text-sm'>Catamarán</MenuItem>
+                  <MenuItem value={"Catamarán"} className='text-sm'>Catamarán</MenuItem>
                   <MenuItem value={"Crucero"} className='text-sm'>Crucero</MenuItem>
                   <MenuItem value={"Velero"} className='text-sm'>Velero</MenuItem>
                 </Select>

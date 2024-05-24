@@ -20,6 +20,16 @@ export const publicarBarco = async (values) => {
       return { error: "Usuario no autenticado,no puedes crear publicaciones" };
     }
 
+    const existingBoat = await db.boatPost.findFirst({
+      where: {
+        matricula: matricula,
+      },
+    });
+
+    if (existingBoat) {
+      return { error: "Ya existe un barco con esa matrícula" };
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes); //chequeo que pueda ponerla en mi compu
     const path = `public/${file.name}`; //genero un path para guardar imagen

@@ -20,6 +20,16 @@ export const publicarVehiculo = async (values) => {
       return { error: "Usuario no autenticado,no puedes crear publicaciones" };
     }
 
+    const existingVehicle = await db.vehiclePost.findFirst({
+        where: {
+          patente: patente,
+        },
+    });
+
+    if (existingVehicle) {
+      return { error: "Ya existe un vehiculo con esa patente" };
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes); //chequeo que pueda ponerla en mi compu
     const path = `public/${file.name}`; //genero un path para guardar imagen

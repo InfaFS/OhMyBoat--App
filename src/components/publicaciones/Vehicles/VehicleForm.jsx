@@ -4,8 +4,8 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
+import Select from '@mui/material/Select';  
+import { FormError } from '@/components/FormError';
 //para el formulario
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,7 @@ export const VehicleForm = () => {
   const router = useRouter();
   const [type, setType] = useState('');
   const [typeError,setTypeError] = useState(false);
+
 
   const onSubmit = async (data) => {
     if (!type) {

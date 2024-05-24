@@ -54,7 +54,7 @@ export const ResetForm= () => {
             headerLabel="Ingresa el email asociado a tu cuenta." 
             backButtonLabel="Ya tienes una cuenta?" 
             backButtonHref="/auth/login"
-            headerTitle="Restablacer"
+            headerTitle="Restablecer"
         >
             <Form {... form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
