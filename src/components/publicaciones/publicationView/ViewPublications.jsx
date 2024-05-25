@@ -2,7 +2,7 @@
 import { useReactTable, getCoreRowModel, flexRender,getPaginationRowModel } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card"; // Asegúrate de ajustar la ruta según tu estructura de proyecto
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { useRouter } from "next/navigation";
 const columns = [
   {
@@ -47,7 +47,7 @@ const empleadosFake = [ //solo para fines de testing
     { id:"un id" ,firstname: "Juan", lastname: "Pérez", cellphone: "1234567890", email: "pepe@gmail.com"},
 
 ]
-function ViewEmployeesComponent2({ empleados }) {
+function ViewPublicationsComponent({ empleados }) {
   console.log(empleados);
   console.log(empleados.length)
   const router = useRouter();
@@ -120,6 +120,4 @@ function ViewEmployeesComponent2({ empleados }) {
   );
 }
 
-export default ViewEmployeesComponent2;
-
-
+export default ViewPublicationsComponent;

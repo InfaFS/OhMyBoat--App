@@ -58,6 +58,7 @@ model PasswordResetToken {
 
 model CardPost {
   id             String  @id @default(cuid())
+  idPublisher    String
   idCompletePost String
   boat           Boolean
   img            String
@@ -99,4 +100,18 @@ model Review {
   idReviewed  String
   stars       Int
   description String
+}
+
+model offer {
+  id                    String  @id @default(cuid())
+  idPublicacionPedida   String
+  idOfertante           String
+  firstNameOfertante    String
+  lastNameOfertante     String
+  emailOfertante        String
+  cellphoneOfertante    String
+  descripcion           String
+  idPublicacionOfrecida String
+  boat                  Boolean
+  status                String
 }

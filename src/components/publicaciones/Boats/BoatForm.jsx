@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { publicarBarco } from "../../../../actions/publicar-barco";
 import { cn } from "../../../lib/utils";
 import { Input } from "@/components/ui/input";
-import { FormSuccess } from "@/components/FormSuccess";
 import { Toaster, toast } from "sonner"; // Importa la función toast desde sonner
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardContent, CardDescription, CardTitle, CardFooter } from "../../ui/card";

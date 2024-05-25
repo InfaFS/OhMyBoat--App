@@ -31,3 +31,52 @@ export const getVehiclePostById = async (id) => {
     }
 }
 
+export const getAllBoatPostsByUser = async ({userId}) => {
+    try {
+        const boatPosts = await db.boatPost.findMany(
+            {
+                where: {
+                    idPublisher: userId,
+                },
+            },
+        );
+        return boatPosts;
+    } catch {
+        return null;
+    }
+
+}
+
+export const getAllVehiclePostsByUser = async ({userId}) => {
+    try {
+        const vehiclePosts = await db.vehiclePost.findMany(
+            {
+                where: {
+                    idPublisher: userId,
+                },
+            },
+        );
+        return vehiclePosts;
+    } catch {
+        return null;
+    }
+
+}
+
+export const getAllPostsByUser = async ({userId}) => {
+    try {
+        const cardPosts = await db.cardPost.findMany(
+            {
+                where: {
+                    idPublisher: userId,
+                },
+            },
+        );
+        return cardPosts
+    } catch {
+        return null;
+    }
+
+}
+
+

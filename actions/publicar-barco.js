@@ -27,7 +27,7 @@ export const publicarBarco = async (values) => {
     });
 
     if (existingBoat) {
-      return { error: "Ya existe un barco con esa matrícula" };
+      return { error: "La matrícula ingresada ya fue registrada" };
     }
 
     const bytes = await file.arrayBuffer();
@@ -59,6 +59,7 @@ export const publicarBarco = async (values) => {
           img: pathUsar,
           title: title,
           modelo:modelo,
+          idPublisher: session.user.id,
         }
       
     })

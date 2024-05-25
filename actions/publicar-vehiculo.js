@@ -27,7 +27,7 @@ export const publicarVehiculo = async (values) => {
     });
 
     if (existingVehicle) {
-      return { error: "Ya existe un vehiculo con esa patente" };
+      return { error: "La patente ingresada ya fue registrada" };
     }
 
     const bytes = await file.arrayBuffer();
@@ -57,6 +57,7 @@ export const publicarVehiculo = async (values) => {
           img: pathUsar,
           title: title,
           modelo:modelo,
+          idPublisher: session.user.id,
         }
       
     })

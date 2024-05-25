@@ -31,7 +31,7 @@ export const viewReviewsPrefix = "/view-reviews";
 /**
  * Ruta por defecto despues de logearte
  */
-export const DEFAULT_LOGIN_REDIRECT = "/settings";
+export const DEFAULT_LOGIN_REDIRECT = "/profile";
 
 /**
  * Ruta por defecto despues de cerrar sesion
