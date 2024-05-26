@@ -143,6 +143,84 @@ export const OfertarEmbarcacion = async ({idOfertante,descripcion,idPublicacionO
 
 }
 
+const rechazarOfertaInterno = async ({offerId}) => {
+    try {
+        console.log(offerId);
+        const res = await db.offer.update({
+            where: {
+                id: offerId,
+            },
+            data: {
+                status: "REJECTED",
+            }
+        });
+
+        if (res.boat === false) { //quiere decir que la publicacion ofertada es un auto, por ende la pedida bote
+            const vehiclePost = await getVehiclePostById(res.idPublicacionOfrecida);
+            if (!vehiclePost) {
+                return { error: "Publicación no encontrada!" }
+            }
+            const vehicleCard = await getCardPostByCompletePostId({completePostId: vehiclePost.id});
+            if (!vehicleCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+            const resCardPost = await db.cardPost.update({
+                where: {
+                    id: vehicleCard.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            const resVehiclePost = await db.vehiclePost.update({
+                where: {
+                    id: vehiclePost.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            if( res && resCardPost && resVehiclePost) {
+                console.log("Oferta rechazada con éxito!")
+            }
+        } else if (res.boat === true) { //quiere decir que la publicacion ofertada es un bote, por ende la pedida auto  
+            const boatPost = await getBoatPostById(res.idPublicacionOfrecida);
+            if (!boatPost) {
+                return { error: "Publicación no encontrada!" }
+            }
+            const boatCard = await getCardPostByCompletePostId({completePostId: boatPost.id});
+            if (!boatCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+            const resCardPost = await db.cardPost.update({
+                where: {
+                    id: boatCard.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            const resBoatPost = await db.boatPost.update({
+                where: {
+                    id: boatPost.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            if( res && resCardPost && resBoatPost) {
+                return { success: "Oferta rechazada con éxito!" }
+            }
+        }
+
+        if (res) {
+            return { success: "Oferta rechazada con éxito!" }
+        }
+    } catch (error) {
+        console.error('Error al rechazar la oferta:', error);
+    }
+}
+
 export const RechazarOferta = async ({offerId}) => {
     try {
         console.log(offerId);
@@ -252,6 +330,21 @@ export const ConfirmarOferta = async ({offerId}) => {
             }
         });
 
+        const rejectAllOffers = await db.offer.findMany({
+            where: {
+                idPublicacionPedida: res.idPublicacionPedida,
+                id: {
+                    not: offerId,
+                },
+                status: "PENDING",
+            },
+        });
+
+        for (let i = 0; i < rejectAllOffers.length; i++) {
+            const rechzada = await rechazarOfertaInterno({offerId: rejectAllOffers[i].id});
+            console.log(rechzada);
+        }
+
         if (res.boat === false) { //quiere decir que la publicacion ofertada es un auto, por ende la pedida bote
             const boatPost = await getBoatPostById(res.idPublicacionPedida);
             if (!boatPost) {
@@ -306,9 +399,13 @@ export const ConfirmarOferta = async ({offerId}) => {
             });
         }
 
+
+
         if (res) {
             return { success: "Oferta confirmada con éxito!" }
         }
+
+
 
     } catch (error) {
         console.error('Error al confirmar la oferta:', error);
@@ -327,7 +424,6 @@ export const CancelarOferta = async ({offerId,isBoat}) => {
                 status: "CANCELLED",
             }
         });
-        
         if(isBoat === true) {
             console.log("entra2")
             const boatPost = await db.boatPost.update({

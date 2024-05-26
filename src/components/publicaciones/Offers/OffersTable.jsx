@@ -177,21 +177,13 @@ export function OffersTable({ data }) {
   }
 
   const handleConfirm = async ({offerId,idPublicacionPedida}) => {
-    const res = await getConfirmedOffersByPostId({idPublicacionPedida});
-    console.log(res)
-    if (res.length > 0) {
-      toast.info("No puedes tener mas de una oferta aceptada!");
-      return;
-    }
-    else if ( res.length === 0 ) {
-      console.log(offerId)
       const response = await ConfirmarOferta({ offerId });
       console.log(response)
       if (response.success) {
         toast.success(response.success);
         router.refresh();
       }
-    }
+
 
 
   }
