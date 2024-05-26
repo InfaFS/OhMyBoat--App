@@ -32,11 +32,13 @@ export const getVehiclePostById = async (id) => {
 }
 
 export const getAllBoatPostsByUser = async ({userId}) => {
+    //voy a obtener los que no se encuentren pausados
     try {
         const boatPosts = await db.boatPost.findMany(
             {
                 where: {
                     idPublisher: userId,
+                    paused: false,
                 },
             },
         );
@@ -53,6 +55,7 @@ export const getAllVehiclePostsByUser = async ({userId}) => {
             {
                 where: {
                     idPublisher: userId,
+                    paused: false,
                 },
             },
         );

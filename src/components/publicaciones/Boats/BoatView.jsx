@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -16,11 +16,33 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { CreateComponent } from "@/components/WorkingComponent";
-
+import { reanudarPublicaciónBarco } from "../../../../actions/PausarReanudarPost";
+import { pausarPublicaciónBarco } from "../../../../actions/PausarReanudarPost";
 export const BoatView = ({boatPost, userSessionId}) => {
+    console.log(boatPost.paused)
     const router = useRouter();
+    
     const handleBack = () => {
         router.back()
+    }
+    const handleResume = async () => {
+      console.log("1");
+      const res = await reanudarPublicaciónBarco(boatPost.id);
+      console.log(res);
+      if (res?.success){
+        toast.success("Publicación reanudada con éxito");
+        router.refresh();
+      }
+    }
+
+    const handlePause = async () => {
+      console.log("1");
+      const res = await pausarPublicaciónBarco(boatPost.id);
+      console.log(res);
+      if (res?.success){
+        toast.success("Publicación pausada con éxito");
+        router.refresh();
+      }
     }
     return (
         <>
@@ -32,6 +54,9 @@ export const BoatView = ({boatPost, userSessionId}) => {
         
             <CardHeader>
               <h1 className="font-semibold text-2xl text-center">{boatPost.title}</h1>
+              {boatPost.paused === true && (
+                 <h1 className="font-semibold text-1xl text-center text-slate-500">PAUSADA</h1>
+              )}
             </CardHeader>
             <CardContent>
                 <div className="flex">
@@ -85,10 +110,19 @@ export const BoatView = ({boatPost, userSessionId}) => {
             <CardFooter className="flex justify-center items-center h-full">
             {userSessionId !== boatPost.idPublisher && (
                 <div>
-                <Link href={`/viewPosts/view-ship/${boatPost.id}/offer`}>
-                <Button className="bg-sky-500">Ofertar</Button>        
-                </Link>
+                { boatPost.paused === false && (
+                  <Link href={`/viewPosts/view-ship/${boatPost.id}/offer`}>
+                    <Button className="bg-sky-500">Ofertar</Button>        
+                  </Link>
+                )}
                 </div>
+            )}
+
+            {(userSessionId === boatPost.idPublisher && boatPost.paused === true) && (
+              <Button className="bg-slate-600" onClick={handleResume}>Reanudar</Button>       
+            )}
+            {(userSessionId === boatPost.idPublisher && boatPost.paused === false) && (
+              <Button className="bg-slate-600" onClick={handlePause}>Pausar</Button>       
             )}
             </CardFooter>
           </Card>

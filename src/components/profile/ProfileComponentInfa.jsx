@@ -84,6 +84,10 @@
                 <Button className="hover:text-blue-700" variant="ghost">Mis publicaciones</Button>
                 </Link>
 
+                <Link href="/profile/my-offers">
+                <Button className="hover:text-blue-700" variant="ghost">Ofertas que hice</Button>
+                </Link>
+
                 
                 </>
                 )}

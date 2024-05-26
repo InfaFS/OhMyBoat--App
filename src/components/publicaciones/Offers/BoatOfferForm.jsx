@@ -133,10 +133,6 @@ const BoatOfferForm = ({ vehicleId,boatPosts, idOfertante }) => {
         )}
 
       </form>
-
-
-
-
       </CardContent>
       <CardFooter className="flex justify-center items-center h-full">
       </CardFooter>

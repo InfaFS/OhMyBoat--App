@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link"
-
+import { toast } from "sonner";
+import { pausarPublicaciónVehículo } from "../../../../actions/PausarReanudarPost";
 import {
   Table,
   TableBody,
@@ -17,12 +18,30 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { CreateComponent } from "@/components/WorkingComponent";
 import { useRouter } from "next/navigation";
+import { reanudarPublicaciónVehículo } from "../../../../actions/PausarReanudarPost";
 
 export const VehicleView = ({vehiclePost,userSessionId}) => {
     const router = useRouter();    
     const handleBack = () => {
         router.back();
     }
+    const handleResume = async () => {
+      console.log("1");
+      const res = await reanudarPublicaciónVehículo(vehiclePost.id);
+      if (res?.success){
+        toast.success("Publicación reanudada con éxito");
+        router.refresh();
+      }
+    }
+      const handlePause = async () => {
+        console.log("1");
+        const res = await pausarPublicaciónVehículo(vehiclePost.id);
+        console.log(res);
+        if (res?.success){
+          toast.success("Publicación pausada con éxito");
+          router.refresh();
+        }
+      }
     return (
         <>
         {vehiclePost && (
@@ -35,6 +54,9 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
               <h1 className="font-semibold text-2xl text-center">
                 {vehiclePost.title}
               </h1>
+              {vehiclePost.paused === true && (
+                 <h1 className="font-semibold text-1xl text-center text-slate-500">PAUSADA</h1>
+              )}
             </CardHeader>
             <CardContent>
               {vehiclePost && (
@@ -89,10 +111,18 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
             <CardFooter className="flex justify-center items-center h-full">
             {userSessionId !== vehiclePost.idPublisher && (
                 <div>
-                <Link href={`/viewPosts/view-vehicle/${vehiclePost.id}/offer`}>
-                <Button className="bg-sky-500">Ofertar</Button>        
-                </Link>
+                  { (vehiclePost.paused === false) && (
+                      <Link href={`/viewPosts/view-vehicle/${vehiclePost.id}/offer`}>
+                      <Button className="bg-sky-500">Ofertar</Button>        
+                      </Link>
+                  )}
                 </div>
+            )}
+            {(userSessionId === vehiclePost.idPublisher && vehiclePost.paused === true) && (
+              <Button className="bg-slate-600" onClick={handleResume}>Reanudar</Button>       
+            )}
+            {(userSessionId === vehiclePost.idPublisher && vehiclePost.paused === false) && (
+              <Button className="bg-slate-600" onClick={handlePause}> Pausar</Button>       
             )}
             </CardFooter>
           </Card>

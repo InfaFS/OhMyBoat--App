@@ -1,14 +1,18 @@
-import db from '@/lib/db'
+
+import { db } from "@/lib/db"
 export const getCardPostByCompletePostId = async ({completePostId}) => {
     try {
-        const cardPost = await db.cardPost.findUnique({
+        console.log(completePostId)
+        const cardPost = await db.cardPost.findFirst({
             where: {
-                completePostId: completePostId
+                idCompletePost: completePostId,
             }
         })
+        console.log(cardPost)
         return cardPost
-    } catch
+    } catch(error)
     {
+        console.log(error)
         return null;
     }
 }

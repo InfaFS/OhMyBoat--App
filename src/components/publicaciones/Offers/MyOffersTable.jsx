@@ -1,5 +1,5 @@
 "use client"
-
+import { CancelarOferta } from "../../../../actions/Offer";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
@@ -22,17 +22,9 @@ import {
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 
-const columns = [ 
-  {
-    accessorKey: "idOfertante",
-    header: "Ofertante",
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.firstNameOfertante} {row.original.lastNameOfertante}
-      </div>
-    )
-  },
+const columns = (handleCancel) => [ 
   {
     accessorKey: "descripcion",
     header: "Descripción",
@@ -43,7 +35,8 @@ const columns = [
     )
   },
   {
-    id: "publication",
+    accessorKey: "publication",
+    header: "Publicación ofertada",
     cell: ({ row }) => (
       <div className="flex justify-center">
         <Link href={row.original.boat 
@@ -56,14 +49,16 @@ const columns = [
     )
   },
   {
-    id: "accept",
+    accessorKey: "requestedPublication",
+    header: "Publicación solicitada",
     cell: ({ row }) => (
       <div className="flex justify-center">
-        {row.original.status === "PENDING" ? (
-          <h1 className="text-sm text-slate-500">Podrás pactar fecha cuando se acepte la oferta</h1>
-        ) : row.original.status === "CONFIRMED" ? (
-          <Button className="bg-sky-500 text-xs">Pactar fecha</Button>
-        ) : null}
+        <Link href={row.original.boat 
+          ? `/viewPosts/view-vehicle/${row.original.idPublicacionPedida}`
+          : `/viewPosts/view-ship/${row.original.idPublicacionPedida}`
+        }>
+          <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver publicación</Button>
+        </Link>
       </div>
     )
   },
@@ -78,10 +73,27 @@ const columns = [
           <div className="text-yellow-500">Pendiente</div>
         ) : row.original.status === "REJECTED" ? (
           <div className="text-red-500">Rechazada</div>
-        ) : null}
+        ) : row.original.status === "CANCELLED" ? (
+          <div className="text-red-500">Cancelada</div>
+        ) : null
+        }
       </div>
     )
-  }
+  },
+  {
+    id: "cancel",
+    cell: ({ row }) => (
+      <>
+      {row.original.status === "PENDING" && (
+          <div className="flex justify-center">
+            <Button className="bg-red-500  hover:bg-red-700 text-white text-xs px-2 py-1 mx-1" onClick={() => handleCancel({isBoat: row.original.boat,offerId: row.original.id})}>Cancelar</Button>
+          </div>
+      )}
+
+      </>
+
+    )
+  },
 ];
 
 const datita = [
@@ -93,10 +105,16 @@ const datita = [
 
 export function MyOffersTable({ data }) {
   const router = useRouter();
+  const handleCancel = async ({isBoat,offerId}) => {
+    const res = await CancelarOferta({isBoat,offerId});
+    toast.success(res?.success);
+    console.log(res?.error);
+    router.refresh()
+  }
 
   const table = useReactTable({
     data: data,
-    columns: columns,
+    columns: columns(handleCancel),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 5 } } // Set page size to 5
@@ -105,6 +123,7 @@ export function MyOffersTable({ data }) {
   const handleBack = () => {
     router.back();
   }
+
 
   return (
     <div className="flex items-center justify-center h-screen w-full px-4">

@@ -47,6 +47,7 @@ export const publicarVehiculo = async (values) => {
           cantPuertas:cantpuertas,
           idPublisher: session.user.id,
           type: type,
+          paused: false,
         }
       })
 
@@ -58,6 +59,7 @@ export const publicarVehiculo = async (values) => {
           title: title,
           modelo:modelo,
           idPublisher: session.user.id,
+          paused: false,
         }
       
     })

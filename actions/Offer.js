@@ -2,6 +2,9 @@
 
 import { db } from "@/lib/db";
 import { getUserById } from "../data/user";
+import { getBoatPostById, getVehiclePostById } from "../data/posts";
+import { getCardPostByCompletePostId } from "../data/cardPosts";
+import { getOffersByOfferentId } from "../data/getOffers";
 
 export const OfertarVehículo = async ({idOfertante,descripcion,idPublicacionOfrecida,idPublicacionPedida}) => {
 
@@ -14,11 +17,14 @@ export const OfertarVehículo = async ({idOfertante,descripcion,idPublicacionOfr
             where: {
                 idOfertante,
                 idPublicacionOfrecida,
-                idPublicacionPedida,
-            }
+                status : {
+                    notIn: ["CANCELLED","REJECTED"],
+                }
+            } 
         });
+        console.log(existingOffer);
         if (existingOffer) {
-            return { error: "Ya has ofertado este vehículo a esta publicación!" }
+            return { error: "Ya has ofertado este vehículo!" }
         }
         const oferta = await db.offer.create({
             data: {
@@ -34,9 +40,36 @@ export const OfertarVehículo = async ({idOfertante,descripcion,idPublicacionOfr
                 emailOfertante: user.email,
             }
         });
-        if (oferta) {
-            return { success: "Oferta de vehículo realizada con éxito!"}
+
+        const vehiclePost = await getVehiclePostById(idPublicacionOfrecida);
+        if (!vehiclePost) {
+            return { error: "Publicación no encontrada!" }
         }
+        console.log(vehiclePost.id)
+        const vehicleCard = await getCardPostByCompletePostId({completePostId: vehiclePost.id});
+        if (!vehicleCard) {
+            return { error: "Publicación card no encontrada!" }
+        }
+        const resCardPost = await db.cardPost.update({
+            where: {
+                id: vehicleCard.id,
+            },
+            data: {
+                paused: true,
+            }
+        });
+        const resVehiclePost = await db.vehiclePost.update({
+            where: {
+                id: vehiclePost.id,
+            },
+            data: {
+                paused: true,
+            }
+        });
+        if (resCardPost && resVehiclePost && oferta) {
+            return { success: "Oferta realizada con éxito!" }
+        }
+
         
     } catch (error) {
         console.error('Error al ofertar:', error);
@@ -54,11 +87,13 @@ export const OfertarEmbarcacion = async ({idOfertante,descripcion,idPublicacionO
             where: {
                 idOfertante,
                 idPublicacionOfrecida,
-            idPublicacionPedida,
+                status : {
+                    notIn: ["CANCELLED","REJECTED"],
+                }
             }
         });
         if (existingOffer) {
-            return { error: "Ya has ofertado este vehículo a esta publicación!" }
+            return { error: "Ya has ofertado esta embarcación!" }
         }
         const oferta = await db.offer.create({
             data: {
@@ -74,9 +109,33 @@ export const OfertarEmbarcacion = async ({idOfertante,descripcion,idPublicacionO
                 emailOfertante: user.email,
             }
         });
-        if (oferta) {
-            return { success: "Oferta de embarcación realizada con éxito!" }
-        
+
+        const boatPost = await getBoatPostById(idPublicacionOfrecida);
+        if (!boatPost) {
+            return { error: "Publicación no encontrada!" }
+        }
+        const boatCard = await getCardPostByCompletePostId({completePostId: boatPost.id});
+        if (!boatCard) {
+            return { error: "Publicación card no encontrada!" }
+        }
+        const resCardPost = await db.cardPost.update({
+            where: {
+                id: boatCard.id,
+            },
+            data: {
+                paused: true,
+            }
+        });
+        const resBoatPost = await db.boatPost.update({
+            where: {
+                id: boatPost.id,
+            },
+            data: {
+                paused: true,
+            }
+        });
+        if (resCardPost && resBoatPost && oferta) {
+            return { success: "Oferta realizada con éxito!" }
         }
     } catch (error) {
         console.error('Error al ofertar:', error);
@@ -95,6 +154,65 @@ export const RechazarOferta = async ({offerId}) => {
                 status: "REJECTED",
             }
         });
+
+        if (res.boat === false) { //quiere decir que la publicacion ofertada es un auto, por ende la pedida bote
+            const vehiclePost = await getVehiclePostById(res.idPublicacionOfrecida);
+            if (!vehiclePost) {
+                return { error: "Publicación no encontrada!" }
+            }
+            const vehicleCard = await getCardPostByCompletePostId({completePostId: vehiclePost.id});
+            if (!vehicleCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+            const resCardPost = await db.cardPost.update({
+                where: {
+                    id: vehicleCard.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            const resVehiclePost = await db.vehiclePost.update({
+                where: {
+                    id: vehiclePost.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            if( res && resCardPost && resVehiclePost) {
+                return { success: "Oferta rechazada con éxito!" }
+            }
+        } else if (res.boat === true) { //quiere decir que la publicacion ofertada es un bote, por ende la pedida auto  
+            const boatPost = await getBoatPostById(res.idPublicacionOfrecida);
+            if (!boatPost) {
+                return { error: "Publicación no encontrada!" }
+            }
+            const boatCard = await getCardPostByCompletePostId({completePostId: boatPost.id});
+            if (!boatCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+            const resCardPost = await db.cardPost.update({
+                where: {
+                    id: boatCard.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            const resBoatPost = await db.boatPost.update({
+                where: {
+                    id: boatPost.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            if( res && resCardPost && resBoatPost) {
+                return { success: "Oferta rechazada con éxito!" }
+            }
+        }
+
         if (res) {
             return { success: "Oferta rechazada con éxito!" }
         }
@@ -133,6 +251,61 @@ export const ConfirmarOferta = async ({offerId}) => {
                 status: "CONFIRMED",
             }
         });
+
+        if (res.boat === false) { //quiere decir que la publicacion ofertada es un auto, por ende la pedida bote
+            const boatPost = await getBoatPostById(res.idPublicacionPedida);
+            if (!boatPost) {
+                return { error: "Publicación no encontrada!" }
+            }
+            console.log(boatPost);
+            const boatCard = await getCardPostByCompletePostId({completePostId: boatPost.id});
+            if (!boatCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+            console.log
+            const resCardPost = await db.cardPost.update({
+                where: {
+                    id: boatCard.id,
+                },
+                data: {
+                    paused: true,
+                }
+            });
+            const resBoatPost = await db.boatPost.update({
+                where: {
+                    id: boatPost.id,
+                },
+                data: {
+                    paused: true,
+                }
+            });    
+        } else if (res.boat === true) { //quiere decir que la publicacion ofertada es un bote, por ende la pedida auto
+            const vehiclePost = await getVehiclePostById(res.idPublicacionPedida);
+            if (!vehiclePost) {
+                return { error: "Publicación no encontrada!" }
+            }
+            const vehicleCard = await getCardPostByCompletePostId({completePostId: vehiclePost.id});
+            if (!vehicleCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+            const resCardPost = await db.cardPost.update({
+                where: {
+                    id: vehicleCard.id,
+                },
+                data: {
+                    paused: true,
+                }
+            });
+            const resVehiclePost = await db.vehiclePost.update({
+                where: {
+                    id: vehiclePost.id,
+                },
+                data: {
+                    paused: true,
+                }
+            });
+        }
+
         if (res) {
             return { success: "Oferta confirmada con éxito!" }
         }
@@ -140,4 +313,86 @@ export const ConfirmarOferta = async ({offerId}) => {
     } catch (error) {
         console.error('Error al confirmar la oferta:', error);
     }
+}
+
+
+export const CancelarOferta = async ({offerId,isBoat}) => {
+    try {
+        console.log(offerId);
+        const offer = await db.offer.update({
+            where: {
+                id: offerId,
+            },
+            data: {
+                status: "CANCELLED",
+            }
+        });
+        
+        if(isBoat === true) {
+            console.log("entra2")
+            const boatPost = await db.boatPost.update({
+                where: {
+                    id: offer.idPublicacionOfrecida,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            console.log("entra3")
+            const boatCard = await getCardPostByCompletePostId({completePostId: boatPost.id});
+            if (!boatCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+
+            const cardPost = await db.cardPost.update({
+                where: {
+                    id: boatCard.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            if (offer && boatPost && cardPost) {
+                return { success: "Oferta cancelada con éxito!" }
+            }
+        } else if (isBoat === false){
+            console.log("entra2")
+            const vehiclePost = await db.vehiclePost.update({
+                where: {
+                    id: offer.idPublicacionOfrecida,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            console.log("entra2")
+            const vehicleCard = await getCardPostByCompletePostId({completePostId: vehiclePost.id});
+            if (!vehicleCard) {
+                return { error: "Publicación card no encontrada!" }
+            }
+
+            const cardPost = await db.cardPost.update({
+                where: {
+                    id: vehicleCard.id,
+                },
+                data: {
+                    paused: false,
+                }
+            });
+            console.log(cardPost)
+            if (offer && vehiclePost && cardPost) {
+                console.log("entro");
+                return { success: "Oferta cancelada con éxito!" }
+            }
+        }
+
+
+        if (res) {
+            return { success: "Oferta cancelada con éxito!" }
+        }
+
+    } catch (error) {
+        console.error('Error al cancelar la oferta:', error);
+    }
+
 }

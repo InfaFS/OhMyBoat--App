@@ -68,7 +68,8 @@ const columns = (handleReject,handleConfirm) => [
       </div>
     )
   },
-  { id: "publication",
+  { accessorKey: "publication",
+    header: "Publicación ofertada",
     cell: ({ row }) => {
 
       return (
@@ -94,39 +95,26 @@ const columns = (handleReject,handleConfirm) => [
       )
     }
   },
-  { id: "accept",
+  { id: "rejectbutton",
     cell: ({ row }) => {
       return (
         <>
         {row.original.status === "PENDING" && (
           <div className="flex justify-center">
-            <button className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded text-xs" onClick={() => handleReject(row.original.id)}>
+            <button className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded text-xs" onClick={() => handleReject(row.original.id)}>
                 Rechazar
             </button>
           </div>   
         )}
-        {row.original.status === "CONFIRMED" && (
+        {row.original.status === "PENDING" && (
           <div className="flex justify-center">
-            <Button className="bg-sky-500 text-xs">Pactar fecha</Button>
+            <button className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 mt-2 rounded text-xs" onClick={() => handleConfirm({offerId: row.original.id,idPublicacionPedida: row.original.idPublicacionPedida})}>
+              Aceptar
+            </button>
           </div>
         )}
         </>
 
-      )
-    }
-  },
-  { id: "confirm",
-    cell: ({ row }) => {
-      return (
-        <>
-        {row.original.status === "PENDING" && (
-            <div className="flex justify-center">
-              <button className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded text-xs" onClick={() => handleConfirm({offerId: row.original.id,idPublicacionPedida: row.original.idPublicacionPedida})}>
-                Aceptar
-              </button>
-            </div>
-        )}
-        </>
       )
     }
   },
@@ -151,10 +139,16 @@ const columns = (handleReject,handleConfirm) => [
             Rechazada
           </div>
         )}
+          {row.original.status === "CANCELLED" && (
+          <div className="flex justify-center text-red-500">
+            Cancelada
+          </div>
+        )}
         </>
       )
     }
-  }
+  },
+
 ];
 
 const datita = [
