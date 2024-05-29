@@ -1,4 +1,8 @@
 "use client"
+import { getBoatPostById } from "../../../../data/posts";
+import { useRouter } from "next/navigation";
+import { ContactPopover } from "./ContactPopover";
+import { toast } from "sonner";
 import Link from "next/link";
 import {
   flexRender,
@@ -18,117 +22,114 @@ import {
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Car } from "lucide-react";
 
-const columns = [
-  {
-    accessorKey: "title",
-    header: "Título",
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.title}
-      </div>
-    )
-  },
-  {
-    accessorKey: "img",
-    header: "Imagen",
+const columns = (handleAmpliarPublicacion) => [
+    { accessorKey: "publication1",
+    header: "Ofertante",
     cell: ({ row }) => {
-      return (
-        <div className="flex justify-center">
-          <img
-            src={row.original.img}
-            width="150"
-            height="150"
-            alt="Image"
-            className="rounded-md"
-          />
-        </div>
-      )
-    }
-  },
-  {
-    accessorKey: "modelo",
-    header: "Modelo",
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.modelo}
-      </div>
-    )
-  },
-  { id: "publication",
-    cell: ({ row }) => {
-
       return (
         <>
-
-        {row.original.boat === true && (
           <div className="flex justify-center">
-          <Link href={`/viewPosts/view-ship/${row.original.idCompletePost}`}>
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ampliar publicación</Button>
-          </Link>
+            <ContactPopover email={row.original.EmailUsuario1} name={row.original.NombreUsuario1} lastname={row.original.ApellidoUsuario1} phone={row.original.PhoneUsuario1}/>
         </div>
-        )}
-
-        {row.original.boat === false && (
-          <div className="flex justify-center">
-          <Link href={`/viewPosts/view-vehicle/${row.original.idCompletePost}`}>
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ampliar publicación</Button>
-          </Link>
-        </div>
-        )}
-        
-        
         </>
-
       )
     }
   },
-  { id: "offers",
+  { accessorKey: "user2",
+  header: "Ofertado",
+  cell: ({ row }) => {
+    return (
+      <>
+        <div className="flex justify-center">
+        <ContactPopover email={row.original.EmailUsuario2} name={row.original.NombreUsuario2} lastname={row.original.ApellidoUsuario2} phone={row.original.PhoneUsuario2}/>
+      </div>
+      </>
+    )
+  }
+},
+  { accessorKey: "publication1",
+    header: "Post ofertado",
     cell: ({ row }) => {
       return (
-        <div className="flex justify-center">
-          <Link href={`/profile/offer/${row.original.idCompletePost}`}> 
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver Ofertas</Button>
-          </Link>
-          
+        <>
+          <div className="flex justify-center">
+            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost1)}>Ampliar publicación</Button>
         </div>
+        </>
       )
     }
+  },
+  { accessorKey: "publication2",
+    header: "Post pedido",
+  cell: ({ row }) => {
+    return (
+      <>
+        <div className="flex justify-center">
+        <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost2)}>Ampliar publicación</Button>
+      </div>
+      </>
+    )
+  }
+},
+  { accessorKey: "date",
+  header: "Fecha",
+  cell: ({ row }) => {
+    return (
+        <div className="flex justify-center">
+        <div className="text-sky-700">{row.original.proposedDay1}</div>
+        </div>
+    )
+  }
+  },
+  { accessorKey: "status",
+  header: "Estado",
+  cell: ({ row }) => {
+    return (
+        <div className="flex justify-center">
+            {row.original.status === "TRUEQUE_REALIZADO" && (
+                <div className="text-green-500">Realizado</div>
+            )}
+
+            {row.original.status === "TRUEQUE_NO_REALIZADO" && (
+                <div className="text-red-500">No Realizado</div>
+            )}
+        </div>
+    )
+  }
   },
 ];
 
-// const datita = [
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-// ];
 
-export function OwnPublicationsTable({ data }) {
+export function CheckedTradesTable({data}) {
+  const router = useRouter();
+  const handleAmpliarPublicacion = async (completePostId) =>  {
+    console.log(completePostId)
+    const BoatPost = await getBoatPostById(completePostId);
+    console.log(BoatPost)
+    if (BoatPost) {
+      router.push(`/viewPosts/view-ship/${completePostId}`);
+    }
+    else {
+        router.push(`/viewPosts/view-vehicle/${completePostId}`);
+    }
+  };
+
   const table = useReactTable({
     data: data,
-    columns: columns,
+    columns: columns(handleAmpliarPublicacion),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize: 4} } // Set page size to 5
+    initialState: { pagination: { pageSize: 5 } } // Set page size to 5
   });
 
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
         {(data && data.length !== 0) ? (
-          <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+          <Card className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-2">
             <CardHeader>
-              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques Pendientes</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="rounded-md border">
@@ -203,7 +204,7 @@ export function OwnPublicationsTable({ data }) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay publicaciones por el momento 🌎
+              No hay trueques revisados por el momento
             </CardContent>
           </Card>
         )}

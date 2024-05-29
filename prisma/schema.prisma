@@ -118,3 +118,30 @@ model offer {
   boat                  Boolean
   status                String
 }
+
+model Trade {
+  id               String @id @default(cuid())
+  status           String
+  proposedDay1     String
+  proposedDay2     String
+  idUsuario1       String
+  PhoneUsuario1    String
+  PhoneUsuario2    String
+  EmailUsuario1    String
+  EmailUsuario2    String
+  NombreUsuario1   String
+  NombreUsuario2   String
+  ApellidoUsuario1 String
+  ApellidoUsuario2 String
+  idUsuario2       String
+  idPost1          String
+  idPost2          String
+}
+
+model Notification {
+  id          String  @id @default(cuid())
+  idOwner     String
+  title       String
+  description String
+  seen        Boolean
+}

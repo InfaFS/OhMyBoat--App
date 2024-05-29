@@ -72,7 +72,7 @@
                 </Link>
                 { role==="USER" && (
                 <>
-                <Link href="/profile/exchanges">
+                <Link href="/profile/my-trades">
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Historial de trueques</Button>
                 </Link>
 
@@ -87,9 +87,20 @@
                 <Link href="/profile/my-offers">
                 <Button className="hover:text-blue-700" variant="ghost">Ofertas que hice</Button>
                 </Link>
-
+                  
                 
                 </>
+                )}
+                { role === "MANAGER" && (
+                  <>
+                  <Link href="/manager/trueques-pendientes">
+                  <Button className="hover:text-blue-700" variant="ghost">Trueques pendientes</Button>
+                  </Link>
+
+                  <Link href="/manager/trueques-revisados">
+                  <Button className="hover:text-blue-700" variant="ghost">Trueques revisados</Button>
+                  </Link>
+                  </>
                 )}
                 </div>
      

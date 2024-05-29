@@ -109,7 +109,7 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
               )}
             </CardContent>
             <CardFooter className="flex justify-center items-center h-full">
-            {userSessionId !== vehiclePost.idPublisher && (
+            {(userSessionId !== vehiclePost.idPublisher && userSessionId) && (
                 <div>
                   { (vehiclePost.paused === false) && (
                       <Link href={`/viewPosts/view-vehicle/${vehiclePost.id}/offer`}>

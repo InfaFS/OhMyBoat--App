@@ -82,3 +82,4 @@ PARA QUE NO DE ERORR LA BASE DE DATOS
 (sudo) npx prisma migrate dev  
 (sudo) npx prisma generate  
 PONER--> sudo chmod 777 A TODO LO QUE ESTA EN LA CARPETA PRISMA  
+ 

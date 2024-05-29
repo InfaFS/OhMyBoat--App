@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 
-const columns = (handleCancel) => [ 
+const columns = (handleConfirmation) => [ 
   {
     accessorKey: "descripcion",
     header: "Descripción",
@@ -86,7 +86,7 @@ const columns = (handleCancel) => [
       <>
       {row.original.status === "PENDING" && (
           <div className="flex justify-center">
-            <Button className="bg-red-500  hover:bg-red-700 text-white text-xs px-2 py-1 mx-1" onClick={() => handleCancel({isBoat: row.original.boat,offerId: row.original.id})}>Cancelar</Button>
+            <Button className="bg-red-500  hover:bg-red-700 text-white text-xs px-2 py-1 mx-1" onClick={() => handleConfirmation({isBoat: row.original.boat,offerId: row.original.id})}>Cancelar</Button>
           </div>
       )}
 
@@ -105,6 +105,18 @@ const datita = [
 
 export function MyOffersTable({ data }) {
   const router = useRouter();
+
+  const handleConfirmation = ({isBoat,offerId}) => {
+    console.log(isBoat," | ",offerId)
+    toast.error("Estás seguro de que quieres cancelar tu oferta?", {
+      action: <>
+      <div>
+        <button onClick={() => {handleCancel({isBoat,offerId});toast.dismiss()}} className='hover:text-red-800 text-red-500'>Confirmar</button>
+        <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-red-500'>Cancelar</button>
+        </div>
+      </> ,
+  })
+  }
   const handleCancel = async ({isBoat,offerId}) => {
     const res = await CancelarOferta({isBoat,offerId});
     toast.success(res?.success);
@@ -114,7 +126,7 @@ export function MyOffersTable({ data }) {
 
   const table = useReactTable({
     data: data,
-    columns: columns(handleCancel),
+    columns: columns(handleConfirmation),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 5 } } // Set page size to 5

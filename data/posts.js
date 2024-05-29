@@ -1,13 +1,15 @@
+"use server"
 import { db } from "@/lib/db";
 
 export const getBoatPostById = async (id) => {
     try {
+        console.log(id)
         const boatPost= await db.boatPost.findUnique({
             where: {
                 id,
             }
         });
-
+        console.log(boatPost)
         return boatPost;
 
     } catch {

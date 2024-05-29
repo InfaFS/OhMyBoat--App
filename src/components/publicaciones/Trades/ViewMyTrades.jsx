@@ -1,4 +1,7 @@
 "use client"
+import { getBoatPostById } from "../../../../data/posts";
+import { useRouter } from "next/navigation";
+
 import Link from "next/link";
 import {
   flexRender,
@@ -18,80 +21,93 @@ import {
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Car } from "lucide-react";
 
-const columns = [
-  {
-    accessorKey: "title",
-    header: "Título",
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.title}
-      </div>
-    )
-  },
-  {
-    accessorKey: "img",
-    header: "Imagen",
+const columns = (handleAmpliarPublicacion) => [
+    { accessorKey: "publication1",
+    header: "Ofertante",
     cell: ({ row }) => {
-      return (
-        <div className="flex justify-center">
-          <img
-            src={row.original.img}
-            width="150"
-            height="150"
-            alt="Image"
-            className="rounded-md"
-          />
-        </div>
-      )
-    }
-  },
-  {
-    accessorKey: "modelo",
-    header: "Modelo",
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.modelo}
-      </div>
-    )
-  },
-  { id: "publication",
-    cell: ({ row }) => {
-
       return (
         <>
-
-        {row.original.boat === true && (
           <div className="flex justify-center">
-          <Link href={`/viewPosts/view-ship/${row.original.idCompletePost}`}>
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ampliar publicación</Button>
-          </Link>
+          <Link href={`/view-profile/${row.original.idUsuario1}`}>
+            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">Ver perfil</Button>     
+            </Link>
         </div>
-        )}
-
-        {row.original.boat === false && (
-          <div className="flex justify-center">
-          <Link href={`/viewPosts/view-vehicle/${row.original.idCompletePost}`}>
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ampliar publicación</Button>
-          </Link>
-        </div>
-        )}
-        
-        
         </>
-
       )
     }
   },
-  { id: "offers",
+  { accessorKey: "user2",
+  header: "Ofertado",
+  cell: ({ row }) => {
+    return (
+      <>
+        <div className="flex justify-center">
+        <Link href={`/view-profile/${row.original.idUsuario2}`}>
+            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">Ver perfil</Button>     
+        </Link>
+      </div>
+      </>
+    )
+  }
+},
+  { accessorKey: "publication1",
+    header: "Post ofertado",
+    cell: ({ row }) => {
+      return (
+        <>
+          <div className="flex justify-center">
+            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost1)}>Ampliar publicación</Button>
+        </div>
+        </>
+      )
+    }
+  },
+  { accessorKey: "publication2",
+    header: "Post pedido",
+  cell: ({ row }) => {
+    return (
+      <>
+        <div className="flex justify-center">
+        <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost2)}>Ampliar publicación</Button>
+      </div>
+      </>
+    )
+  }
+},
+  { accessorKey: "date",
+  header: "Fecha",
+  cell: ({ row }) => {
+    return (
+      <div className="flex justify-center">
+      {row.original.status === "FECHA_PENDIENTE" ? (
+        <Link href={`/profile/my-trades/set-date/${row.original.id}`}>
+            <button className="hover:text-sky-500 text-sm">Pactar fecha</button>        
+        </Link>
+
+      ) : row.original.status !== "FECHA_PENDIENTE" ? (
+        <div className="text-sky-700">{row.original.proposedDay1}</div>
+      ) : null
+      } 
+      </div>
+    )
+  }
+},
+  { accessorKey: "status",
+    header: "Estado",
     cell: ({ row }) => {
       return (
         <div className="flex justify-center">
-          <Link href={`/profile/offer/${row.original.idCompletePost}`}> 
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver Ofertas</Button>
-          </Link>
-          
+        {row.original.status === "TRUEQUE_REALIZADO" ? (
+          <div className="text-green-600">Realizado</div>
+        ) : row.original.status === "FECHA_PENDIENTE" ? (
+          <div className="text-yellow-500">Fecha pendiente</div>
+        ) : row.original.status === "FECHA_PACTADA" ? (
+            <div className="text-yellow-500">Pendiente</div>
+        ) : row.original.status === "TRUEQUE_NO_REALIZADO" ? (
+            <div className="text-red-500">No realizado</div>
+        ): null
+        } 
         </div>
       )
     }
@@ -113,13 +129,26 @@ const columns = [
 //   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
 // ];
 
-export function OwnPublicationsTable({ data }) {
+export function MyTradesTable({ data}) {
+  const router = useRouter();
+  const handleAmpliarPublicacion = async (completePostId) =>  {
+    console.log(completePostId)
+    const BoatPost = await getBoatPostById(completePostId);
+    console.log(BoatPost)
+    if (BoatPost) {
+      router.push(`/viewPosts/view-ship/${completePostId}`);
+    }
+    else {
+        router.push(`/viewPosts/view-vehicle/${completePostId}`);
+    }
+  };
+
   const table = useReactTable({
     data: data,
-    columns: columns,
+    columns: columns(handleAmpliarPublicacion),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize: 4} } // Set page size to 5
+    initialState: { pagination: { pageSize: 5 } } // Set page size to 5
   });
 
   return (
@@ -128,7 +157,7 @@ export function OwnPublicationsTable({ data }) {
         {(data && data.length !== 0) ? (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
             <CardHeader>
-              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="rounded-md border">
@@ -200,10 +229,10 @@ export function OwnPublicationsTable({ data }) {
         ) : (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
             <CardHeader>
-              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay publicaciones por el momento 🌎
+              No hay trueques en los que estés participando en este momento 🤝
             </CardContent>
           </Card>
         )}

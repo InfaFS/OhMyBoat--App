@@ -161,3 +161,19 @@ export const RegisterManagerSchema = z.object({
         message: "Mínimo 6 caracteres requeridos."
     }), //no bloquear con min por ser login es buena practica
 }) 
+
+export const TradeDateSchema = z.object({
+    selectDate: z.string().refine((value) => {
+        // Convertir la cadena de fecha en un objeto Date
+        const selectedDate = new Date(value);
+        // Obtener la fecha actual y ajustarla para que no incluya la parte del tiempo
+        const NowDate = new Date();
+        NowDate.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00
+
+        // Validar que la fecha seleccionada sea posterior a la fecha actual
+        return selectedDate > NowDate;
+      }, {
+        // Mensaje de error si la validación falla
+        message: "La fecha seleccionada debe ser posterior a la fecha actual.",
+    }),
+});

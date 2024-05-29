@@ -25,7 +25,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const columns = (handleReject,handleConfirm) => [ 
+const columns = (handleRejectConfirmation,handleConfirmation) => [ 
   {
     accessorKey: "idOfertante",
     header: "Ofertante",
@@ -101,14 +101,14 @@ const columns = (handleReject,handleConfirm) => [
         <>
         {row.original.status === "PENDING" && (
           <div className="flex justify-center">
-            <button className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded text-xs" onClick={() => handleReject(row.original.id)}>
+            <button className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded text-xs" onClick={() => handleRejectConfirmation(row.original.id)}>
                 Rechazar
             </button>
           </div>   
         )}
         {row.original.status === "PENDING" && (
           <div className="flex justify-center">
-            <button className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 mt-2 rounded text-xs" onClick={() => handleConfirm({offerId: row.original.id,idPublicacionPedida: row.original.idPublicacionPedida})}>
+            <button className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 mt-2 rounded text-xs" onClick={() => handleConfirmation({offerId: row.original.id,idPublicacionPedida: row.original.idPublicacionPedida})}>
               Aceptar
             </button>
           </div>
@@ -166,6 +166,7 @@ const datita = [
 export function OffersTable({ data }) {
   const router = useRouter()
 
+
   const handleReject = async (offerId) => {
     console.log(offerId)
     const response = await RechazarOferta({ offerId });
@@ -184,13 +185,37 @@ export function OffersTable({ data }) {
         router.refresh();
       }
 
+  }
 
+
+  const handleRejectConfirmation = (offerId) => {
+    console.log(offerId)
+    toast.error("Estás seguro de que quieres rechazar la oferta?", {
+      action: <>
+      <div>
+        <button onClick={() => {handleReject(offerId);toast.dismiss()}} className='hover:text-red-800 text-red-500'>Confirmar</button>
+        <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-red-500'>Cancelar</button>
+        </div>
+      </> ,
+  })
+  }
+
+  const handleConfirmation = ({offerId,idPublicacionPedida}) => {
+    console.log(offerId)
+    toast.info("Estás seguro de que quieres aceptar la oferta?", {
+      action: <>
+      <div>
+        <button onClick={() => {handleConfirm({offerId,idPublicacionPedida});toast.dismiss()}} className='hover:text-green-500  text-blue-500'>Confirmar</button>
+        <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-blue-500'>Cancelar</button>
+        </div>
+      </> ,
+  })
 
   }
 
   const table = useReactTable({
     data: data,
-    columns: columns(handleReject,handleConfirm),
+    columns: columns(handleRejectConfirmation,handleConfirmation),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 5 } } // Set page size to 5

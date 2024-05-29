@@ -5,6 +5,7 @@ import { getUserById } from "../data/user";
 import { getBoatPostById, getVehiclePostById } from "../data/posts";
 import { getCardPostByCompletePostId } from "../data/cardPosts";
 import { getOffersByOfferentId } from "../data/getOffers";
+import { auth } from "../auth";
 
 export const OfertarVehículo = async ({idOfertante,descripcion,idPublicacionOfrecida,idPublicacionPedida}) => {
 
@@ -399,8 +400,34 @@ export const ConfirmarOferta = async ({offerId}) => {
             });
         }
 
-
-
+        const session = await auth()
+        const userId = session.user?.id
+        const userOfertado = await getUserById(userId);
+        const userOfertante = await getUserById(res.idOfertante);
+        console.log(userOfertante);
+        console.log(userOfertado);
+        const newTrade = await db.trade.create({ //creo el trade con los datos pedidos
+            data: {
+                status: "FECHA_PENDIENTE",
+                proposedDay1: "EMPTY",
+                proposedDay2: "EMPTY",
+                idUsuario1: userOfertante.id,
+                idUsuario2: userOfertado.id,
+                idPost1: res.idPublicacionOfrecida,
+                idPost2: res.idPublicacionPedida,
+                PhoneUsuario1: userOfertante.cellphone,
+                PhoneUsuario2: userOfertado.cellphone,
+                EmailUsuario1: userOfertante.email,
+                EmailUsuario2: userOfertado.email,
+                NombreUsuario1: userOfertante.firstname,
+                NombreUsuario2: userOfertado.firstname,
+                ApellidoUsuario1: userOfertante.lastname,
+                ApellidoUsuario2: userOfertado.lastname,
+    
+            }
+        
+        })
+        console.log(newTrade);
         if (res) {
             return { success: "Oferta confirmada con éxito!" }
         }
