@@ -73,7 +73,7 @@
                 { role==="USER" && (
                 <>
                 <Link href="/profile/my-trades">
-                <Button className="mr-2 hover:text-blue-700" variant="ghost">Historial de trueques</Button>
+                <Button className="mr-2 hover:text-blue-700" variant="ghost">Trueques</Button>
                 </Link>
 
                 <Link href="/profile/reviews">

@@ -19,7 +19,7 @@ import { CreateComponent } from "@/components/WorkingComponent";
 import { reanudarPublicaciónBarco } from "../../../../actions/PausarReanudarPost";
 import { pausarPublicaciónBarco } from "../../../../actions/PausarReanudarPost";
 export const BoatView = ({boatPost, userSessionId}) => {
-    console.log(boatPost.paused)
+    console.log(boatPost.paused);
     const router = useRouter();
     
     const handleBack = () => {

@@ -3,6 +3,7 @@ import { CancelarOferta } from "../../../../actions/Offer";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
+import { Check,X } from "lucide-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -22,7 +23,6 @@ import {
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 
 const columns = (handleConfirmation) => [ 
   {
@@ -34,32 +34,79 @@ const columns = (handleConfirmation) => [
       </div>
     )
   },
-  {
-    accessorKey: "publication",
-    header: "Publicación ofertada",
-    cell: ({ row }) => (
-      <div className="flex justify-center">
-        <Link href={row.original.boat 
-          ? `/viewPosts/view-ship/${row.original.idPublicacionOfrecida}`
-          : `/viewPosts/view-vehicle/${row.original.idPublicacionOfrecida}`
-        }>
-          <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver publicación</Button>
-        </Link>
-      </div>
-    )
+    {
+      accessorKey: 'publication1',
+      header: 'Post ofertado',
+      cell: ({ row }) => (
+        <div className="flex flex-col items-center">
+          <h1 className="font-semibold text-sm mb-2">{row.original.tituloPublicacionOfrecida}</h1>
+          <Link href={row.original.boat 
+            ? `/viewPosts/view-ship/${row.original.idPublicacionOfrecida}`
+            : `/viewPosts/view-vehicle/${row.original.idPublicacionOfrecida}`
+          }>
+            <img
+              src={row.original.imgPublicacionOfrecida}
+              width="100"
+              height="100"
+              alt="Image"
+              className="rounded-md"
+            />
+          </Link>
+        </div>
+      )
+    },
+    {
+      accessorKey: 'publication2',
+      header: 'Post pedido',
+      cell: ({ row }) => (
+        <div className="flex flex-col items-center">
+          <h1 className="font-semibold text-sm mb-2">{row.original.tituloPublicacionPedida}</h1>
+          <Link href={row.original.boat 
+            ? `/viewPosts/view-vehicle/${row.original.idPublicacionPedida}`
+            : `/viewPosts/view-ship/${row.original.idPublicacionPedida}`
+          }>
+            <img
+              src={row.original.imgPublicacionPedida}
+              width="100"
+              height="100"
+              alt="Image"
+              className="rounded-md"
+            />
+          </Link>
+        </div>
+      )
+    },
+  {accessorKey: "ofertado",
+  header: "Ofertado",
+  cell: ({ row }) => (
+    <div className="text-center">
+      {row.original.firstNameOfertado} {row.original.lastNameOfertado}
+    </div>
+  )
   },
   {
-    accessorKey: "requestedPublication",
-    header: "Publicación solicitada",
+    accessorKey: "actions",
+    header: "Acciones",
     cell: ({ row }) => (
-      <div className="flex justify-center">
-        <Link href={row.original.boat 
-          ? `/viewPosts/view-vehicle/${row.original.idPublicacionPedida}`
-          : `/viewPosts/view-ship/${row.original.idPublicacionPedida}`
-        }>
-          <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver publicación</Button>
-        </Link>
-      </div>
+      <>
+      {row.original.status === "PENDING" && (
+          <div className="flex justify-center">
+            <Button className="bg-red-500  hover:bg-red-700 text-white text-xs px-2 py-1 mx-1" onClick={() => handleConfirmation({offerId: row.original.id})}>Cancelar</Button>
+          </div>
+      )}
+
+      { row.original.status === "CONFIRMED" && (
+           <div className="flex justify-center">
+          <Check height={20} width={20} className="text-green-600"/>
+          </div>
+        )}
+        {(row.original.status === "REJECTED" || row.original.status === "CANCELLED") && (
+          <div className="flex justify-center">
+            <X height={20} width={20} className="text-red-600"/>
+          </div>
+        )}
+      </>
+
     )
   },
   {
@@ -78,20 +125,6 @@ const columns = (handleConfirmation) => [
         ) : null
         }
       </div>
-    )
-  },
-  {
-    id: "cancel",
-    cell: ({ row }) => (
-      <>
-      {row.original.status === "PENDING" && (
-          <div className="flex justify-center">
-            <Button className="bg-red-500  hover:bg-red-700 text-white text-xs px-2 py-1 mx-1" onClick={() => handleConfirmation({isBoat: row.original.boat,offerId: row.original.id})}>Cancelar</Button>
-          </div>
-      )}
-
-      </>
-
     )
   },
 ];
@@ -117,11 +150,11 @@ export function MyOffersTable({ data }) {
       </> ,
   })
   }
-  const handleCancel = async ({isBoat,offerId}) => {
-    const res = await CancelarOferta({isBoat,offerId});
+  const handleCancel = async ({offerId}) => {
+    const res = await CancelarOferta({offerId});
     toast.success(res?.success);
     console.log(res?.error);
-    router.refresh()
+    router.refresh();
   }
 
   const table = useReactTable({

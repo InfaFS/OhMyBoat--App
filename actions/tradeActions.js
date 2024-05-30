@@ -1,5 +1,7 @@
 "use server"
 import { db } from "@/lib/db"
+import { getBoatPostById } from "../data/posts";
+import { getCardPostByCompletePostId } from "../data/cardPosts";
 
 export const getTradesById = async (id) => {
     try {
@@ -118,6 +120,41 @@ export const setTradeDate = async ({userId,tradeId,proposedDay}) => {
 
 }
 
+const modificarCards = async ({idCompletePost1,idCompletePost2,userId1,userId2}) => {
+    try {
+        const card1 = await getCardPostByCompletePostId({completePostId: idCompletePost1});
+        const card2 = await getCardPostByCompletePostId({completePostId: idCompletePost2});
+        if (card1 !== null && card2 !== null) {
+            const res1 = await db.cardPost.update({
+                where: {
+                    id: card1.id,
+                },
+                data: {
+                    idPublisher: userId2,
+                }
+            });
+            const res2 = await db.cardPost.update({
+                where: {
+                    id: card2.id,
+                },
+                data: {
+                    idPublisher: userId1,
+                }
+            });
+            if (res1 && res2) {
+                return true;
+            }
+        }
+        return false;
+    } catch (error) {
+        console.log(error)
+        return null;
+    }
+
+
+
+}
+
 export const confirmTrade = async ({tradeId}) => {
     try {
         const res = await db.trade.update({
@@ -128,6 +165,72 @@ export const confirmTrade = async ({tradeId}) => {
                 status: "TRUEQUE_REALIZADO",
             }
         });
+
+        const userId1 = res.idUsuario1;
+        console.log(userId1);
+        const userId2 = res.idUsuario2;
+        console.log(userId2);
+        const publicationId1 = res.idPost1;
+        console.log(publicationId1);
+        const publicationId2 = res.idPost2;
+        console.log(publicationId2);
+        //vamos a intercambiar los ids de las publicaciones
+        let isBoat = false;
+        const publication1EsBote = await getBoatPostById(publicationId1);
+        console.log(publication1EsBote);
+        if (publication1EsBote !== null) {
+            console.log("entra");
+            isBoat = true;
+        }
+        if (isBoat === true) {
+            const res1 = await db.boatPost.update({
+                where: {
+                    id: publicationId1,
+                },
+                data: {
+                    idPublisher: userId2,
+                }
+            });
+            console.log(res1);
+            
+            const res2 = await db.vehiclePost.update({
+                where: {
+                    id: publicationId2,
+                },
+                data: {
+                    idPublisher: userId1,
+                }
+            });
+            console.log(res2);
+            const ok = await modificarCards({idCompletePost1: publicationId1,idCompletePost2: publicationId2,userId1: userId1,userId2: userId2});
+            console.log(ok);
+
+        }
+        if (isBoat === false){
+            const res1 = await db.vehiclePost.update({
+                where: {
+                    id: publicationId1,
+                },
+                data: {
+                    idPublisher: userId2,
+                }
+            });
+
+            console.log(res1);
+
+            const res2 = await db.boatPost.update({
+                where: {
+                    id: publicationId2,
+                },
+                data: {
+                    idPublisher: userId1,
+                }
+            });
+
+            console.log(res2);
+            const ok = await modificarCards({idCompletePost1: publicationId1,idCompletePost2: publicationId2,userId1: userId1,userId2: userId2});
+            console.log(ok);
+        }
         if (res) {
             return {success : "El trueque se confirmó correctamente"}
         }

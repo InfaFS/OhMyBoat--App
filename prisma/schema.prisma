@@ -106,17 +106,23 @@ model Review {
 }
 
 model offer {
-  id                    String  @id @default(cuid())
-  idPublicacionPedida   String
-  idOfertante           String
-  firstNameOfertante    String
-  lastNameOfertante     String
-  emailOfertante        String
-  cellphoneOfertante    String
-  descripcion           String
-  idPublicacionOfrecida String
-  boat                  Boolean
-  status                String
+  id                        String  @id @default(cuid())
+  idPublicacionPedida       String
+  firstNameOfertado         String
+  lastNameOfertado          String
+  idOfertante               String
+  firstNameOfertante        String
+  lastNameOfertante         String
+  emailOfertante            String
+  cellphoneOfertante        String
+  descripcion               String
+  idPublicacionOfrecida     String
+  boat                      Boolean
+  tituloPublicacionOfrecida String
+  tituloPublicacionPedida   String
+  imgPublicacionOfrecida    String
+  imgPublicacionPedida      String
+  status                    String
 }
 
 model Trade {

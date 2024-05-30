@@ -76,7 +76,7 @@ export const getAllPostsByUser = async ({userId}) => {
                     idPublisher: userId,
                 },
             },
-        );
+        ); 
         return cardPosts
     } catch {
         return null;

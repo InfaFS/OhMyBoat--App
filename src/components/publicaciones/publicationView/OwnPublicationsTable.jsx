@@ -56,7 +56,8 @@ const columns = [
       </div>
     )
   },
-  { id: "publication",
+  { accessorKey: "actions",
+    header: "Acciones",
     cell: ({ row }) => {
 
       return (
@@ -77,25 +78,35 @@ const columns = [
           </Link>
         </div>
         )}
-        
+          <div className="flex justify-center mt-2">
+          <Link href={`/profile/offer/${row.original.idCompletePost}`}> 
+            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver Ofertas</Button>
+          </Link>
+          
+        </div>
         
         </>
 
       )
     }
   },
-  { id: "offers",
+  { accessorKey: "status",
+    header: "Estado",
     cell: ({ row }) => {
       return (
         <div className="flex justify-center">
-          <Link href={`/profile/offer/${row.original.idCompletePost}`}> 
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver Ofertas</Button>
-          </Link>
-          
+          {row.original.paused === true ? (
+            <div className="text-slate-500">Pausada</div>
+          ) : row.original.paused === false ? (
+            <div className="text-sky-500">Visible</div>
+          ) : null
+          }
         </div>
       )
     }
+
   },
+
 ];
 
 // const datita = [
@@ -119,7 +130,7 @@ export function OwnPublicationsTable({ data }) {
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize: 4} } // Set page size to 5
+    initialState: { pagination: { pageSize: 3} } // Set page size to 5
   });
 
   return (

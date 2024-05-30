@@ -4,7 +4,7 @@ import { getUserById } from "../../../../data/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getConfirmedOffersByPostId } from "../../../../data/getOffers";
-import { Hourglass, MoveLeft } from "lucide-react";
+import { Check, Hourglass, LucideAlignHorizontalSpaceBetween, MoveLeft, X } from "lucide-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -74,28 +74,38 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
 
       return (
         <>
-        {(row.original.boat) === true && (
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center">
+        <h1 className="font-semibold text-sm mb-2">{row.original.tituloPublicacionOfrecida}</h1>
+        {row.original.boat ? (
           <Link href={`/viewPosts/view-ship/${row.original.idPublicacionOfrecida}`}>
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver publicación</Button>
+            <img
+              src={row.original.imgPublicacionOfrecida}
+              width="100"
+              height="100"
+              alt="Image"
+              className="rounded-md"
+            />
           </Link>
-        </div>
-        )}
-
-        {row.original.boat === false && (
-          <div className="flex justify-center">
+        ) : (
           <Link href={`/viewPosts/view-vehicle/${row.original.idPublicacionOfrecida}`}>
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver publicación</Button>
+            <img
+              src={row.original.imgPublicacionOfrecida}
+              width="100"
+              height="100"
+              alt="Image"
+              className="rounded-md"
+            />
           </Link>
-        </div>
         )}
+      </div>
     
         </>
 
       )
     }
   },
-  { id: "rejectbutton",
+  { accessorKey: "rejectbutton",
+    header: "Acciones",
     cell: ({ row }) => {
       return (
         <>
@@ -112,6 +122,17 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
               Aceptar
             </button>
           </div>
+        )}
+        {row.original.status === "CONFIRMED" && (
+           <div className="flex justify-center">
+          <Check height={20} width={20} className="text-green-600"/>
+          </div>
+        )}
+        {(row.original.status === "REJECTED" || row.original.status === "CANCELLED") && (
+          <div className="flex justify-center">
+            <X height={20} width={20} className="text-red-600"/>
+          </div>
+
         )}
         </>
 
