@@ -155,16 +155,17 @@ const rechazarOfertaInterno = async ({offerId}) => {
             }
         });
 
-        // const notificacion = await db.notification.create({
-        //     data: {
-        //         idEmisor: "???",
-        //         idReceptor: res.idOfertante,
-        //         title: "Oferta rechazada",
-        //         description: `Tu oferta por la publicación ${res.tituloPublicacionPedida} ha sido rechazada`,
-        //         seen: false,
-        //         type: "OFFER",
-        //     }
-        // })
+        const notificacion = await db.notification.create({
+            data: {
+                idEmisor: "???",
+                idReceptor: res.idOfertante,
+                title: "Oferta rechazada",
+                description: `Tu oferta por la publicación ${res.tituloPublicacionPedida} ofertando ${res.tituloPublicacionOfrecida} ha sido rechazada`,
+                seen: false,
+                type: "OFFER",
+            }
+        })
+        console.log(notificacion);
 
         if (res.boat === false) { //quiere decir que la publicacion ofertada es un auto, por ende la pedida bote
             const vehiclePost = await getVehiclePostById(res.idPublicacionOfrecida);
@@ -264,24 +265,27 @@ export const RechazarOferta = async ({offerId}) => {
     }
 }
 
-    // export const EliminarOfertasDePublicacionExcepto = async ({publicationId,offeredPublicationId}) => {
-    //     try {
-    //         const res = await db.offer.deleteMany({
-    //             where: {
-    //                 idPublicacionPedida: publicationId,
-    //                 idPublicacionOfrecida: {
-    //                     not: offeredPublicationId,
-    //                 },
-    //             }
-    //         });
-    //         if (res) {
-    //             return { success: "Todas las demas ofertas fueron rechazadas con éxito!" }
-    //         }
-    //     } catch (error) {
-    //         console.error('Error al rechazar las ofertas:', error);
-    //     }
 
-    // }
+const enviarNotifRechazoInterno = async ({oferta}) => {
+    try {
+        const notificacion = await db.notification.create({
+            data: {
+                idEmisor: "???",
+                idReceptor: oferta.idOfertante,
+                title: "Oferta rechazada",
+                description: `Tu oferta de ${oferta.tituloPublicacionOfrecida} por la publicación ${oferta.tituloPublicacionPedida} ha sido rechazada`,
+                seen: false,
+                type: "OFFER",
+            }
+        })
+        console.log(notificacion);
+        if (notificacion) {
+            return { success: "Notificación enviada con éxito!" }
+        }
+    } catch (error) {
+        console.error('Error al enviar la notificación:', error);
+    }
+}
 
 export const ConfirmarOferta = async ({offerId}) => {
     try {
@@ -413,7 +417,7 @@ export const ConfirmarOferta = async ({offerId}) => {
                     status: "PAUSED",
                 }
             });
-            //pausamos la otra publi ahora
+            //pausamos la otra publicacion
             const resBoatPost = await getBoatPostById(res.idPublicacionOfrecida);
             console.log(resBoatPost);
             const resBoatPostUpdated = await db.boatPost.update({
@@ -437,49 +441,50 @@ export const ConfirmarOferta = async ({offerId}) => {
             });
             console.log(cardPostUpdated);
             
-        }
+        } //probar aca
 
         //mandamos notificacion al ofertante de que se le confirmo la oferta
 
-        // const notificacionConfirmacionAOfertante = await db.notification.create({
-        //     data: {
-        //         idEmisor: "???",
-        //         idReceptor: res.idOfertante,
-        //         title: "Oferta aceptada!",
-        //         description: `Tu oferta de ${res.tituloPublicacionOfrecida} por la publicación ${res.tituloPublicacionPedida} ha sido aceptada con éxito, ya puedes pactar una fecha para el trueque!`,
-        //         seen: false,
-        //         type: "OFFER",
-        //     }
-        //     })
-        //console.log(notificacionConfirmacionAOfertante);
+        const notificacionConfirmacionAOfertante = await db.notification.create({
+            data: {
+                idEmisor: "???",
+                idReceptor: res.idOfertante,
+                title: "Oferta aceptada!",
+                description: `Tu oferta de ${res.tituloPublicacionOfrecida} por la publicación ${res.tituloPublicacionPedida} ha sido aceptada con éxito, ya puedes pactar una fecha para el trueque!`,
+                seen: false,
+                type: "OFFER",
+            }
+            })
+            console.log(notificacionConfirmacionAOfertante);
             
             //le mandamos que se le pauso la oferta
 
-            // const notificacionPausadaOfertante = await db.notification.create({
-            //     data: {
-            //         idEmisor: "???",
-            //         idReceptor: res.idOfertante,
-            //         title: "Publicación pausada",
-            //         description: `Debido a que la oferta de la publicación ${res.tituloPublicacionOfrecida} ha sido aceptada, esta ha sido pausada temporalmente`,
-            //         seen: false,
-            //         type: "OFFER",
-            //     }
-            //     })
-          //  console.log(notificacionPausadaOfertante);
-            //ahora pauso la publicacion ofertada
+            const notificacionPausadaOfertante = await db.notification.create({
+                data: {
+                    idEmisor: "???",
+                    idReceptor: res.idOfertante,
+                    title: "Publicación pausada",
+                    description: `Debido a que la oferta de la publicación ${res.tituloPublicacionOfrecida} ha sido aceptada, esta ha sido pausada temporalmente`,
+                    seen: false,
+                    type: "OFFER",
+                }
+                })
+           console.log(notificacionPausadaOfertante);
+
         const post = await getCardPostByCompletePostId({completePostId: res.idPublicacionPedida});
         console.log(post);
         //mandamos notificacion al ofertado de que se le pauso la publi
-        // const notificacionPausadaOfertado = await db.notification.create({
-        //     data: {
-        //         idEmisor: "???",
-        //         idReceptor: post.idPublisher,
-        //         title: "Publicación pausada",
-        //         description: `Debido a que has aceptado el trueque de ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} tu publicación ha sido pausada temporalmente`,
-        //         seen: false,
-        //         type: "OFFER",
-        //     }
-        //     })
+        const notificacionPausadaOfertado = await db.notification.create({
+            data: {
+                idEmisor: "???",
+                idReceptor: post.idPublisher,
+                title: "Publicación pausada",
+                description: `Debido a que has aceptado el trueque de ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} tu publicación ha sido pausada temporalmente`,
+                seen: false,
+                type: "OFFER",
+            }
+            })
+        console.log(notificacionPausadaOfertado);
         
         //mandamos notificacion al ofertante de que se le cancelaron las demas ofertas
         const ofertasCanceladasOfertante = await db.offer.updateMany({
@@ -494,18 +499,20 @@ export const ConfirmarOferta = async ({offerId}) => {
         })
         console.log(ofertasCanceladasOfertante);
 
-        // if (ofertasCanceladasOfertante) {
-        //     const notificacionCanceladasOfertante = await db.notification.create({
-        //         data: {
-        //             idEmisor: "???",
-        //             idReceptor: res.idOfertante,
-        //             title: "Ofertas canceladas!",
-        //             description: `Debido a que tu oferta de ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} fue aceptada, las ofertas que hiciste con ${res.tituloPublicacionOfrecida} han sido canceladas`,
-        //             seen: false,
-        //             type: "OFFER",
-        //         }
-        //         })
-        // }
+        if (ofertasCanceladasOfertante) {
+            const notificacionCanceladasOfertante = await db.notification.create({
+                data: {
+                    idEmisor: "???",
+                    idReceptor: res.idOfertante,
+                    title: "Ofertas canceladas!",
+                    description: `Debido a que tu oferta de ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} fue aceptada, las ofertas que hiciste con ${res.tituloPublicacionOfrecida} han sido canceladas`,
+                    seen: false,
+                    type: "OFFER",
+                }
+                })
+            console.log(notificacionCanceladasOfertante);
+        }
+
 
         const ofertasCanceladasOfertado = await db.offer.updateMany({
             where: {
@@ -518,19 +525,20 @@ export const ConfirmarOferta = async ({offerId}) => {
         })
         console.log(ofertasCanceladasOfertado);
         //mandamos notificacion al ofertado de que se le cancelaron las demas ofertas
-        // if (ofertasCanceladasOfertado) {
+        if (ofertasCanceladasOfertado) {
 
-        //         const notificacionCanceladasOfertado = await db.notification.create({
-        //             data: {
-        //                 idEmisor: "???",
-        //                 idReceptor: post.idPublisher,
-        //                 title: "Ofertas canceladas!",
-        //                 description: `Debido a que tu oferta de ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} fue aceptada, las ofertas que hiciste con ${res.tituloPublicacionOfrecida} han sido canceladas`,
-        //                 seen: false,
-        //                 type: "OFFER",
-        //             }
-        //          })
-        // }
+                const notificacionCanceladasOfertado = await db.notification.create({
+                    data: {
+                        idEmisor: "???",
+                        idReceptor: post.idPublisher,
+                        title: "Ofertas canceladas!",
+                        description: `Debido a que tu oferta de ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} fue aceptada, las ofertas que hiciste con ${res.tituloPublicacionPedida} han sido canceladas`,
+                        seen: false,
+                        type: "OFFER",
+                    }
+                 })
+                 console.log(notificacionCanceladasOfertado);
+        }
 
         const ofertasRechazadas = await db.offer.updateMany({
             where: {
@@ -542,23 +550,23 @@ export const ConfirmarOferta = async ({offerId}) => {
             }
         })
         console.log(ofertasRechazadas);
+        //busco las ofertas rechazadas de la publi por parte del ofertante
+        const arOfertasRechazadas = await db.offer.findMany({
+            where: {
+                idPublicacionPedida: res.idPublicacionOfrecida,
+                status: "REJECTED",
+            }
+        })
+        console.log(arOfertasRechazadas);
+        if (arOfertasRechazadas) {
+            console.log(arOfertasRechazadas)
+            for (let j = 0; j < arOfertasRechazadas.length; j++) {
+                console.log(arOfertasRechazadas[j]);
+                const notifEnviada = await enviarNotifRechazoInterno({oferta: arOfertasRechazadas[j]});
+                console.log(notifEnviada);
+            }
 
-        // if (ofertasRechazadas) {
-        //     ofertasRechazadas.forEach(async oferta => {
-        //         const notificacionRechazada = await db.notification.create({
-        //             data: {
-        //                 idEmisor: "???",
-        //                 idReceptor: oferta.idOfertante,
-        //                 title: "Oferta rechazada",
-        //                 description: `Debido a que la oferta de ${oferta.tituloPublicacionPedida} y ${oferta.tituloPublicacionOfrecida} fue aceptada, tu oferta ha sido rechazada`,
-        //                 seen: false,
-        //                 type: "OFFER",
-        //             }
-        //         })
-        //     });
-
-        // }
-
+        }
 
 
         const session = await auth()
@@ -594,16 +602,17 @@ export const ConfirmarOferta = async ({offerId}) => {
         })
         console.log(newTrade);
 
-        // const notificacionTrueque1 = await db.notification.create({
-        //     data : {
-        //         idEmisor: "???",
-        //         idReceptor: post.idPublisher,
-        //         title: "Trueque pendiente",
-        //         description: `La oferta por la publicación ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} ha sido aceptada con éxito, ahora puedes pactar una fecha para el trueque!`,
-        //         seen: false,
-        //         type: "TRADE",
-        //     }
-        // })
+        const notificacionTrueque1 = await db.notification.create({
+            data : {
+                idEmisor: "???",
+                idReceptor: post.idPublisher,
+                title: "Trueque pendiente",
+                description: `La oferta por la publicación ${res.tituloPublicacionPedida} y ${res.tituloPublicacionOfrecida} ha sido aceptada con éxito, ahora puedes pactar una fecha para el trueque!`,
+                seen: false,
+                type: "TRADE",
+            }
+        })
+        console.log(notificacionTrueque1);
 
         if (res) {
             return { success: "Oferta confirmada con éxito!" }
@@ -636,11 +645,12 @@ export const CancelarOferta = async ({offerId}) => {
                 idEmisor: "???",
                 idReceptor: offer.idOfertante,
                 title: "Oferta cancelada",
-                description: `Tu oferta por la publicación ${offer.tituloPublicacionPedida} ha sido cancelada`,
+                description: `Tu oferta por la publicación ${offer.tituloPublicacionPedida} ofertando ${offer.tituloPublicacionOfrecida} ha sido cancelada`,
                 seen: false,
                 type: "OFFER",
             }
         })
+        console.log(notificacionOfertante)
 
         const notificacionOfertado = await db.notification.create({
             data: {
@@ -652,6 +662,7 @@ export const CancelarOferta = async ({offerId}) => {
                 type: "OFFER",
             }
         })
+        console.log(notificacionOfertado)
 
         if (offer) {
             return { success: "Oferta cancelada con éxito!" }
