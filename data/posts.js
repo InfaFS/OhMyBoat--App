@@ -1,5 +1,71 @@
 "use server"
 import { db } from "@/lib/db";
+import { getCardPostByCompletePostId } from "./cardPosts";
+
+export const ocultarEmbarcacion = async ({completePostId}) => {
+    try {
+        console.log(completePostId)
+        const hiddenBoat = await db.boatPost.update({
+            where: {
+                id: completePostId,
+            },
+            data: {
+                status: "HIDDEN",
+            }
+        });
+        console.log(hiddenBoat);
+
+        const card = await getCardPostByCompletePostId({completePostId});
+        console.log(card)
+        const updatedBoat = await db.cardPost.update({
+            where: {
+                id: card.id,
+            },
+            data: {
+                status: "HIDDEN",
+            }
+        });
+        console.log(updatedBoat);
+        return {success: "Embarcación ocultado correctamente"};
+    } catch {
+        return null;
+    }
+}
+
+
+export const ocultarVehiculo = async ({completePostId}) => {
+    try {
+        console.log(completePostId);
+        const hiddenVehicle = await db.vehiclePost.update({
+            where: {
+                id: completePostId,
+            },
+            data: {
+                status: "HIDDEN",
+            }
+        });
+        console.log(hiddenVehicle);
+
+        const card = await getCardPostByCompletePostId({completePostId});
+        console.log(card)
+        const updatedCard = await db.cardPost.update({
+            where: {
+                id: card.id,
+            },
+            data: {
+                status: "HIDDEN",
+            }
+        });
+        console.log(updatedCard);
+        return {success: "Vehículo ocultado correctamente"};
+    } catch {
+        return null;
+    }
+}
+
+
+
+
 
 export const getBoatPostById = async (id) => {
     try {

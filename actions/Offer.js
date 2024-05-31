@@ -499,7 +499,8 @@ export const ConfirmarOferta = async ({offerId}) => {
         })
         console.log(ofertasCanceladasOfertante);
 
-        if (ofertasCanceladasOfertante) {
+
+        if (ofertasCanceladasOfertante.count !== 0) {
             const notificacionCanceladasOfertante = await db.notification.create({
                 data: {
                     idEmisor: "???",
@@ -525,7 +526,7 @@ export const ConfirmarOferta = async ({offerId}) => {
         })
         console.log(ofertasCanceladasOfertado);
         //mandamos notificacion al ofertado de que se le cancelaron las demas ofertas
-        if (ofertasCanceladasOfertado) {
+        if (ofertasCanceladasOfertado.count !== 0) {
 
                 const notificacionCanceladasOfertado = await db.notification.create({
                     data: {
