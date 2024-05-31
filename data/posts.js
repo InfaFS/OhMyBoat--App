@@ -40,7 +40,10 @@ export const getAllBoatPostsByUser = async ({userId}) => {
             {
                 where: {
                     idPublisher: userId,
-                    paused: false,
+                    OR: [
+                        { status: "ACTIVE" },
+                        { status: "HIDDEN" }
+                      ]
                 },
             },
         );
@@ -57,7 +60,10 @@ export const getAllVehiclePostsByUser = async ({userId}) => {
             {
                 where: {
                     idPublisher: userId,
-                    paused: false,
+                    OR: [
+                        { status: "ACTIVE" },
+                        { status: "HIDDEN" }
+                      ]
                 },
             },
         );

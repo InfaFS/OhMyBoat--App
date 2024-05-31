@@ -95,12 +95,15 @@ const columns = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center">
-          {row.original.paused === true ? (
-            <div className="text-slate-500">Pausada</div>
-          ) : row.original.paused === false ? (
+          {row.original.status === "HIDDEN" ? (
+            <div className="text-slate-500">Oculta</div>
+          ) : row.original.status === "ACTIVE" ? (
             <div className="text-sky-500">Visible</div>
-          ) : null
-          }
+          ) : row.original.status === "PAUSED" ? (
+            <div className="text-yellow-500">Pausada</div>
+          ) : row.original.status === "DELETED" ? (
+            <div className="text-red-500">Eliminada</div>
+          ) : null }
         </div>
       )
     }

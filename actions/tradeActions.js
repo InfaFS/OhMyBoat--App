@@ -21,6 +21,19 @@ export const getTradesById = async (id) => {
 
 }
 
+export const getTradeById = async (id) => {
+    try {
+        const trade = await db.trade.findUnique({
+            where: {
+                id: id,
+            }
+        });
+        return trade;
+    } catch {
+        return null;
+    }
+}
+
 export const getAllPendingTrades = async () => {
     try {
         const pendingTrades = await db.trade.findMany({
@@ -98,7 +111,7 @@ export const setTradeDate = async ({userId,tradeId,proposedDay}) => {
         }
         if((res.proposedDay1 !== "EMPTY" && res.proposedDay2 !== "EMPTY") && (res.proposedDay1 === res.proposedDay2)) {
             console.log("entra")
-            await db.trade.update({
+            const updatedTrade = await db.trade.update({
                 where: {
                     id: tradeId,
                 },
@@ -106,11 +119,29 @@ export const setTradeDate = async ({userId,tradeId,proposedDay}) => {
                     status: "FECHA_PACTADA",
                 }
             });
-        }
-        if (res) {
-            return {success : "La fecha se cargó correctamente"}
+            if (updatedTrade){
+                return {success : "La fecha se cargó correctamente y el trueque está pendiente de confirmación"}
+            }
+            
         }
 
+        if ((res.proposedDay1 !== "EMPTY" && res.proposedDay2 !== "EMPTY") && (res.proposedDay1 !== res.proposedDay2)) {
+            console.log("entra")
+            const reset = await db.trade.update({
+                where: {
+                    id: tradeId,
+                },
+                data: {
+                    proposedDay1: "EMPTY",
+                    proposedDay2: "EMPTY",
+                }
+            });
+            console.log(reset);
+            return {error : "Las fechas no coinciden, se resetearon los formularios para que vuelvan a pactar una fecha"}
+        }
+        if (res) {
+            return {success : "La fecha se cargó correctamente. Espera a que el otro usuario confirme la fecha también!"};
+        }
         return null;
     } catch (error) {
         console.log(error)

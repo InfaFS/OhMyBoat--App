@@ -3,10 +3,19 @@ import { Button } from "@/components/ui/button";
 import { auth } from "../../../auth";
 import BasicMenuCallback from "./BasicMenuCall";
 import HomeCallBack from "./HomeCall";
+import { getAllNotis, getUnseenNotis } from "../../../actions/notifications";
 
 //al ser algo que depende del valor de la session lo ponemos como function async
 export async function HeaderTincho() {
   const session = await auth();
+  let notis;
+  let unseenNotisNumber;
+  if (session?.user?.id){
+    notis = await getAllNotis(session.user.id);
+    console.log(notis);
+    unseenNotisNumber = await getUnseenNotis(session.user.id);
+    console.log(unseenNotisNumber)
+  }
   let rol = null;
   console.log(session);
   if (session) {
@@ -48,7 +57,7 @@ export async function HeaderTincho() {
             </>
           ) : (
             <>
-              <BasicMenuCallback role={session?.user?.role} />
+              <BasicMenuCallback role={session?.user?.role} notis={notis} userId={session?.user?.id} unseenNotisNumber={unseenNotisNumber.length}/>
             </>
           )}
         </div>

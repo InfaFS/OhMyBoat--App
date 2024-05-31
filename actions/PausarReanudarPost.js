@@ -14,7 +14,7 @@ export const pausarPublicaciónBarco = async (idPublicacion) => {
                     id: boatPost.id,
                 },
                 data: {
-                    paused: true,
+                    status: "HIDDEN",
                 },
             });
             const boatPostcard = await getCardPostByCompletePostId({completePostId: idPublicacion});
@@ -25,13 +25,13 @@ export const pausarPublicaciónBarco = async (idPublicacion) => {
                         id: boatPostcard.id,
                     },
                     data: {
-                        paused: true,
+                        status: "HIDDEN",
                     },
                 });
             }
             console.log(cardPost)
             if (boatPostUpdated && cardPost) {
-                return {success : "Publicación pausada correctamente"};
+                return {success : "Publicación ocultada correctamente"};
             }
         } catch {
             return null;
@@ -48,7 +48,7 @@ export const pausarPublicaciónVehículo = async (idPublicacion) => {
                     id: idPublicacion,
                 },
                 data: {
-                    paused: true,
+                    status: "HIDDEN",
                 },
             });
             const vehiclePostcard = await getCardPostByCompletePostId({completePostId: idPublicacion});
@@ -59,12 +59,12 @@ export const pausarPublicaciónVehículo = async (idPublicacion) => {
                         id: vehiclePostcard.id,
                     },
                     data: {
-                        paused: true,
+                        status: "HIDDEN",
                     },
                 });
             }
             if (vehiclePost && cardPost) {
-                return {success : "Publicación pausada correctamente"};
+                return {success : "Publicación ocultada correctamente"};
             }
         } catch {
             return null;
@@ -84,7 +84,7 @@ export const reanudarPublicaciónBarco = async (idPublicacion) => {
                     id: boatPost.id,
                 },
                 data: {
-                    paused: false,
+                    status: "ACTIVE",
                 },
             });
             console.log(boatPostUpdated)
@@ -96,7 +96,7 @@ export const reanudarPublicaciónBarco = async (idPublicacion) => {
                         id: boatPostcard.id,
                     },
                     data: {
-                        paused: false,
+                        status: "ACTIVE",
                     },
                 });
             }
@@ -118,7 +118,7 @@ export const reanudarPublicaciónVehículo = async (idPublicacion) => {
                     id: idPublicacion,
                 },
                 data: {
-                    paused: false,
+                    status: "ACTIVE",
                 },
             });
             const vehiclePostcard = await getCardPostByCompletePostId({completePostId: idPublicacion});
@@ -129,7 +129,7 @@ export const reanudarPublicaciónVehículo = async (idPublicacion) => {
                         id: vehiclePostcard.id,
                     },
                     data: {
-                        paused: false,
+                        status: "ACTIVE",
                     },
                 });
             }

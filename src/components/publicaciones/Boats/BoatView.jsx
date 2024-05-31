@@ -54,8 +54,12 @@ export const BoatView = ({boatPost, userSessionId}) => {
         
             <CardHeader>
               <h1 className="font-semibold text-2xl text-center">{boatPost.title}</h1>
-              {boatPost.paused === true && (
-                 <h1 className="font-semibold text-1xl text-center text-slate-500">PAUSADA</h1>
+              {boatPost.status === "HIDDEN" && (
+                 <h1 className="font-semibold text-1xl text-center text-slate-500">Oculta</h1>
+              )}
+
+              {boatPost.status === "PAUSED" && (
+                 <h1 className="font-semibold text-1xl text-center text-slate-500">Pausada</h1>
               )}
             </CardHeader>
             <CardContent>
@@ -110,7 +114,7 @@ export const BoatView = ({boatPost, userSessionId}) => {
             <CardFooter className="flex justify-center items-center h-full">
             {(userSessionId !== boatPost.idPublisher && userSessionId) && (
                 <div>
-                { boatPost.paused === false && (
+                { boatPost.status === "ACTIVE" && (
                   <Link href={`/viewPosts/view-ship/${boatPost.id}/offer`}>
                     <Button className="bg-sky-500">Ofertar</Button>        
                   </Link>
@@ -118,11 +122,11 @@ export const BoatView = ({boatPost, userSessionId}) => {
                 </div>
             )}
 
-            {(userSessionId === boatPost.idPublisher && boatPost.paused === true) && (
+            {(userSessionId === boatPost.idPublisher && boatPost.status === "HIDDEN") && (
               <Button className="bg-slate-600" onClick={handleResume}>Reanudar</Button>       
             )}
-            {(userSessionId === boatPost.idPublisher && boatPost.paused === false) && (
-              <Button className="bg-slate-600" onClick={handlePause}>Pausar</Button>       
+            {(userSessionId === boatPost.idPublisher && boatPost.status === "ACTIVE") && (
+              <Button className="bg-slate-600" onClick={handlePause}>Ocultar</Button>       
             )}
             </CardFooter>
           </Card>

@@ -4,8 +4,11 @@ import ProfileMenu from "./HeaderComponents/ProfileMenu"
 import AddPublicationMenu from "./HeaderComponents/AddPublicationMenu"
 import SpecialActionsMenu from "./HeaderComponents/SpecialActionMenu"
 import ManagerActions from "./HeaderComponents/ManagerActions"
-export default function BasicMenuCallback({role}) {
+import { useEffect } from "react"
+export default function BasicMenuCallback({role,notis,userId,unseenNotisNumber}) {
 console.log(role)
+console.log(notis);
+
     return (
         <div className="flex items-center space-x-2">
             {role === "ADMIN" && (
@@ -14,8 +17,9 @@ console.log(role)
             
             {role === "USER" && (
                 <>
+                <NotisMenu notificacionesArray={notis} userId={userId} unseenNotisNumber={unseenNotisNumber}/>
                 <AddPublicationMenu/>
-                <NotisMenu/>
+
                 </>
             )}
             {role === "MANAGER" && (
@@ -24,7 +28,6 @@ console.log(role)
                 </>
             
             )}
-
             <ProfileMenu/>
         </div>
     );

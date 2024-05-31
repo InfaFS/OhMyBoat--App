@@ -9,7 +9,8 @@ import { TradeDateSchema } from "@/schemas";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { setTradeDate } from "../../../../../actions/tradeActions";
 import { toast } from "sonner";
-export function SetDateComponent({alreadySetted,userId,tradeId}) {
+import { BadgeCheck, Check, CheckCircle } from "lucide-react";
+export function SetDateComponent({alreadySetted,userId,tradeId,trade}) {
     const router = useRouter();
     const form = useForm({
         resolver: zodResolver(TradeDateSchema),
@@ -27,7 +28,12 @@ export function SetDateComponent({alreadySetted,userId,tradeId}) {
             toast.success(res.success);
             router.refresh();
             router.back();
+            router.refresh();
 
+        }
+        if (res.error) {
+            toast.error(res.error);
+            router.refresh();
         }
         console.log(res);
     }
@@ -37,12 +43,15 @@ export function SetDateComponent({alreadySetted,userId,tradeId}) {
         <div className="flex items-center justify-center h-screen bg-gray-100">
             <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
                 <Card className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
-                    <CardHeader>
+
+
+                    { alreadySetted === false && (
+                    <>
+                        <CardHeader>
                         <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Pactar fecha</CardTitle>
                         <span className="block text-center text-slate-400 text-sm mt-2">Selecciona una fecha acordada para realizar el trueque</span>
                     </CardHeader>
-
-                    { alreadySetted === false && (
+                        
                         <CardContent>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -72,14 +81,37 @@ export function SetDateComponent({alreadySetted,userId,tradeId}) {
                             </form>
                         </Form>
                     </CardContent>
+                    </>
                     )}
                     {alreadySetted === true && (
+                        <>
+                        <CardHeader className="flex justify-center items-center">
+                          <CardTitle>
+                            <BadgeCheck className="text-green-500 hover:text-green-700" height={40} width={40} />
+                          </CardTitle>
+                        </CardHeader>
+                      
                         <CardContent>
-                            <div className="flex justify-center">
-                                <span className="text-slate-500">Ya has pactado una fecha para este trueque</span>
-                            </div>
+                          <div className="flex flex-col items-center">
+                            {(trade.idUsuario1 === userId && trade.proposedDay1 !== "EMPTY") && (
+                              <span className="text-slate-500 text-center">
+                                Has pactado la fecha <span className="font-semibold text-slate-700">{trade.proposedDay1}</span>, espera a que{" "}
+                                <span className="font-semibold text-slate-700">{trade.NombreUsuario2} {trade.ApellidoUsuario2}</span>{" "}
+                                confirme la fecha.
+                              </span>
+                            )}
+                      
+                            {(trade.idUsuario2 === userId && trade.proposedDay2 !== "EMPTY") && (
+                              <span className="text-slate-500 text-center">
+                                Has pactado la fecha <span className="font-semibold text-slate-700">{trade.proposedDay2}</span>, espera a que{" "}
+                                <span className="font-semibold text-slate-700">{trade.NombreUsuario1} {trade.ApellidoUsuario1}</span>{" "}
+                                confirme la fecha.
+                              </span>
+                            )}
+                          </div>    
                         </CardContent>
-                    
+                      </>
+                      
                     )}
 
                 </Card>

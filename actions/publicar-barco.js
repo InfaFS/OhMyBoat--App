@@ -49,7 +49,7 @@ export const publicarBarco = async (values) => {
           deuda:deuda,
           idPublisher: session.user.id,
           type: type,
-          paused: false,
+          status: "ACTIVE",
         }
       })
 
@@ -61,7 +61,7 @@ export const publicarBarco = async (values) => {
           title: title,
           modelo:modelo,
           idPublisher: session.user.id,
-          paused: false,
+          status:"ACTIVE",
         }
       
     })

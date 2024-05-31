@@ -30,7 +30,7 @@ const columns = (handleAmpliarPublicacion) => [
         <>
           <div className="flex justify-center">
           <Link href={`/view-profile/${row.original.idUsuario1}`}>
-            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">Ver perfil</Button>     
+            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">{row.original.NombreUsuario1} {row.original.ApellidoUsuario1}</Button>     
             </Link>
         </div>
         </>
@@ -44,7 +44,7 @@ const columns = (handleAmpliarPublicacion) => [
       <>
         <div className="flex justify-center">
         <Link href={`/view-profile/${row.original.idUsuario2}`}>
-            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">Ver perfil</Button>     
+            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">{row.original.NombreUsuario2} {row.original.ApellidoUsuario2}</Button>     
         </Link>
       </div>
       </>
@@ -56,9 +56,22 @@ const columns = (handleAmpliarPublicacion) => [
     cell: ({ row }) => {
       return (
         <>
-          <div className="flex justify-center">
-            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost1)}>Ampliar publicación</Button>
-        </div>
+            <div className="flex flex-col items-center space-y-1">
+        <button
+          className="text-xs hover:text-blue-600 p-0"
+          onClick={() => handleAmpliarPublicacion(row.original.idPost1)}
+        >
+          {row.original.tituloPublicacionOfrecida}
+        </button>
+        <img
+          src={row.original.imgPublicacionOfrecida}
+          width="100"
+          height="100"
+          alt="Imagen de publicacion"
+          className="rounded-md"
+        />
+      </div>
+
         </>
       )
     }
@@ -68,12 +81,25 @@ const columns = (handleAmpliarPublicacion) => [
   cell: ({ row }) => {
     return (
       <>
-        <div className="flex justify-center">
-        <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost2)}>Ampliar publicación</Button>
+                  <div className="flex flex-col items-center space-y-1">
+        <button
+          className="text-xs hover:text-blue-600 p-0"
+          onClick={() => handleAmpliarPublicacion(row.original.idPost2)}
+        >
+          {row.original.tituloPublicacionPedida}
+        </button>
+        <img
+          src={row.original.imgPublicacionPedida}
+          width="100"
+          height="100"
+          alt="Imagen de publicacion"
+          className="rounded-md"
+        />
       </div>
       </>
     )
   }
+
 },
   { accessorKey: "date",
   header: "Fecha",
@@ -82,9 +108,8 @@ const columns = (handleAmpliarPublicacion) => [
       <div className="flex justify-center">
       {row.original.status === "FECHA_PENDIENTE" ? (
         <Link href={`/profile/my-trades/set-date/${row.original.id}`}>
-            <button className="hover:text-sky-500 text-sm">Pactar fecha</button>        
+            <Button className="hover:text-sky-500 text-xs" variant="link">Pactar fecha</Button>        
         </Link>
-
       ) : row.original.status !== "FECHA_PENDIENTE" ? (
         <div className="text-sky-700">{row.original.proposedDay1}</div>
       ) : null

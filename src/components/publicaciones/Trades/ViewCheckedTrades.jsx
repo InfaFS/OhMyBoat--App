@@ -53,9 +53,21 @@ const columns = (handleAmpliarPublicacion) => [
     cell: ({ row }) => {
       return (
         <>
-          <div className="flex justify-center">
-            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost1)}>Ampliar publicación</Button>
-        </div>
+        <div className="flex flex-col items-center space-y-1">
+        <button
+          className="text-xs hover:text-blue-600 p-0"
+          onClick={() => handleAmpliarPublicacion(row.original.idPost1)}
+        >
+          {row.original.tituloPublicacionOfrecida}
+        </button>
+        <img
+          src={row.original.imgPublicacionOfrecida}
+          width="100"
+          height="100"
+          alt="Imagen de publicacion"
+          className="rounded-md"
+        />
+      </div>
         </>
       )
     }
@@ -65,10 +77,22 @@ const columns = (handleAmpliarPublicacion) => [
   cell: ({ row }) => {
     return (
       <>
-        <div className="flex justify-center">
-        <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link" onClick={() => handleAmpliarPublicacion(row.original.idPost2)}>Ampliar publicación</Button>
-      </div>
-      </>
+      <div className="flex flex-col items-center space-y-1">
+      <button
+        className="text-xs hover:text-blue-600 p-0"
+        onClick={() => handleAmpliarPublicacion(row.original.idPost2)}
+      >
+        {row.original.tituloPublicacionPedida}
+      </button>
+      <img
+        src={row.original.imgPublicacionPedida}
+        width="100"
+        height="100"
+        alt="Imagen de publicacion"
+        className="rounded-md"
+      />
+    </div>
+    </>
     )
   }
 },

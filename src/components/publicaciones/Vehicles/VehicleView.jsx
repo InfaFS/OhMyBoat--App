@@ -54,8 +54,12 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
               <h1 className="font-semibold text-2xl text-center">
                 {vehiclePost.title}
               </h1>
-              {vehiclePost.paused === true && (
-                 <h1 className="font-semibold text-1xl text-center text-slate-500">PAUSADA</h1>
+              {vehiclePost.status === "HIDDEN" && (
+                 <h1 className="font-semibold text-1xl text-center text-slate-500">Oculta</h1>
+              )}
+
+              {vehiclePost.status === "PAUSED" && (
+                 <h1 className="font-semibold text-1xl text-center text-slate-500">Pausada</h1>
               )}
             </CardHeader>
             <CardContent>
@@ -111,18 +115,18 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
             <CardFooter className="flex justify-center items-center h-full">
             {(userSessionId !== vehiclePost.idPublisher && userSessionId) && (
                 <div>
-                  { (vehiclePost.paused === false) && (
+                  { (vehiclePost.status === "ACTIVE") && (
                       <Link href={`/viewPosts/view-vehicle/${vehiclePost.id}/offer`}>
                       <Button className="bg-sky-500">Ofertar</Button>        
                       </Link>
                   )}
                 </div>
             )}
-            {(userSessionId === vehiclePost.idPublisher && vehiclePost.paused === true) && (
+            {(userSessionId === vehiclePost.idPublisher && vehiclePost.status === "HIDDEN") && (
               <Button className="bg-slate-600" onClick={handleResume}>Reanudar</Button>       
             )}
-            {(userSessionId === vehiclePost.idPublisher && vehiclePost.paused === false) && (
-              <Button className="bg-slate-600" onClick={handlePause}> Pausar</Button>       
+            {(userSessionId === vehiclePost.idPublisher && vehiclePost.status === "ACTIVE") && (
+              <Button className="bg-slate-600" onClick={handlePause}>Ocultar</Button>       
             )}
             </CardFooter>
           </Card>
