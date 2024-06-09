@@ -39,11 +39,13 @@ const columns = (handleConfirmation) => [
       header: 'Post ofertado',
       cell: ({ row }) => (
         <div className="flex flex-col items-center">
-          <h1 className="font-semibold text-sm mb-2">{row.original.tituloPublicacionOfrecida}</h1>
           <Link href={row.original.boat 
             ? `/viewPosts/view-ship/${row.original.idPublicacionOfrecida}`
             : `/viewPosts/view-vehicle/${row.original.idPublicacionOfrecida}`
           }>
+          <h1 className="font-semibold text-sm mb-2 hover:text-sky-600">{row.original.tituloPublicacionOfrecida}</h1>
+          </Link>
+        
             <img
               src={row.original.imgPublicacionOfrecida}
               width="100"
@@ -51,7 +53,6 @@ const columns = (handleConfirmation) => [
               alt="Image"
               className="rounded-md"
             />
-          </Link>
         </div>
       )
     },
@@ -60,11 +61,12 @@ const columns = (handleConfirmation) => [
       header: 'Post pedido',
       cell: ({ row }) => (
         <div className="flex flex-col items-center">
-          <h1 className="font-semibold text-sm mb-2">{row.original.tituloPublicacionPedida}</h1>
           <Link href={row.original.boat 
             ? `/viewPosts/view-vehicle/${row.original.idPublicacionPedida}`
             : `/viewPosts/view-ship/${row.original.idPublicacionPedida}`
           }>
+          <h1 className="font-semibold text-sm mb-2 hover:text-sky-600">{row.original.tituloPublicacionPedida}</h1>
+          </Link>
             <img
               src={row.original.imgPublicacionPedida}
               width="100"
@@ -72,7 +74,6 @@ const columns = (handleConfirmation) => [
               alt="Image"
               className="rounded-md"
             />
-          </Link>
         </div>
       )
     },
@@ -80,7 +81,10 @@ const columns = (handleConfirmation) => [
   header: "Ofertado",
   cell: ({ row }) => (
     <div className="text-center">
+      <Link href={`/view-profile/${row.original.idOfertado}`} className="hover:text-sky-600 font-semibold">
       {row.original.firstNameOfertado} {row.original.lastNameOfertado}
+      </Link>
+
     </div>
   )
   },
@@ -243,6 +247,7 @@ export function MyOffersTable({ data }) {
           </Card>
         ) : (
           <Card className="w-full max-w-6xl bg-white shadow-lg rounded-lg p-4">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Ofertas</CardTitle>
             </CardHeader>

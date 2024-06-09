@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { ContactPopover } from "./ContactPopover";
 import { toast } from "sonner";
 import Link from "next/link";
+import { MoveLeft } from "lucide-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -30,7 +31,7 @@ const columns = (handleAmpliarPublicacion) => [
       return (
         <>
           <div className="flex justify-center">
-            <ContactPopover email={row.original.EmailUsuario1} name={row.original.NombreUsuario1} lastname={row.original.ApellidoUsuario1} phone={row.original.PhoneUsuario1}/>
+            <ContactPopover email={row.original.EmailUsuario1} name={row.original.NombreUsuario1} lastname={row.original.ApellidoUsuario1} phone={row.original.PhoneUsuario1} userId={row.original.idUsuario1}/>
         </div>
         </>
       )
@@ -42,7 +43,7 @@ const columns = (handleAmpliarPublicacion) => [
     return (
       <>
         <div className="flex justify-center">
-        <ContactPopover email={row.original.EmailUsuario2} name={row.original.NombreUsuario2} lastname={row.original.ApellidoUsuario2} phone={row.original.PhoneUsuario2}/>
+        <ContactPopover email={row.original.EmailUsuario2} name={row.original.NombreUsuario2} lastname={row.original.ApellidoUsuario2} phone={row.original.PhoneUsuario2} userId={row.original.idUsuario2}/>
       </div>
       </>
     )
@@ -58,7 +59,7 @@ const columns = (handleAmpliarPublicacion) => [
           className="text-xs hover:text-blue-600 p-0"
           onClick={() => handleAmpliarPublicacion(row.original.idPost1)}
         >
-          {row.original.tituloPublicacionOfrecida}
+          <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionOfrecida}</h1>
         </button>
         <img
           src={row.original.imgPublicacionOfrecida}
@@ -82,7 +83,7 @@ const columns = (handleAmpliarPublicacion) => [
         className="text-xs hover:text-blue-600 p-0"
         onClick={() => handleAmpliarPublicacion(row.original.idPost2)}
       >
-        {row.original.tituloPublicacionPedida}
+    <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionPedida}</h1>
       </button>
       <img
         src={row.original.imgPublicacionPedida}
@@ -127,6 +128,9 @@ const columns = (handleAmpliarPublicacion) => [
 
 export function CheckedTradesTable({data}) {
   const router = useRouter();
+  const handleBack = () => {
+    router.back();
+  }
   const handleAmpliarPublicacion = async (completePostId) =>  {
     console.log(completePostId)
     const BoatPost = await getBoatPostById(completePostId);
@@ -152,6 +156,7 @@ export function CheckedTradesTable({data}) {
       <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
         {(data && data.length !== 0) ? (
           <Card className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques Pendientes</CardTitle>
             </CardHeader>
@@ -224,6 +229,7 @@ export function CheckedTradesTable({data}) {
           </Card>
         ) : (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
             </CardHeader>

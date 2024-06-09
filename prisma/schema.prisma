@@ -108,6 +108,7 @@ model Review {
 model offer {
   id                        String  @id @default(cuid())
   idPublicacionPedida       String
+  idOfertado                String
   firstNameOfertado         String
   lastNameOfertado          String
   idOfertante               String

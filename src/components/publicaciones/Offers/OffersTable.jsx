@@ -1,5 +1,6 @@
 "use client"
 import { RechazarOferta,ConfirmarOferta } from "../../../../actions/Offer";
+import { ContactPopover } from "../Trades/ContactPopover";
 import { getUserById } from "../../../../data/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -30,33 +31,9 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
     accessorKey: "idOfertante",
     header: "Ofertante",
     cell: ({ row }) => (
-
-      <div className="text-center">
-        {row.original.firstNameOfertante} {row.original.lastNameOfertante}
-      </div>
-
-    )
-  },
-  {
-    accessorKey: "emailOfertante",
-    header: "Email",
-    cell: ({ row }) => (
-
-      <div className="text-center">
-        {row.original.emailOfertante}
-      </div>
-
-    )
-  },
-  {
-    accessorKey: "cellPhoneOfertante",
-    header: "Teléfono",
-    cell: ({ row }) => (
-
-      <div className="text-center">
-        {row.original.cellphoneOfertante }
-      </div>
-
+      <div className="flex justify-center">
+  <ContactPopover email={row.original.emailOfertante} name= {row.original.firstNameOfertante} lastname={row.original.lastNameOfertante} phone={row.original.cellphoneOfertante } userId={row.original.idOfertante}/>
+      </div> 
     )
   },
   {
@@ -74,10 +51,15 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
 
       return (
         <>
+          
           <div className="flex flex-col items-center">
-        <h1 className="font-semibold text-sm mb-2">{row.original.tituloPublicacionOfrecida}</h1>
-        {row.original.boat ? (
-          <Link href={`/viewPosts/view-ship/${row.original.idPublicacionOfrecida}`}>
+          <Link href={row.original.boat 
+            ? `/viewPosts/view-ship/${row.original.idPublicacionOfrecida}`
+            : `/viewPosts/view-vehicle/${row.original.idPublicacionOfrecida}`
+          }>
+          <h1 className="font-semibold text-sm mb-2 hover:text-sky-600">{row.original.tituloPublicacionOfrecida}</h1>
+          </Link>
+        
             <img
               src={row.original.imgPublicacionOfrecida}
               width="100"
@@ -85,18 +67,7 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
               alt="Image"
               className="rounded-md"
             />
-          </Link>
-        ) : (
-          <Link href={`/viewPosts/view-vehicle/${row.original.idPublicacionOfrecida}`}>
-            <img
-              src={row.original.imgPublicacionOfrecida}
-              width="100"
-              height="100"
-              alt="Image"
-              className="rounded-md"
-            />
-          </Link>
-        )}
+
       </div>
     
         </>
@@ -172,17 +143,7 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
 
 ];
 
-const datita = [
-  { id: "un id", descripcion:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum unde dolor, quia necessitatibus laudantium fugiat praesentium cumque! Quos voluptate dolorem itaque animi magni ad dignissimos. Amet, laborum! Hic, beatae pariatur.", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
-  { id: "un id", descripcion:"FACHERAZO", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
-  { id: "un id", descripcion:"FACHERAZO", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
-  { id: "un id", descripcion:"FACHERAZO", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
-  { id: "un id", descripcion:"FACHERAZO", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
-  { id: "un id", descripcion:"FACHERAZO", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
-  { id: "un id", descripcion:"FACHERAZO", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
-  { id: "un id", descripcion:"FACHERAZO", idOfertante:"un id de ofertante",idPublicacionOfrecida:"clwlmnzs5000bz1b1rv9lebcf", boat:false},
 
-];
 
 export function OffersTable({ data }) {
   const router = useRouter()
@@ -324,6 +285,7 @@ export function OffersTable({ data }) {
           </Card>
         ) : (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Ofertas</CardTitle>
             </CardHeader>

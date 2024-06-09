@@ -13,53 +13,27 @@ import { getUnseenNotis, seeNotis } from '../../../../actions/notifications';
 {/* <Link href="/profile/notifications">
 <MenuItem onClick={handleClose} className='text-sm'>Notificaciones</MenuItem>
 </Link> */}
-const mensajes = [
+
+const fakeNotis = [
   {
     id: 1,
-    mensaje: 'Tu vehículo ha sido robado :(',
+    title: "Notificación 1",
+    description: "Descripción de la notificación 1",
   },
   {
     id: 2,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
+    title: "Notificación 2",
+    description: "Descripción de la notificación 2",
   },
   {
     id: 3,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
+    title: "Notificación 3",
+    description: "Descripción de la notificación 3",
   },
-  {
-    id: 4,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
-  {
-    id: 5,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
-  {
-    id: 6,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
-  {
-    id: 7,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
-  {
-    id: 8,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
-  {
-    id: 9,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
-  {
-    id: 10,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
-  {
-    id: 11,
-    mensaje: 'Joseph joestar te ha enviado una solicitud de amistad',
-  },
+];
 
-]
+
+
 export default function NotisMenu({notificacionesArray,userId,unseenNotisNumber}) {
   console.log(unseenNotisNumber);
   console.log(userId);
@@ -108,16 +82,20 @@ export default function NotisMenu({notificacionesArray,userId,unseenNotisNumber}
         },
       }}
     >
-      <ScrollArea className="h-64 w-full rounded-md border shadow-lg">
+      <ScrollArea className="w-full rounded-md border shadow-lg">
         <div className="p-4">
+          <Link href="/profile/notifications">
+          <h1 className='text-sm font-semibold hover:text-slate-500 cursor-pointer' >Ver historial de notificaciones</h1>
+          </Link>
+          <Separator className="my-2"/>
           {notificacionesArray.length === 0 ? (
-              <h4 className="mb-4 text-sm font-medium leading-none text-gray-700">No hay notificaciones por el momento</h4>
+              <h4 className="text-sm font-semibold leading-none text-gray-700 hover:underline">No hay notificaciones nuevas por el momento</h4>
           ) : (
-            <h4 className="mb-4 text-sm font-medium leading-none text-gray-700">Notificaciones</h4>
+            <h4 className="text-sm font-semibold leading-none text-blue-500">Nuevas notificaciones!</h4>
           )}
 
           <Separator className="my-2" />
-          {notificacionesArray.map((notif) => (
+          {notificacionesArray.slice().reverse().map((notif) => (
             <div key={notif.id} className="my-2">
               <div>
                 <span className="text-sm font-semibold text-gray-800">{notif.title}</span>

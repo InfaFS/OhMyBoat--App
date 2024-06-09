@@ -34,6 +34,7 @@ export const OfertarVehículo = async ({idOfertante,descripcion,idPublicacionOfr
         const oferta = await db.offer.create({
             data: {
                 idOfertante,
+                idOfertado: boatPost.idPublisher,
                 descripcion,
                 idPublicacionOfrecida,
                 idPublicacionPedida,
@@ -105,6 +106,7 @@ export const OfertarEmbarcacion = async ({idOfertante,descripcion,idPublicacionO
         const oferta = await db.offer.create({
             data: {
                 idOfertante,
+                idOfertado: vehiclePost.idPublisher,
                 descripcion,
                 idPublicacionOfrecida,
                 idPublicacionPedida,

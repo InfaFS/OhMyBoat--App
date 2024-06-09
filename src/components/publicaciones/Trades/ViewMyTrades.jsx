@@ -1,7 +1,7 @@
 "use client"
 import { getBoatPostById } from "../../../../data/posts";
 import { useRouter } from "next/navigation";
-
+import { MoveLeft } from "lucide-react";
 import Link from "next/link";
 import {
   flexRender,
@@ -30,7 +30,7 @@ const columns = (handleAmpliarPublicacion) => [
         <>
           <div className="flex justify-center">
           <Link href={`/view-profile/${row.original.idUsuario1}`}>
-            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">{row.original.NombreUsuario1} {row.original.ApellidoUsuario1}</Button>     
+            <Button className="text-sm px-2 py-1 mx-1 hover:text-sky-600 font-semibold" variant='link'>{row.original.NombreUsuario1} {row.original.ApellidoUsuario1}</Button>     
             </Link>
         </div>
         </>
@@ -42,11 +42,11 @@ const columns = (handleAmpliarPublicacion) => [
   cell: ({ row }) => {
     return (
       <>
-        <div className="flex justify-center">
-        <Link href={`/view-profile/${row.original.idUsuario2}`}>
-            <Button className="text-xs px-2 py-1 mx-1 hover:text-blue-600" variant="link">{row.original.NombreUsuario2} {row.original.ApellidoUsuario2}</Button>     
-        </Link>
-      </div>
+                <div className="flex justify-center">
+          <Link href={`/view-profile/${row.original.idUsuario2}`}>
+            <Button className="text-sm px-2 py-1 mx-1 hover:text-sky-600 font-semibold" variant='link'>{row.original.NombreUsuario2} {row.original.ApellidoUsuario2}</Button>     
+            </Link>
+        </div>
       </>
     )
   }
@@ -61,7 +61,7 @@ const columns = (handleAmpliarPublicacion) => [
           className="text-xs hover:text-blue-600 p-0"
           onClick={() => handleAmpliarPublicacion(row.original.idPost1)}
         >
-          {row.original.tituloPublicacionOfrecida}
+      <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionPedida}</h1>
         </button>
         <img
           src={row.original.imgPublicacionOfrecida}
@@ -81,12 +81,12 @@ const columns = (handleAmpliarPublicacion) => [
   cell: ({ row }) => {
     return (
       <>
-                  <div className="flex flex-col items-center space-y-1">
+        <div className="flex flex-col items-center space-y-1">
         <button
           className="text-xs hover:text-blue-600 p-0"
           onClick={() => handleAmpliarPublicacion(row.original.idPost2)}
         >
-          {row.original.tituloPublicacionPedida}
+        <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionPedida}</h1>
         </button>
         <img
           src={row.original.imgPublicacionPedida}
@@ -97,6 +97,7 @@ const columns = (handleAmpliarPublicacion) => [
         />
       </div>
       </>
+
     )
   }
 
@@ -108,7 +109,7 @@ const columns = (handleAmpliarPublicacion) => [
       <div className="flex justify-center">
       {row.original.status === "FECHA_PENDIENTE" ? (
         <Link href={`/profile/my-trades/set-date/${row.original.id}`}>
-            <Button className="hover:text-sky-500 text-xs" variant="link">Pactar fecha</Button>        
+            <Button className="hover:text-sky-600 text-sm" variant="link">Pactar fecha</Button>        
         </Link>
       ) : row.original.status !== "FECHA_PENDIENTE" ? (
         <div className="text-sky-700">{row.original.proposedDay1}</div>
@@ -139,23 +140,13 @@ const columns = (handleAmpliarPublicacion) => [
   },
 ];
 
-// const datita = [
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-// ];
 
 export function MyTradesTable({ data}) {
+
   const router = useRouter();
+  const handleBack = () => {
+    router.back()
+  }
   const handleAmpliarPublicacion = async (completePostId) =>  {
     console.log(completePostId)
     const BoatPost = await getBoatPostById(completePostId);
@@ -178,10 +169,13 @@ export function MyTradesTable({ data}) {
 
   return (
     <div className="flex items-center justify-center h-screen">
+      
       <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
         {(data && data.length !== 0) ? (
-          <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+          <Card className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
+              
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques</CardTitle>
             </CardHeader>
             <CardContent>
@@ -253,6 +247,7 @@ export function MyTradesTable({ data}) {
           </Card>
         ) : (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques</CardTitle>
             </CardHeader>

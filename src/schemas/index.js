@@ -164,16 +164,16 @@ export const RegisterManagerSchema = z.object({
 
 export const TradeDateSchema = z.object({
     selectDate: z.string().refine((value) => {
-        // Convertir la cadena de fecha en un objeto Date
-        const selectedDate = new Date(value);
-        // Obtener la fecha actual y ajustarla para que no incluya la parte del tiempo
-        const NowDate = new Date();
-        NowDate.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00
 
-        // Validar que la fecha seleccionada sea posterior a la fecha actual
-        return selectedDate > NowDate;
+        // Obtener la fecha actual y ajustarla para que no incluya la parte del tiempo
+        console.log(value)
+        const NowDate = new Date().toISOString().split('T')[0];
+        console.log(NowDate)
+        
+        // Validar que la fecha seleccionada sea igual o posterior a la fecha actual
+        return value >= NowDate;
       }, {
         // Mensaje de error si la validación falla
-        message: "La fecha seleccionada debe ser posterior a la fecha actual.",
+        message: "La fecha seleccionada debe ser igual o posterior a la fecha actual.",
     }),
 });

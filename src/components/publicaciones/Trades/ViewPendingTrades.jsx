@@ -1,8 +1,9 @@
 "use client"
+import { useRouter } from "next/navigation";
 import { rejectTrade } from "../../../../actions/tradeActions";
+import { MoveLeft } from "lucide-react";
 import { confirmTrade } from "../../../../actions/tradeActions";
 import { getBoatPostById } from "../../../../data/posts";
-import { useRouter } from "next/navigation";
 import { Check,X } from "lucide-react";
 import { ContactPopover } from "./ContactPopover";
 import { toast } from "sonner";
@@ -33,7 +34,7 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
       return (
         <>
           <div className="flex justify-center">
-            <ContactPopover email={row.original.EmailUsuario1} name={row.original.NombreUsuario1} lastname={row.original.ApellidoUsuario1} phone={row.original.PhoneUsuario1}/>
+            <ContactPopover email={row.original.EmailUsuario1} name={row.original.NombreUsuario1} lastname={row.original.ApellidoUsuario1} phone={row.original.PhoneUsuario1} userId={row.original.idUsuario1 }/>
         </div>
         </>
       )
@@ -45,7 +46,7 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
     return (
       <>
         <div className="flex justify-center">
-        <ContactPopover email={row.original.EmailUsuario2} name={row.original.NombreUsuario2} lastname={row.original.ApellidoUsuario2} phone={row.original.PhoneUsuario2}/>
+        <ContactPopover email={row.original.EmailUsuario2} name={row.original.NombreUsuario2} lastname={row.original.ApellidoUsuario2} phone={row.original.PhoneUsuario2} userId={row.original.idUsuario2 }/>
       </div>
       </>
     )
@@ -61,7 +62,7 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
           className="text-xs hover:text-blue-600 p-0"
           onClick={() => handleAmpliarPublicacion(row.original.idPost1)}
         >
-          {row.original.tituloPublicacionOfrecida}
+        <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionOfrecida}</h1>
         </button>
         <img
           src={row.original.imgPublicacionOfrecida}
@@ -85,7 +86,7 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
           className="text-xs hover:text-blue-600 p-0"
           onClick={() => handleAmpliarPublicacion(row.original.idPost2)}
         >
-          {row.original.tituloPublicacionPedida}
+        <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionPedida}</h1>
         </button>
         <img
           src={row.original.imgPublicacionPedida}
@@ -112,10 +113,15 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
   { accessorKey: "confirmation",
   header: "Confirmación",
   cell: ({ row }) => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    const proposedDate = row.original.proposedDay1;
+    console.log(currentDate)
+    console.log(proposedDate)
+    const idTrade = row.original.id;
     return (
         <div className="flex justify-center">
-            <Check className="hover:text-green-500 cursor-pointer" onClick={() => {handleConfirmation(row.original.id)}}size={20} width={20}/>
-            <X className="ml-2 hover:text-red-500 cursor-pointer" size={20} width={20} onClick={() => {handleRejectConfirmation(row.original.id)}}/>
+            <Check className="hover:text-green-500 cursor-pointer" onClick={() => {handleConfirmation({idTrade,currentDate,proposedDate})}}size={20} width={20}/>
+            <X className="ml-2 hover:text-red-500 cursor-pointer" size={20} width={20} onClick={() => {handleRejectConfirmation({idTrade,currentDate,proposedDate})}}/>
         </div>
     )
   }
@@ -125,6 +131,10 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
 
 export function PendingTradesTable({data}) {
   const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  }
   const handleAmpliarPublicacion = async (completePostId) =>  {
     console.log(completePostId)
     const BoatPost = await getBoatPostById(completePostId);
@@ -156,20 +166,38 @@ export function PendingTradesTable({data}) {
     }
   }
 
-  const handleConfirmation = (idTrade) => {
+  const handleConfirmation = ({idTrade, currentDate, proposedDate}) => {
     console.log(idTrade)
-    toast.info("Estás seguro de que quieres confirmar el trueque?", {
-      action: <>
-      <div>
-        <button onClick={() => {handleConfirm(idTrade);toast.dismiss()}} className='hover:text-green-500  text-blue-500'>Confirmar</button>
-        <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-blue-500'>Cancelar</button>
-        </div>
-      </> ,
-  })
+    console.log(currentDate)
+    console.log(proposedDate)
+    if (currentDate === proposedDate){
+      toast.info("Estás seguro de que quieres confirmar el trueque?", {
+        action: <>
+        <div>
+          <button onClick={() => {handleConfirm(idTrade);toast.dismiss()}} className='hover:text-green-500  text-blue-500'>Confirmar</button>
+          <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-blue-500'>Cancelar</button>
+          </div>
+        </> ,
+    })
+    } else {
+      toast.info("La fecha del trueque no coincide con el dia actual, quieres aceptar?", {
+        action: <>
+        <div>
+          <button onClick={() => {handleConfirm(idTrade);toast.dismiss()}} className='hover:text-green-500  text-blue-500'>Confirmar</button>
+          <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-blue-500'>Cancelar</button>
+          </div>
+        </> ,
+    })
+    }
+
   }
 
-  const handleRejectConfirmation = (idTrade) => {
+  const handleRejectConfirmation = ({idTrade, currentDate, proposedDate}) => {
     console.log(idTrade)
+    console.log(currentDate)
+    console.log(proposedDate)
+    if (currentDate === proposedDate){
+
     toast.error("Estás seguro de que quieres confirmar que no se realizó el trueque?", {
       action: <>
       <div>
@@ -178,6 +206,16 @@ export function PendingTradesTable({data}) {
         </div>
       </> ,
   })
+  } else {
+    toast.error("La fecha del trueque no coincide con el dia actual, quieres rechazar?", {
+      action: <>
+      <div>
+        <button onClick={() => {handleReject(idTrade);toast.dismiss()}} className='hover:text-red-800  text-red-500'>Confirmar</button>
+        <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-red-500'>Cancelar</button>
+        </div>
+      </> ,
+  })
+  }
 
   }
   const table = useReactTable({
@@ -193,6 +231,7 @@ export function PendingTradesTable({data}) {
       <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
         {(data && data.length !== 0) ? (
           <Card className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques Pendientes</CardTitle>
             </CardHeader>
@@ -265,6 +304,7 @@ export function PendingTradesTable({data}) {
           </Card>
         ) : (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
             </CardHeader>

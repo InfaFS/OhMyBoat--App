@@ -3,6 +3,19 @@ import { db } from "@/lib/db"
 import { getBoatPostById } from "../data/posts";
 import { getCardPostByCompletePostId } from "../data/cardPosts";
 
+export const eraseAllOffers = async (postId) => {
+    try {
+        const res = await db.offer.deleteMany({
+            where: {
+                idPublicacionPedida: postId,
+            }
+        });
+        return res;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
 
 const ocultarEmbarcacion = async ({completePostId}) => {
     try {
@@ -192,8 +205,7 @@ export const setTradeDate = async ({userId,tradeId,proposedDay}) => {
                             idReceptor: actualTrade.idUsuario2,
                             idEmisor: "???",
                             title: "Trueque pendiente",
-                            description: `El usuario ${actualTrade.NombreUsuario1} ${actualTrade.ApellidoUsuario1} confirmó la fecha ${proposedDay}, el trueque
-                            ahora se encuentra en estado pendiente de confirmación!`,
+                            description: `El usuario ${actualTrade.NombreUsuario1} ${actualTrade.ApellidoUsuario1} confirmó la fecha ${proposedDay} para el trueque entre ${actualTrade.tituloPublicacionOfrecida} y ${actualTrade.tituloPublicacionPedida} ahora se encuentra en estado pendiente de confirmación!`,
                             seen: false,
                             type: "TRADE",
                         }
@@ -207,8 +219,7 @@ export const setTradeDate = async ({userId,tradeId,proposedDay}) => {
                             idReceptor: actualTrade.idUsuario1,
                             idEmisor: "???",
                             title: "Trueque pendiente",
-                            description: `El usuario ${actualTrade.NombreUsuario2} ${actualTrade.ApellidoUsuario2} confirmó la fecha ${proposedDay}, el trueque
-                            ahora se encuentra en estado pendiente de confirmación!`,
+                            description: `El usuario ${actualTrade.NombreUsuario2} ${actualTrade.ApellidoUsuario2} confirmó la fecha ${proposedDay} para el trueque entre ${actualTrade.tituloPublicacionOfrecida} y ${actualTrade.tituloPublicacionPedida} ahora se encuentra en estado pendiente de confirmación!`,
                             seen: false,
                             type: "TRADE",
                         }
@@ -473,6 +484,12 @@ export const confirmTrade = async ({tradeId}) => {
                 }
             });
             console.log(notifUser2);
+
+
+            const res1 = await eraseAllOffers(res.idPost1);
+            const res2 = await eraseAllOffers(res.idPost2); 
+            console.log(res1);
+            console.log(res2);
             return {success : "El trueque se confirmó correctamente"}
         }
 
@@ -567,3 +584,4 @@ export const getAllCheckedTrades = async () => {
     }
 
 }
+

@@ -1,8 +1,14 @@
 import { CreateComponent } from "@/components/WorkingComponent";
-function notificationsPage() {
+import { NotisDisplay } from "@/components/profile/notis/NotisDisplay";
+import { getAllNotis } from "../../../../../actions/notifications";
+import { auth } from "../../../../../auth";
+async function notificationsPage() {
+    const session = await auth();
+    const notis = await getAllNotis(session.user?.id);
+    console.log(notis.length);
     return (
-        <div>
-            <CreateComponent titulo="Estamos trabajando para que puedas ver tus notificaciones 📱" backLink={"/profile"} />
+        <div className="bg-white">
+            <NotisDisplay notificacionesArray={notis}/>
         </div>
     )
 }

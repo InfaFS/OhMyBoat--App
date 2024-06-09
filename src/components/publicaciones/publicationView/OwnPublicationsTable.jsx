@@ -1,4 +1,5 @@
 "use client"
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   flexRender,
@@ -6,7 +7,7 @@ import {
   useReactTable,
   getPaginationRowModel,
 } from "@tanstack/react-table"
-
+import { MoveLeft } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -112,22 +113,12 @@ const columns = [
 
 ];
 
-// const datita = [
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-//   { id: "un id", title: "FERRARI FIUM", img: "/ferrari.jpg", modelo: "Modelo 1" },
-// ];
 
 export function OwnPublicationsTable({ data }) {
+  const router = useRouter();
+  const handleBack = () => {
+    router.back()
+  }
   const table = useReactTable({
     data: data,
     columns: columns,
@@ -141,6 +132,7 @@ export function OwnPublicationsTable({ data }) {
       <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
         {(data && data.length !== 0) ? (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
             </CardHeader>
@@ -213,6 +205,7 @@ export function OwnPublicationsTable({ data }) {
           </Card>
         ) : (
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
             </CardHeader>
