@@ -158,7 +158,7 @@ export function CheckedTradesTable({data}) {
           <Card className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-2">
             <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
-              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques Pendientes</CardTitle>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques revisados</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="rounded-md border">
@@ -231,10 +231,10 @@ export function CheckedTradesTable({data}) {
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
             <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
-              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques revisados</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay trueques revisados por el momento
+              No hay trueques revisados 🤝
             </CardContent>
           </Card>
         )}

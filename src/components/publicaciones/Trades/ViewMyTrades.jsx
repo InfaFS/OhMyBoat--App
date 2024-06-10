@@ -3,6 +3,7 @@ import { getBoatPostById } from "../../../../data/posts";
 import { useRouter } from "next/navigation";
 import { MoveLeft } from "lucide-react";
 import Link from "next/link";
+import { ContactPopover } from "./ContactPopover";
 import {
   flexRender,
   getCoreRowModel,
@@ -22,35 +23,24 @@ import {
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const columns = (handleAmpliarPublicacion) => [
+const columns = (handleAmpliarPublicacion,user) => [
     { accessorKey: "publication1",
-    header: "Ofertante",
+    header: "Usuario" ,
     cell: ({ row }) => {
       return (
         <>
           <div className="flex justify-center">
-          <Link href={`/view-profile/${row.original.idUsuario1}`}>
-            <Button className="text-sm px-2 py-1 mx-1 hover:text-sky-600 font-semibold" variant='link'>{row.original.NombreUsuario1} {row.original.ApellidoUsuario1}</Button>     
-            </Link>
+            { row.original.idUsuario1 === user && (
+              <ContactPopover email={row.original.EmailUsuario2} name= {row.original.NombreUsuario2} lastname={row.original.ApellidoUsuario2} phone={row.original.PhoneUsuario2} userId={row.original.idUsuario2}/>
+            )}
+            { row.original.idUsuario2 === user && (
+              <ContactPopover email={row.original.EmailUsuario1} name= {row.original.NombreUsuario1} lastname={row.original.ApellidoUsuario1} phone={row.original.PhoneUsuario1} userId={row.original.idUsuario1}/>     
+            )}
         </div>
         </>
       )
     }
   },
-  { accessorKey: "user2",
-  header: "Ofertado",
-  cell: ({ row }) => {
-    return (
-      <>
-                <div className="flex justify-center">
-          <Link href={`/view-profile/${row.original.idUsuario2}`}>
-            <Button className="text-sm px-2 py-1 mx-1 hover:text-sky-600 font-semibold" variant='link'>{row.original.NombreUsuario2} {row.original.ApellidoUsuario2}</Button>     
-            </Link>
-        </div>
-      </>
-    )
-  }
-},
   { accessorKey: "publication1",
     header: "Post ofertado",
     cell: ({ row }) => {
@@ -61,7 +51,7 @@ const columns = (handleAmpliarPublicacion) => [
           className="text-xs hover:text-blue-600 p-0"
           onClick={() => handleAmpliarPublicacion(row.original.idPost1)}
         >
-      <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionPedida}</h1>
+      <h1 className="font-semibold text-xs hover:text-sky-600">{row.original.tituloPublicacionOfrecida}</h1>
         </button>
         <img
           src={row.original.imgPublicacionOfrecida}
@@ -141,7 +131,8 @@ const columns = (handleAmpliarPublicacion) => [
 ];
 
 
-export function MyTradesTable({ data}) {
+export function MyTradesTable({ data,user}) {
+  console.log(user)
 
   const router = useRouter();
   const handleBack = () => {
@@ -161,7 +152,7 @@ export function MyTradesTable({ data}) {
 
   const table = useReactTable({
     data: data,
-    columns: columns(handleAmpliarPublicacion),
+    columns: columns(handleAmpliarPublicacion,user),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 5 } } // Set page size to 5
@@ -252,7 +243,7 @@ export function MyTradesTable({ data}) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay trueques en los que estés participando en este momento 🤝
+              No hay trueques realizados 🤝
             </CardContent>
           </Card>
         )}

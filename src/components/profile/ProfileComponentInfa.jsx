@@ -81,11 +81,11 @@
                 </Link>
 
                 <Link href="/profile/own-posts">
-                <Button className="hover:text-blue-700" variant="ghost">Mis publicaciones</Button>
+                <Button className="hover:text-blue-700" variant="ghost">Publicaciones</Button>
                 </Link>
 
                 <Link href="/profile/my-offers">
-                <Button className="hover:text-blue-700" variant="ghost">Ofertas que hice</Button>
+                <Button className="hover:text-blue-700" variant="ghost">Mis ofertas</Button>
                 </Link>
                   
                 

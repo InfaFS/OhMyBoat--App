@@ -81,7 +81,7 @@ const columns = [
         )}
           <div className="flex justify-center mt-2">
           <Link href={`/profile/offer/${row.original.idCompletePost}`}> 
-            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ver Ofertas</Button>
+            <Button className="bg-sky-500 text-xs px-2 py-1 mx-1">Ofertas</Button>
           </Link>
           
         </div>
@@ -210,7 +210,7 @@ export function OwnPublicationsTable({ data }) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay publicaciones por el momento 🌎
+              No hay publicaciones realizadas 🌎
             </CardContent>
           </Card>
         )}

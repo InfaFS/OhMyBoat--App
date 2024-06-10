@@ -111,7 +111,7 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
   }
   },
   { accessorKey: "confirmation",
-  header: "Confirmación",
+  header: "Acciones",
   cell: ({ row }) => {
     const currentDate = new Date().toISOString().split('T')[0];
     const proposedDate = row.original.proposedDay1;
@@ -120,8 +120,12 @@ const columns = (handleAmpliarPublicacion,handleConfirmation,handleRejectConfirm
     const idTrade = row.original.id;
     return (
         <div className="flex justify-center">
-            <Check className="hover:text-green-500 cursor-pointer" onClick={() => {handleConfirmation({idTrade,currentDate,proposedDate})}}size={20} width={20}/>
-            <X className="ml-2 hover:text-red-500 cursor-pointer" size={20} width={20} onClick={() => {handleRejectConfirmation({idTrade,currentDate,proposedDate})}}/>
+            <span className="hover:text-green-500 cursor-pointer text-green-700" onClick={() => {handleConfirmation({idTrade,currentDate,proposedDate})}}> 
+            Aceptar
+            </span>
+            <span className="ml-2 hover:text-red-500 cursor-pointer text-red-700" size={20} width={20} onClick={() => {handleRejectConfirmation({idTrade,currentDate,proposedDate})}}>
+            Rechazar
+            </span>
         </div>
     )
   }
@@ -306,10 +310,10 @@ export function PendingTradesTable({data}) {
           <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
             <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
-              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques pendientes</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay trueques pendientes por el momento
+              No hay trueques pendientes 🤝
             </CardContent>
           </Card>
         )}

@@ -249,10 +249,10 @@ export function MyOffersTable({ data }) {
           <Card className="w-full max-w-6xl bg-white shadow-lg rounded-lg p-4">
             <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
             <CardHeader>
-              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Ofertas</CardTitle>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Mis ofertas</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay ofertas que estés realizando en este momento 💰
+              No hay ofertas realizadas en este momento 💰
             </CardContent>
           </Card>
         )}

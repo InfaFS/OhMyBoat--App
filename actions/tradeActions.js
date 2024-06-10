@@ -289,7 +289,7 @@ export const setTradeDate = async ({userId,tradeId,proposedDay}) => {
                         idReceptor: actualTrade.idUsuario2,
                         idEmisor: userId,
                         title: "Fecha propuesta",
-                        description: `El usuario ${actualTrade.NombreUsuario1} ${actualTrade.ApellidoUsuario1} ingresó la fecha ${proposedDay}`,
+                        description: `El usuario ${actualTrade.NombreUsuario1} ${actualTrade.ApellidoUsuario1} ingresó la fecha ${proposedDay} para el trueque entre ${actualTrade.tituloPublicacionOfrecida} y ${actualTrade.tituloPublicacionPedida}`,
                         seen: false,
                         type: "TRADE",
                     }
@@ -303,7 +303,7 @@ export const setTradeDate = async ({userId,tradeId,proposedDay}) => {
                         idReceptor: actualTrade.idUsuario1,
                         idEmisor: userId,
                         title: "Fecha propuesta",
-                        description: `El usuario ${actualTrade.NombreUsuario2} ${actualTrade.ApellidoUsuario2} ingresó la fecha ${proposedDay}`,
+                        description: `El usuario ${actualTrade.NombreUsuario2} ${actualTrade.ApellidoUsuario2} ingresó la fecha ${proposedDay} para el trueque entre ${actualTrade.tituloPublicacionOfrecida} y ${actualTrade.tituloPublicacionPedida}`,
                         seen: false,
                         type: "TRADE",
                     }

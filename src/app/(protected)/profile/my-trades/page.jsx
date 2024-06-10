@@ -11,7 +11,7 @@ async function MyTradesPage() {
 
     return (
         <div>
-            <MyTradesTable data={trades} />
+            <MyTradesTable data={trades} user={userId} />
         </div>
     )
 }

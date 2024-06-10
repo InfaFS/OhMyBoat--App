@@ -32,7 +32,7 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
     header: "Ofertante",
     cell: ({ row }) => (
       <div className="flex justify-center">
-  <ContactPopover email={row.original.emailOfertante} name= {row.original.firstNameOfertante} lastname={row.original.lastNameOfertante} phone={row.original.cellphoneOfertante } userId={row.original.idOfertante}/>
+      <ContactPopover email={row.original.emailOfertante} name= {row.original.firstNameOfertante} lastname={row.original.lastNameOfertante} phone={row.original.cellphoneOfertante } userId={row.original.idOfertante}/>
       </div> 
     )
   },
@@ -290,7 +290,7 @@ export function OffersTable({ data }) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Ofertas</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay ofertas por el momento para esta publicación 💰
+              No hay ofertas para esta publicación 💰
             </CardContent>
           </Card>
         )}
