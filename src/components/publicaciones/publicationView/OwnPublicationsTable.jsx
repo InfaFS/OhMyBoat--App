@@ -87,10 +87,11 @@ export function OwnPublicationsTable({ data }) {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-5xl p-4">
-        <div className="bg-sky-600 shadow-2xl rounded-lg p-2">
+    <>
           {(data && data.length !== 0) ? (
+            <div className="flex items-center justify-center min-h-screen">
+            <div className="w-full max-w-5xl p-4">
+            <div className="bg-sky-600 shadow-2xl rounded-lg p-2">
             <Card className="bg-white shadow-lg rounded-lg">
               <div className="flex justify-between items-center p-4">
                 <button
@@ -170,27 +171,24 @@ export function OwnPublicationsTable({ data }) {
                 </Button>
               </CardFooter>
             </Card>
+            </div>
+            </div>
+          </div>
           ) : (
-            <Card className="bg-white shadow-lg rounded-lg p-4">
-              <div className="flex justify-between items-center">
-                <button
-                  className="hover:text-sky-500"
-                  onClick={handleBack}
-                >
-                  <MoveLeft height={20} width={20} />
-                </button>
-                <CardTitle className="text-xl font-semibold text-center text-sky-600">
-                  Publicaciones
-                </CardTitle>
-                <div></div>
-              </div>
-              <CardContent className="text-center p-4">
-                No hay publicaciones realizadas 🌎
-              </CardContent>
-            </Card>
+            <div className="flex items-center justify-center h-screen">
+            <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
+            <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-2">
+            <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
+            <CardHeader>
+              <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Publicaciones</CardTitle>
+            </CardHeader>
+            <CardContent>
+              No hay publicaciones realizadas 🌎
+            </CardContent>
+          </Card>
+          </div>
+          </div>
           )}
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
