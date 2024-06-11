@@ -167,11 +167,12 @@ export const TradeDateSchema = z.object({
 
         // Obtener la fecha actual y ajustarla para que no incluya la parte del tiempo
         console.log(value)
-        const NowDate = new Date().toISOString().split('T')[0];
-        console.log(NowDate)
-        
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000; // Obtiene el offset de la zona horaria en milisegundos
+        const localISOTime = new Date(now - offset).toISOString().split('T')[0];
+        console.log(localISOTime);
         // Validar que la fecha seleccionada sea igual o posterior a la fecha actual
-        return value >= NowDate;
+        return value >= localISOTime;
       }, {
         // Mensaje de error si la validación falla
         message: "La fecha seleccionada debe ser igual o posterior a la fecha actual.",

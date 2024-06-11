@@ -29,7 +29,7 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
       console.log("1");
       const res = await reanudarPublicaciónVehículo(vehiclePost.id);
       if (res?.success){
-        toast.success("Publicación reanudada con éxito");
+        toast.success(res.success);
         router.refresh();
       }
     }
@@ -38,7 +38,7 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
         const res = await pausarPublicaciónVehículo(vehiclePost.id);
         console.log(res);
         if (res?.success){
-          toast.success("Publicación pausada con éxito");
+          toast.success(res.success);
           router.refresh();
         }
       }

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MoveLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { TradeDateSchema } from "@/schemas";
@@ -12,6 +13,9 @@ import { toast } from "sonner";
 import { BadgeCheck, Check, CheckCircle } from "lucide-react";
 export function SetDateComponent({alreadySetted,userId,tradeId,trade}) {
     const router = useRouter();
+    const handleBack = () => {
+        router.back();
+    }
     const form = useForm({
         resolver: zodResolver(TradeDateSchema),
         defaultValues: {
@@ -43,11 +47,16 @@ export function SetDateComponent({alreadySetted,userId,tradeId,trade}) {
         <div className="flex items-center justify-center h-screen bg-gray-100">
             <div className="flex justify-center items-center p-2 rounded-lg bg-sky-600">
                 <Card className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
-
+                <button
+                className="hover:text-sky-500"
+                onClick={handleBack}
+                >
+                <MoveLeft height={20} width={20} />
+                </button>
 
                     { alreadySetted === false && (
                     <>
-                        <CardHeader>
+                    <CardHeader>
                         <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Pactar fecha</CardTitle>
                         <span className="block text-center text-slate-400 text-sm mt-2">Selecciona una fecha acordada para realizar el trueque</span>
                     </CardHeader>

@@ -29,7 +29,7 @@ export const BoatView = ({boatPost, userSessionId}) => {
       const res = await reanudarPublicaciónBarco(boatPost.id);
       console.log(res);
       if (res?.success){
-        toast.success("Publicación reanudada con éxito");
+        toast.success(res.success);
         router.refresh();
       }
     }
@@ -39,7 +39,7 @@ export const BoatView = ({boatPost, userSessionId}) => {
       const res = await pausarPublicaciónBarco(boatPost.id);
       console.log(res);
       if (res?.success){
-        toast.success("Publicación pausada con éxito");
+        toast.success(res.success);
         router.refresh();
       }
     }
