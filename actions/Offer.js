@@ -487,24 +487,23 @@ export const ConfirmarOferta = async ({offerId}) => {
             }
             })
         console.log(notificacionPausadaOfertado);
-        
-        //mandamos notificacion al ofertante de que se le cancelaron las demas ofertas
-        const ofertasCanceladasOfertante = await db.offer.updateMany({
+            
+
+
+        //busco las ofertas canceladas del ofertante
+        const ofertasCanceladasOfertante = await db.offer.findMany({
             where: {
                 idOfertante: res.idOfertante,
                 idPublicacionOfrecida: res.idPublicacionOfrecida,
                 status: "PENDING",
             },
-            data: {
-                status: "CANCELLED",
-            }
         })
         console.log(ofertasCanceladasOfertante);
 
 
 
-
-        if (ofertasCanceladasOfertante.count !== 0) {
+        //si hay ofertas a cancelar para el ofertante entro
+        if (ofertasCanceladasOfertante.length > 0) {
             const notificacionCanceladasOfertante = await db.notification.create({
                 data: {
                     idEmisor: "???",
@@ -517,49 +516,46 @@ export const ConfirmarOferta = async ({offerId}) => {
                 })
             console.log(notificacionCanceladasOfertante);
 
-            //buscamos todas las ofertas del ofertante
-            const ofertasCanceladasOfertanteArray = await db.offer.findMany({
-                where: {
-                    idOfertante: res.idOfertante,
-                    idPublicacionOfrecida: res.idPublicacionOfrecida,
-                    status: "PENDING",
-                },
-                data: {
-                    status: "CANCELLED",
-                }
-            })
-            console.log(ofertasCanceladasOfertanteArray);
     
-            if (ofertasCanceladasOfertanteArray) {
-                for (let i = 0; i < ofertasCanceladasOfertanteArray.length; i++) {
+                //le mando notif a cada uno de los ofertados que se les cancelo la oferta
+                for (let i = 0; i < ofertasCanceladasOfertante.length; i++) {
                     const notifEnviada = await db.notification.create({
                         data: {
                             idEmisor: "???",
-                            idReceptor: ofertasCanceladasOfertanteArray[i].idOfertado,
+                            idReceptor: ofertasCanceladasOfertante[i].idOfertado,
                             title: "Oferta cancelada",
-                            description: `La oferta realizada por ${ofertasCanceladasOfertanteArray[i].firstNameOfertante} ${ofertasCanceladasOfertanteArray[i].lastNameOfertante} de ${ofertasCanceladasOfertanteArray[i].tituloPublicacionOfrecida} por la publicación ${ofertasCanceladasOfertanteArray[i].tituloPublicacionPedida} ha sido cancelada`,
+                            description: `La oferta realizada por ${ofertasCanceladasOfertante[i].firstNameOfertante} ${ofertasCanceladasOfertante[i].lastNameOfertante} de ${ofertasCanceladasOfertante[i].tituloPublicacionOfrecida} por la publicación ${ofertasCanceladasOfertante[i].tituloPublicacionPedida} ha sido cancelada`,
                             seen: false,
                             type: "OFFER",
                         }
                     })
                     console.log(notifEnviada);
                 }
-            }
+                //las cancelo
+                const ofertasCanceladasOfertanteUpdated = await db.offer.updateMany({
+                    where: {
+                        idOfertante: res.idOfertante,
+                        idPublicacionOfrecida: res.idPublicacionOfrecida,
+                        status: "PENDING",
+                    },
+                    data: {
+                        status: "CANCELLED",
+                    }
+                })
+                console.log(ofertasCanceladasOfertanteUpdated)
         }
 
-
-        const ofertasCanceladasOfertado = await db.offer.updateMany({
+        //busca las ofertas pendientes del ofertado
+        const ofertasCanceladasOfertado = await db.offer.findMany({
             where: {
                 idPublicacionOfrecida: res.idPublicacionPedida,
                 status: "PENDING",
             },
-            data: {
-                status: "CANCELLED",
-            }
+
         })
         console.log(ofertasCanceladasOfertado);
         //mandamos notificacion al ofertado de que se le cancelaron las demas ofertas
-        if (ofertasCanceladasOfertado.count !== 0) {
+        if (ofertasCanceladasOfertado.length > 0) {
 
                 const notificacionCanceladasOfertado = await db.notification.create({
                     data: {
@@ -573,34 +569,35 @@ export const ConfirmarOferta = async ({offerId}) => {
                  })
                  console.log(notificacionCanceladasOfertado);
                 
-                //buscamos todas las ofertas del ofertado
-                 const ofertasCanceladasOfertadoArray = await db.offer.findMany({
-                    where: {
-                        idPublicacionOfrecida: res.idPublicacionPedida,
-                        status: "PENDING",
-                    },
-                    data: {
-                        status: "CANCELLED",
-                    }
-                })
+                    //le mando notif a cada uno de los ofertados que se les cancelo la oferta
 
-                console.log(ofertasCanceladasOfertadoArray);
-
-                if (ofertasCanceladasOfertadoArray) {
-                    for (let i = 0; i < ofertasCanceladasOfertadoArray.length; i++) {
+                    for (let i = 0; i < ofertasCanceladasOfertado.length; i++) {
                         const notifEnviada = await db.notification.create({
                             data: {
                                 idEmisor: "???",
-                                idReceptor: ofertasCanceladasOfertadoArray[i].idOfertante,
+                                idReceptor: ofertasCanceladasOfertado[i].idOfertado,
                                 title: "Oferta cancelada",
-                                description: `La oferta realizada por ${ofertasCanceladasOfertadoArray[i].firstNameOfertante} ${ofertasCanceladasOfertadoArray[i].lastNameOfertante} de ${ofertasCanceladasOfertadoArray[i].tituloPublicacionOfrecida} por la publicación ${ofertasCanceladasOfertadoArray[i].tituloPublicacionPedida} ha sido cancelada`,
+                                description: `La oferta realizada por ${ofertasCanceladasOfertado[i].firstNameOfertante} ${ofertasCanceladasOfertado[i].lastNameOfertante} de ${ofertasCanceladasOfertado[i].tituloPublicacionOfrecida} por la publicación ${ofertasCanceladasOfertado[i].tituloPublicacionPedida} ha sido cancelada`,
                                 seen: false,
                                 type: "OFFER",
                             }
                         })
                         console.log(notifEnviada);
                     }
-                }
+
+                    //las cancelo
+                 const ofertasCanceladasOfertadoUpdated = await db.offer.updateMany({
+                    where: {
+                        idPublicacionOfrecida: res.idPublicacionPedida,
+                        status: "PENDING",
+                    },
+                    data : {
+                        status: "CANCELLED",
+                    }
+                })
+
+                console.log(ofertasCanceladasOfertadoUpdated);
+
         }
 
         const ofertasRechazadas = await db.offer.updateMany({
