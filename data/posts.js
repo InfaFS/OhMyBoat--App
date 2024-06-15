@@ -1,6 +1,7 @@
 "use server"
 import { db } from "@/lib/db";
 import { getCardPostByCompletePostId } from "./cardPosts";
+import { CancelarOfertas, RechazarOfertas } from "../actions/Offer";
 
 export const ocultarEmbarcacion = async ({completePostId}) => {
     try {
@@ -156,4 +157,61 @@ export const getAllPostsByUser = async ({userId}) => {
 
 }
 
+export const eliminarPost = async ({completePostId}) => {
+    try {
+        
+        const boatPost = await getBoatPostById(completePostId);
+        const vehiclePost = await getVehiclePostById(completePostId);
+        console.log(boatPost);
+        console.log(vehiclePost);
 
+        if (boatPost !== null) {
+            const deletedBoat = await db.boatPost.update({
+                where: {
+                    id: boatPost.id,
+                },
+                data: {
+                    status: "DELETED",
+                }
+            });
+            console.log(deletedBoat);
+        } else {
+            const deletedVehicle = await db.vehiclePost.update({
+                where: {
+                    id: vehiclePost.id,
+                },
+                data: {
+                    status: "DELETED",
+                }
+            });
+            console.log(deletedVehicle);
+        }
+
+        const card = await getCardPostByCompletePostId({completePostId});
+        console.log(card)
+
+
+        const deletedCard = await db.cardPost.update({
+            where: {
+                id: card.id,
+            },
+            data: {
+                status: "DELETED",
+            }
+        });
+        console.log(deletedCard);
+
+        const cancelarOfertas = await CancelarOfertas({postId: completePostId});
+        console.log(cancelarOfertas);
+        const rechazarOfertas = await RechazarOfertas({postId: completePostId});
+        console.log(rechazarOfertas);
+
+        return {success: "Post eliminado correctamente"};
+
+    } catch(error){
+        console.log(error);
+        return null;
+    }
+
+
+}

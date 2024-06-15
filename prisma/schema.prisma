@@ -97,14 +97,6 @@ model BoatPost {
   status      String
 }
 
-model Review {
-  id          String @id @default(cuid())
-  idPublisher String
-  idReviewed  String
-  stars       Int
-  description String
-}
-
 model offer {
   id                        String  @id @default(cuid())
   idPublicacionPedida       String
@@ -157,4 +149,14 @@ model Notification {
   description String
   seen        Boolean
   type        String
+}
+
+model Review {
+  id                String @id @default(cuid())
+  idReviewer        String
+  idReviewed        String
+  stars             Int
+  description       String
+  ReviewerFirstName String
+  ReviewerLastName  String
 }

@@ -1,32 +1,76 @@
-import ViewComponent from "@/components/admin-components/viewEmployeesComponent2"
-import { auth } from "../../../auth"
-import { getUserById } from "../../../data/user"
-import { getAllEmployees } from "../../../actions/getEmployees";
-import { LoadingComponent } from "@/components/LoadingComponent";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-const tags = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`
-)
-export default async function testOnly() {
-  return (
-    <div>
-      <h1>Test Only</h1>
-      <ScrollArea className="h-72 w-48 rounded-md border">
-      <div className="p-4">
-        <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
-        {tags.map((tag) => (
-          <>
-            <div key={tag} className="text-sm">
-              {tag}
-            </div>
-            <Separator className="my-2" />
-          </>
-        ))}
-      </div>
-    </ScrollArea>
-    </div>
-  )
+"use client";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
+import Rating from '@mui/material/Rating';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import { useState } from 'react';
+
+const StyledRating = styled(Rating)(({ theme }) => ({
+  '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
+    color: theme.palette.action.disabled,
+  },
+}));
+
+const customIcons = {
+  1: {
+    icon: <SentimentVeryDissatisfiedIcon color="error" />,
+    label: 'Very Dissatisfied',
+  },
+  2: {
+    icon: <SentimentDissatisfiedIcon color="error" />,
+    label: 'Dissatisfied',
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon color="warning" />,
+    label: 'Neutral',
+  },
+  4: {
+    icon: <SentimentSatisfiedAltIcon color="success" />,
+    label: 'Satisfied',
+  },
+  5: {
+    icon: <SentimentVerySatisfiedIcon color="success" />,
+    label: 'Very Satisfied',
+  },
+};
+
+function IconContainer(props) {
+  const { value, ...other } = props;
+  return <span {...other}>{customIcons[value].icon}</span>;
 }
 
+IconContainer.propTypes = {
+  value: PropTypes.number.isRequired,
+};
 
+export default function RadioGroupRating() {
+  const [rating, setRating] = useState(2);
+
+  const handleRatingChange = (event, newValue) => {
+    console.log(event)
+    console.log(newValue)
+    setRating(newValue);
+    console.log("Selected Rating:", newValue);
+  };
+
+  return (
+    <div>
+      <StyledRating
+        name="highlight-selected-only"
+        value={rating}
+        onChange={handleRatingChange}
+        IconContainerComponent={IconContainer}
+        getLabelText={(value) => customIcons[value].label}
+        highlightSelectedOnly
+      />
+      <div className="text-center mt-2">
+        <span>Selected Rating: {rating}</span>
+      </div>
+    </div>
+  );
+}

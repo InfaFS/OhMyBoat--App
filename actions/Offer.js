@@ -784,3 +784,45 @@ export const updateAllOffersByPostId = async ({postId}) => {
     }
 }
 
+export const CancelarOfertas = async ({postId}) => {
+    try {
+        const offers = await db.offer.findMany({
+            where: {
+                idPublicacionOfrecida: postId,
+                status: "PENDING",
+            }
+        })
+        console.log(offers);
+        for (let i = 0; i < offers.length; i++) {
+            const res = await CancelarOferta({offerId: offers[i].id});
+            console.log(res);
+        }
+        return true;
+    } catch(error) {
+        console.log(error)
+        return null;
+    }
+
+
+}
+
+export const RechazarOfertas = async ({postId}) => {
+    try {
+        const offers = await db.offer.findMany({
+            where : {
+                idPublicacionPedida: postId,
+                status: "PENDING",
+            }
+        });
+        console.log(offers);
+        for (let i=0;i < offers.length; i++) {
+            const res = await RechazarOferta({offerId: offers[i].id});
+            console.log(res);
+        }
+        return true;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+
+}

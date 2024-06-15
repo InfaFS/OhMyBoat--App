@@ -60,6 +60,10 @@ export const BoatView = ({boatPost, userSessionId}) => {
               {boatPost.status === "PAUSED" && (
                  <h1 className="font-semibold text-1xl text-center text-slate-500">Pausada</h1>
               )}
+
+              {boatPost.status === "DELETED" && (
+                  <h1 className="font-semibold text-1xl text-center text-red-500">Eliminada</h1>
+              )}
             </CardHeader>
             <CardContent>
                 <div className="flex">

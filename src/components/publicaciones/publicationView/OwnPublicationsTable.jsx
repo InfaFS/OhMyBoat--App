@@ -1,4 +1,5 @@
 "use client"
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -7,7 +8,7 @@ import {
   useReactTable,
   getPaginationRowModel,
 } from "@tanstack/react-table"
-import { MoveLeft } from "lucide-react";
+import { MoveLeft,Trash2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -16,11 +17,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
+import { eliminarPost } from "../../../../data/posts";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const columns = [
+const columns = (handleDeleteConfirmation) => [
   {
     accessorKey: "title",
     header: "Post",
@@ -50,6 +51,11 @@ const columns = [
         <Link href={`/profile/offer/${row.original.idCompletePost}`}>
           <Button className="bg-sky-500 text-sm w-full h-full">Ofertas</Button>
         </Link>
+        { (row.original.status === "HIDDEN" || row.original.status === "ACTIVE") && (
+          <Trash2 size={20} className="hover:text-red-500 cursor-pointer ml-2" onClick={() => handleDeleteConfirmation({completePostId: row.original.idCompletePost})}/>
+        )}
+       
+        
       </div>
     )
   },
@@ -77,10 +83,30 @@ export function OwnPublicationsTable({ data }) {
   const handleBack = () => {
     router.back();
   };
+  const handleDelete = async ({completePostId}) => {
+    console.log(completePostId)
+    const res = await eliminarPost({completePostId: completePostId});
+    console.log(res);
+    if (res?.success){
+      toast.success(res.success);
+      router.refresh();
+    }
+  }
 
+  const handleDeleteConfirmation = ({completePostId}) => {
+    console.log(completePostId)
+    toast.info("Estás seguro de que quieres eliminar el post?", {
+      action: <>
+      <div>
+        <button onClick={() => {handleDelete({completePostId});toast.dismiss()}} className='hover:text-green-500  text-blue-500'>Confirmar</button>
+        <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-blue-500'>Cancelar</button>
+        </div>
+      </> ,
+  })
+  }
   const table = useReactTable({
     data: data,
-    columns: columns,
+    columns: columns(handleDeleteConfirmation),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 3 } }

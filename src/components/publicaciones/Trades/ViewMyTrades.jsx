@@ -1,7 +1,7 @@
 "use client"
 import { getBoatPostById } from "../../../../data/posts";
 import { useRouter } from "next/navigation";
-import { MoveLeft } from "lucide-react";
+import { MoveLeft, Star } from "lucide-react";
 import Link from "next/link";
 import { ContactPopover } from "./ContactPopover";
 import {
@@ -29,14 +29,37 @@ const columns = (handleAmpliarPublicacion,user) => [
     cell: ({ row }) => {
       return (
         <>
-          <div className="flex justify-center">
-            { row.original.idUsuario1 === user && (
-              <ContactPopover email={row.original.EmailUsuario2} name= {row.original.NombreUsuario2} lastname={row.original.ApellidoUsuario2} phone={row.original.PhoneUsuario2} userId={row.original.idUsuario2}/>
-            )}
-            { row.original.idUsuario2 === user && (
-              <ContactPopover email={row.original.EmailUsuario1} name= {row.original.NombreUsuario1} lastname={row.original.ApellidoUsuario1} phone={row.original.PhoneUsuario1} userId={row.original.idUsuario1}/>     
-            )}
+      <div className="flex flex-col items-center">
+      <div className="flex justify-center space-x-4">
+        {row.original.idUsuario1 === user && (
+          <ContactPopover 
+            email={row.original.EmailUsuario2} 
+            name={row.original.NombreUsuario2} 
+            lastname={row.original.ApellidoUsuario2} 
+            phone={row.original.PhoneUsuario2} 
+            userId={row.original.idUsuario2} 
+          />
+        )}
+        {row.original.idUsuario2 === user && (
+          <ContactPopover 
+            email={row.original.EmailUsuario1} 
+            name={row.original.NombreUsuario1} 
+            lastname={row.original.ApellidoUsuario1} 
+            phone={row.original.PhoneUsuario1} 
+            userId={row.original.idUsuario1} 
+          />     
+        )}
+      </div>
+      {row.original.status === "TRUEQUE_REALIZADO" && (
+        <div className="flex items-center space-x-1">
+          <Star className="text-yellow-500" height={20} width={20}/>
+          <Link href={`/create/create-review/${row.original.idUsuario2}`}>
+            <span className="text-sm font-medium cursor-pointer text-yellow-600 hover:text-yellow-700">Reseñar</span>
+          </Link>
+          
         </div>
+      )}
+    </div>
         </>
       )
     }
@@ -96,16 +119,17 @@ const columns = (handleAmpliarPublicacion,user) => [
   header: "Fecha",
   cell: ({ row }) => {
     return (
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center space-x-4">
       {row.original.status === "FECHA_PENDIENTE" ? (
         <Link href={`/profile/my-trades/set-date/${row.original.id}`}>
-            <Button className="hover:text-sky-600 text-sm" variant="link">Pactar fecha</Button>        
+          <Button className="hover:text-sky-600 text-sm font-medium" variant="link">Pactar fecha</Button>
         </Link>
-      ) : row.original.status !== "FECHA_PENDIENTE" ? (
-        <div className="text-sky-700">{row.original.proposedDay1}</div>
-      ) : null
-      } 
-      </div>
+      ) : (
+        row.original.status !== "FECHA_PENDIENTE" && (
+          <div className="text-sky-700 text-sm font-medium">{row.original.proposedDay1}</div>
+        )
+      )}
+    </div>
     )
   }
 },
