@@ -50,3 +50,25 @@ export const seeNotis = async (idOwner) => {
         console.error('Error al obtener las notificaciones:', error);
     }
 }
+
+export const NotifSeen = async (notifId) => {
+    try {
+
+        const notifSeen = await db.notification.update({
+            where: {
+                id: notifId,
+            },
+            data: {
+                seen: true,
+            }
+        });
+
+        console.log(notifSeen);
+
+        return notifSeen;
+    } catch (error){
+        console.error('Error al obtener las notificaciones:', error);
+        return null;
+    }
+
+}

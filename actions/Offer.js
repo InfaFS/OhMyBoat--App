@@ -733,3 +733,54 @@ export const CancelarOferta = async ({offerId}) => {
     }
 
 }
+
+
+export const updateAllOffersByPostId = async ({postId}) => {
+    try {
+        let updatedPost = await getBoatPostById(postId);
+        if  (!updatedPost) { //quiere decir que el post es un vehiculo
+            updatedPost = await getVehiclePostById(postId);
+        }
+
+        const offers = await db.offer.findMany({
+            where: {
+                OR: [
+                    { idPublicacionOfrecida: postId },
+                    { idPublicacionPedida: postId },
+                ]
+            }
+        });
+        console.log(offers)
+        for (let i = 0; i < offers.length; i++) {
+            if (offers[i].idPublicacionOfrecida === postId) {
+                const res = await db.offer.update({
+                    where: {
+                        id: offers[i].id,
+                    },
+                    data: {
+                        tituloPublicacionOfrecida: updatedPost.title,
+                        imgPublicacionOfrecida: updatedPost.img,
+                    }
+                });
+                console.log(res);
+            }
+            else if (offers[i].idPublicacionPedida === postId) {
+                const res = await db.trade.update({
+                    where: {
+                        id: trades[i].id,
+                    },
+                    data: {
+                        tituloPublicacionPedida: updatedPost.title,
+                        imgPublicacionPedida: updatedPost.img,
+                    }
+                });
+                console.log(res);
+            }
+        }
+
+    } catch ( error) {
+        console.log(error);
+        return null;
+    }
+}
+

@@ -128,6 +128,10 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
             {(userSessionId === vehiclePost.idPublisher && vehiclePost.status === "ACTIVE") && (
               <Button className="bg-slate-600" onClick={handlePause}>Ocultar</Button>       
             )}
+
+            {(userSessionId === vehiclePost.idPublisher && (vehiclePost.status === "ACTIVE" || vehiclePost.status === "HIDDEN")) && (
+              <Button className="bg-sky-600 ml-2" onClick={() => router.push(`/viewPosts/view-vehicle/${vehiclePost.id}/edit`)}>Editar</Button>       
+            )}
             </CardFooter>
           </Card>
           </div>

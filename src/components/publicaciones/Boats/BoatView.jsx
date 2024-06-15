@@ -127,6 +127,10 @@ export const BoatView = ({boatPost, userSessionId}) => {
             {(userSessionId === boatPost.idPublisher && boatPost.status === "ACTIVE") && (
               <Button className="bg-slate-600" onClick={handlePause}>Ocultar</Button>       
             )}
+
+            {(userSessionId === boatPost.idPublisher && (boatPost.status === "ACTIVE" || boatPost.status === "HIDDEN")) && (
+              <Button className="bg-sky-600 ml-2" onClick={() => router.push(`/viewPosts/view-ship/${boatPost.id}/edit`)}>Editar</Button>       
+            )}
             </CardFooter>
           </Card>
           </div>

@@ -91,7 +91,7 @@ export const getVehiclePostById = async (id) => {
                 id,
             }
         });
-
+        console.log(vehiclePost)
         return vehiclePost;
 
     } catch {

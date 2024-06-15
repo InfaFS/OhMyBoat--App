@@ -57,7 +57,7 @@ export async function HeaderTincho() {
             </>
           ) : (
             <>
-              <BasicMenuCallback role={session?.user?.role} notis={unseenNotisNumber} userId={session?.user?.id} unseenNotisNumber={unseenNotisNumber.length}/>
+              <BasicMenuCallback role={session?.user?.role} notis={notis} userId={session?.user?.id} unseenNotisNumber={unseenNotisNumber.length}/>
             </>
           )}
         </div>

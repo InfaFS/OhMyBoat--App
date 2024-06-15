@@ -1,6 +1,6 @@
 "use server"
 import { db } from "@/lib/db"
-import { getBoatPostById } from "../data/posts";
+import { getBoatPostById, getVehiclePostById } from "../data/posts";
 import { getCardPostByCompletePostId } from "../data/cardPosts";
 
 export const eraseAllOffers = async (postId) => {
@@ -583,5 +583,61 @@ export const getAllCheckedTrades = async () => {
         return null;
     }
 
+}
+
+export const updateAllTradesByPostId = async ({postId}) => {
+    try {
+        console.log(postId)
+        const updatedPostBoat = await getBoatPostById(postId);
+        const updatedPostVehicle = await getVehiclePostById(postId);
+        let updatedPost;
+        if (updatedPostBoat !== null) {
+            updatedPost = updatedPostBoat;
+        } else {
+            updatedPost = updatedPostVehicle;
+        }
+        console.log(updatedPost)
+        
+
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idPost1: postId },
+                    { idPost2: postId },
+                ]
+            }
+        });
+        console.log(trades)
+        for (let i = 0; i < trades.length; i++) {
+            if (trades[i].idPost1 === postId) {
+                const res = await db.trade.update({
+                    where: {
+                        id: trades[i].id,
+                    },
+                    data: {
+                        tituloPublicacionOfrecida: updatedPost.title,
+                        imgPublicacionOfrecida: updatedPost.img,
+                    }
+                });
+                console.log(res);
+            }
+            else if (trades[i].idPost2 === postId) {
+                const res = await db.trade.update({
+                    where: {
+                        id: trades[i].id,
+                    },
+                    data: {
+                        tituloPublicacionPedida: updatedPost.title,
+                        imgPublicacionPedida: updatedPost.img,
+                    }
+                });
+                console.log(res);
+            }
+        }
+
+    } catch ( error) {
+        console.log(error);
+        return null;
+    }
 }
 
