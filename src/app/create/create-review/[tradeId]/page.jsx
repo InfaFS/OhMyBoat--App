@@ -1,9 +1,9 @@
 import CreateReviewComponent from "@/components/publicaciones/Reviews/CreateReview"
 async function CreateReviewPage({params}) {
-    const id = params.reviewedId
+    const id = params.tradeId;
     console.log(id)
     return (
-        <CreateReviewComponent reviewedId={id}/>
+        <CreateReviewComponent tradeId={id}/>
     )
 }
 

@@ -1,4 +1,9 @@
 "use client"
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import InfiniteSlider from "../Slider";
+import "slick-carousel/slick/slick-theme.css";
+import { useState } from "react";
 import {
     Card,
     CardContent,
@@ -13,7 +18,43 @@ import {
   import RatingComponent from "./RatingComponent";
   import { intRandomizer } from "../../../data/extra-stuff";
   import { useRouter } from "next/navigation";
-  export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,role,id,}) {
+  import { UserRatingProm } from "../../../actions/reviewActions";
+import { Star } from "lucide-react";
+
+
+  const sliderData = [
+    { id: 1, content: "Slide 1 Content" },
+    { id: 2, content: "Slide 2 Content" },
+    { id: 3, content: "Slide 3 Content" },
+    { id: 1, content: "Slide 1 Content" },
+    { id: 2, content: "Slide 2 Content" },
+    { id: 3, content: "Slide 3 Content" },
+    { id: 1, content: "Slide 1 Content" },
+    { id: 2, content: "Slide 2 Content" },
+    { id: 3, content: "Slide 3 Content" },
+    { id: 1, content: "Slide 1 Content" },
+    { id: 2, content: "Slide 2 Content" },
+    { id: 3, content: "Slide 3 Content" },
+
+    // Add more slides as needed
+  ];
+
+  export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,role,id,estrellas,reviews}) {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    console.log(reviews)
+
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 4000,
+      beforeChange: (oldIndex, newIndex) => setCurrentSlide(newIndex),
+    };
+
+
     const router = useRouter();
     let rol = null
     
@@ -62,7 +103,7 @@ import {
               {/* Solo mostrar reseñas para usuarios. */}
               { role === "USER" && (
                 <section className="flex items-center space-x-4 space-y-5">
-                  <RatingComponent number={intRandomizer(6)} />
+                  <RatingComponent number={estrellas} />
                   <Link href={`/view-reviews/${id}`}>
                   <Button variant="ghost" className="hover:text-blue-500">Ver reseñas</Button>
                   </Link>
@@ -70,6 +111,28 @@ import {
               )}
 
                 </div>
+                {/* 
+                <Slider {...settings}>
+                {reviews.map((slide) => (
+                  <div key={slide.id} className="flex items-center">
+                     <span className='text-sm'>
+                  {slide.ReviewerFirstName} {slide.ReviewerLastName}
+                  </span>
+                  <RatingComponent number={slide.stars} format='table'/>
+                 </div>
+                ))}
+                </Slider> */}
+                  {reviews.length > 0 && (
+                    <div>
+                    <div className="flex justify-center items-center">
+                    <Star  size={20} className="text-yellow-600"/>
+                    <h1 className="text-center font-bold text-yellow-600">Reseñas Destacadas</h1>
+                    <Star size={20} className="text-yellow-600"/>
+                  </div>
+                  <InfiniteSlider reviews={reviews} />
+                  </div>
+
+                  )}
                 <Separator />
               </CardContent>
               <CardFooter>

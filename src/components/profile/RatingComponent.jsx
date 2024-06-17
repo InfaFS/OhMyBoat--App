@@ -4,7 +4,8 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
-export default function RatingComponent({number=0}) {
+export default function RatingComponent({number=0,format='normal'}) {
+  console.log(number)
   return (
     <Box
       sx={{
@@ -26,8 +27,18 @@ export default function RatingComponent({number=0}) {
       <Typography component="legend">No rating given</Typography>
       <Rating name="no-value" value={null} />
       */}
-      <Typography component="legend">Calificación</Typography>
-      <Rating name="read-only" value={number} readOnly />
+      {format === 'table' ? (
+        <div className='flex'>
+         <Rating name="read-only" value={number} readOnly className='text-lg' />
+         <span className='ml-1'>({number})</span>
+        </div>
+      ) : (
+        <div>
+          <Typography component="legend">Puntuación</Typography>
+          <Rating name="read-only" value={number} readOnly />
+        </div>
+
+      )}
 
     </Box>
   );

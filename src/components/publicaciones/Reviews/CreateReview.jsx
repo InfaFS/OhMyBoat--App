@@ -17,47 +17,13 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import { createReview } from "../../../../actions/reviewActions";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-// Para el selector de estrellas
-const StyledRating = styled(Rating)(({ theme }) => ({
-  '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
-    color: theme.palette.action.disabled,
-  },
-}));
 
-const customIcons = {
-  1: {
-    icon: <SentimentVeryDissatisfiedIcon color="error" />,
-    label: 'Muy insatisfecho',
-  },
-  2: {
-    icon: <SentimentDissatisfiedIcon color="error" />,
-    label: 'Insatisfecho',
-  },
-  3: {
-    icon: <SentimentSatisfiedIcon color="warning" />,
-    label: 'Neutral',
-  },
-  4: {
-    icon: <SentimentSatisfiedAltIcon color="success" />,
-    label: 'Satisfecho',
-  },
-  5: {
-    icon: <SentimentVerySatisfiedIcon color="success" />,
-    label: 'Muy satisfecho',
-  },
-};
-
-function IconContainer(props) {
-  const { value, ...other } = props;
-  return <span {...other}>{customIcons[value].icon}</span>;
-}
-
-IconContainer.propTypes = {
-  value: PropTypes.number.isRequired,
-};
-
-const CreateReviewComponent = ({ userId }) => {
+const CreateReviewComponent = ({tradeId }) => {
+  console.log(tradeId)
   const [starError, setStarError] = useState(false)
   const [rating, setRating] = useState(null);
   const handleRatingChange = (event, newValue) => {
@@ -86,7 +52,14 @@ const CreateReviewComponent = ({ userId }) => {
   };
   const onSubmit = async (data) => {
     console.log(data);
-    toast.success("¡Reseña realizada con éxito!");
+    const res = await createReview({tradeId: tradeId, stars: rating, description: data.descripcion});
+    if (res.success){
+      toast.success(res.success);
+      router.refresh();
+      router.back();
+      router.refresh();
+
+    }
   };
 
   return (
@@ -112,14 +85,13 @@ const CreateReviewComponent = ({ userId }) => {
                 className="mt-3 block w-full"
               />
               <div className="flex justify-center mt-4">
-                <StyledRating
-                  name="highlight-selected-only"
-                  value={rating}
-                  onChange={handleRatingChange}
-                  IconContainerComponent={IconContainer}
-                  getLabelText={(value) => customIcons[value].label}
-                  highlightSelectedOnly
-                />
+                  <Box sx={{'& > legend': { mt: 2 },}}>
+                  <Rating
+                    name="simple-controlled"
+                    value={rating}
+                    onChange={handleRatingChange}
+                  />
+                  </Box>
               </div>
               <div className="text-center mt-2">
                 <span>Selected Rating: {rating}</span>
@@ -143,3 +115,4 @@ const CreateReviewComponent = ({ userId }) => {
 };
 
 export default CreateReviewComponent;
+

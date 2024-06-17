@@ -11,7 +11,8 @@
   import { Separator } from "../ui/separator";
 
   
-  export default function ProfileComponentInfa({ firstname, lastname, cellphone, birthday, email, password, role }) {
+  export default function ProfileComponentInfa({ firstname, lastname, cellphone, birthday, email, password, role,userId }) {
+    console.log(userId)
     const showedPassword = password.replace(/./g, "*");
     let rol = "";
     if (role === "ADMIN") {
@@ -76,11 +77,16 @@
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Trueques</Button>
                 </Link>
 
-                <Link href="/profile/reviews">
+                {/* <Link href="/profile/reviews">
+                <Button className="mr-2 hover:text-blue-700" variant="ghost">Mis reseñas</Button>
+                </Link> */}
+
+                  
+                <Link href={`/view-reviews/${userId}`}>
                 <Button className="mr-2 hover:text-blue-700" variant="ghost">Mis reseñas</Button>
                 </Link>
 
-                <Link href="/profile/own-posts">
+                <Link href={"/profile/own-posts"}>
                 <Button className="hover:text-blue-700" variant="ghost">Publicaciones</Button>
                 </Link>
 

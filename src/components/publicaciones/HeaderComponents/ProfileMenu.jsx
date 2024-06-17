@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { CerradoDeSesion } from '../../../../actions/cerrarsession';
 import { toast } from 'sonner';
 
-export default function ProfileMenu() {
+export default function ProfileMenu({userId}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -59,7 +59,7 @@ export default function ProfileMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <Link href="/profile">
+        <Link href={`/profile`}>
         <MenuItem onClick={handleClose} className='text-sm'>
             <Settings height={20} width={20} className="mr-2" /> Ver perfil
         </MenuItem>

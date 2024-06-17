@@ -655,8 +655,9 @@ export const ConfirmarOferta = async ({offerId}) => {
                 tituloPublicacionOfrecida: res.tituloPublicacionOfrecida,
                 tituloPublicacionPedida: res.tituloPublicacionPedida,
                 imgPublicacionOfrecida: res.imgPublicacionOfrecida,
-                imgPublicacionPedida: res.imgPublicacionPedida
-    
+                imgPublicacionPedida: res.imgPublicacionPedida,
+                ReviewedByUser1: false,
+                ReviewedByUser2: false,
             }
         
         })

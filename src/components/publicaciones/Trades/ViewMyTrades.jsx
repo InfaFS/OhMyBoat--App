@@ -1,7 +1,7 @@
 "use client"
 import { getBoatPostById } from "../../../../data/posts";
 import { useRouter } from "next/navigation";
-import { MoveLeft, Star } from "lucide-react";
+import { BadgeCheck, MoveLeft, Star } from "lucide-react";
 import Link from "next/link";
 import { ContactPopover } from "./ContactPopover";
 import {
@@ -50,15 +50,36 @@ const columns = (handleAmpliarPublicacion,user) => [
           />     
         )}
       </div>
-      {row.original.status === "TRUEQUE_REALIZADO" && (
+      {(row.original.status === "TRUEQUE_REALIZADO" && row.original.idUsuario1 === user && row.original.ReviewedByUser1 === false) ? (
         <div className="flex items-center space-x-1">
           <Star className="text-yellow-500" height={20} width={20}/>
-          <Link href={`/create/create-review/${row.original.idUsuario2}`}>
+          <Link href={`/create/create-review/${row.original.id}`}>
             <span className="text-sm font-medium cursor-pointer text-yellow-600 hover:text-yellow-700">Reseñar</span>
           </Link>
-          
         </div>
-      )}
+      ) : (row.original.status === "TRUEQUE_REALIZADO" && row.original.idUsuario1 === user && row.original.ReviewedByUser1 === true) ? (
+        <div className="flex items-center space-x-1">
+        <BadgeCheck className="text-green-500" height={20} width={20}/>
+          <span className="text-sm font-medium text-green-500">Reseñado</span>
+        </div>
+      ) : null}
+
+
+      {(row.original.status === "TRUEQUE_REALIZADO" && row.original.idUsuario2 === user && row.original.ReviewedByUser2 === false) ? (
+        <div className="flex items-center space-x-1">
+          <Star className="text-yellow-500" height={20} width={20}/>
+          <Link href={`/create/create-review/${row.original.id}`}>
+            <span className="text-sm font-medium cursor-pointer text-yellow-600 hover:text-yellow-700">Reseñar</span>
+          </Link>
+        </div> ) : (row.original.status === "TRUEQUE_REALIZADO" && row.original.idUsuario2 === user && row.original.ReviewedByUser2 === true) ? (
+          <div className="flex items-center space-x-1">
+          <BadgeCheck className="text-green-500" height={20} width={20}/>
+            <span className="text-sm font-medium text-green-500">Reseñado</span>
+          </div>
+        ) : null }
+
+
+
     </div>
         </>
       )

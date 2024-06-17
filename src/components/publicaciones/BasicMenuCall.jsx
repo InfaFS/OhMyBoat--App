@@ -28,7 +28,7 @@ console.log(notis);
                 </>
             
             )}
-            <ProfileMenu/>
+            <ProfileMenu userId={userId}/>
         </div>
     );
 }

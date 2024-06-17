@@ -9,7 +9,7 @@ export function ProfileManager ({userData}) {
         <div>
             {userData ? (
                 <div>
-                <ProfileComponentInfa firstname={userData.firstname} lastname={userData.lastname} birthday={userData.birthday} cellphone={userData.cellphone} email={userData.email} password={userData.password} role={userData.role}/>
+                <ProfileComponentInfa firstname={userData.firstname} lastname={userData.lastname} birthday={userData.birthday} cellphone={userData.cellphone} email={userData.email} password={userData.password} role={userData.role} userId={userData.id}/>
                 </div>
             ) : (
                 <p>Loading...</p>
