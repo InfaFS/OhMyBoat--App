@@ -2,7 +2,7 @@
 import { db } from "@/lib/db";
 import { auth } from "../auth";
 import { getUserById } from "../data/user";
-export const createReview = async ({tradeId,stars,description}) => {
+export const createReview = async ({tradeId,stars,description,title}) => {
     try {
         console.log(tradeId,stars,description);
         const session = await auth();
@@ -33,6 +33,7 @@ export const createReview = async ({tradeId,stars,description}) => {
                     idReviewed: trade.idUsuario2,
                     stars: stars,
                     description: description,
+                    title: title,
                     ReviewerFirstName: userFound.firstname,
                     ReviewerLastName: userFound.lastname,
                     tradeId: tradeId,
@@ -60,6 +61,7 @@ export const createReview = async ({tradeId,stars,description}) => {
                     idReviewed: trade.idUsuario1,
                     stars: stars,
                     description: description,
+                    title : title,
                     ReviewerFirstName: userFound.firstname,
                     ReviewerLastName: userFound.lastname,
                     tradeId: tradeId,

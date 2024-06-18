@@ -52,7 +52,7 @@ const CreateReviewComponent = ({tradeId }) => {
   };
   const onSubmit = async (data) => {
     console.log(data);
-    const res = await createReview({tradeId: tradeId, stars: rating, description: data.descripcion});
+    const res = await createReview({tradeId: tradeId, stars: rating, description: data.descripcion,title: data.titulo});
     if (res.success){
       toast.success(res.success);
       router.refresh();
@@ -80,10 +80,18 @@ const CreateReviewComponent = ({tradeId }) => {
             <form onSubmit={onSubmitWithEvent}>
               <Input
                 type="text"
+                {...register("titulo", { required: true })}
+                placeholder="Título"
+                className="mt-3 block w-full"
+              />
+
+              <Input
+                type="text"
                 {...register("descripcion", { required: true })}
                 placeholder="Descripción"
                 className="mt-3 block w-full"
               />
+
               <div className="flex justify-center mt-4">
                   <Box sx={{'& > legend': { mt: 2 },}}>
                   <Rating
@@ -101,9 +109,9 @@ const CreateReviewComponent = ({tradeId }) => {
                   Realizar reseña
                 </Button>
               </div>
-              {(errors.descripcion || starError === true) && (
+              {(errors.descripcion || starError === true || errors.titulo) && (
                 <span className="text-red-500 text-sm mt-2 block text-center">
-                  Ingresa una descripción y selecciona una cantidad de estrellas
+                  Ingresa una descripción, un título y selecciona una cantidad de estrellas
                 </span>
               )}
             </form>

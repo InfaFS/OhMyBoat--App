@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { CreateComponent } from "@/components/WorkingComponent";
 import { Toaster } from "sonner";
 import {SidebarInfa} from '@/components/SidebarInfa.jsx'
+import { obtenerAutomovilesCard } from "../../../../data/posts";
 import {
   Pagination,
   PaginationContent,
@@ -15,54 +16,19 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 
-const font = Poppins({
-  subsets: ["latin"],
-  weight: ["600"],
-})
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from 'react';
 import CardPublicacion from "@/components/publicaciones/CardPublicacion";
-import Header from "next/head";
-import { obtenerPublicaciones } from "../../actions/publicacion";
 import { Button } from "@/components/ui/button";
-import { fakeBoatGenerator,fakeVehicleGenerator } from "../../actions/fakeDataGenerator";
 
 
-export default function Home() {
+
+export default function OrderBy({publicaciones}) {
+  console.log("hola");
   const [pageNumber, setPageNumber] = useState(1)
-  const [publicaciones, setPublicaciones] = useState([]);
 
   const publicacionesPerPage = 12;
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(publicacionesPerPage);
-
-  useEffect(() => {
-    const fetchPublicaciones = async () => {
-      try {
-        const data = await obtenerPublicaciones();
-        setPublicaciones(data);
-      } catch (error) {
-        console.error('Error al obtener las publicaciones:', error);
-      }
-    };
-
-    fetchPublicaciones();
-
-  }, []);
-
-
-  const onClickBoat = async () => {
-    const res = await fakeBoatGenerator();
-    console.log(res);
-  }
-
-  const onClickVehicle= async () => {
-    const res = await fakeVehicleGenerator();
-    console.log(res);
-  }
-
-
-
 
   return (
   <>

@@ -36,6 +36,17 @@ const columns = [
     )
   },
   {
+    accessorKey: "Title",
+    header: "Título",
+    cell: ({ row }) => (
+      <div className="flex justify-center">
+        <Link href={`/view-profile/${row.original.idReviewer}`}>
+          <Button variant="link">{row.original.ReviewerFirstName} {row.original.ReviewerLastName}</Button>
+        </Link>
+      </div>
+    )
+  },
+  {
     accessorKey: "descripcion",
     header: "Descripción",
     cell: ({ row }) => (

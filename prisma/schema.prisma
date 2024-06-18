@@ -161,5 +161,6 @@ model Review {
   description       String
   ReviewerFirstName String
   ReviewerLastName  String
+  title             String
   tradeId           String
 }

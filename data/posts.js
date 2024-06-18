@@ -215,3 +215,292 @@ export const eliminarPost = async ({completePostId}) => {
 
 
 }
+
+export const obtenerAutomovilesCard = async () => {
+    try {
+        const vehicles = await db.vehiclePost.findMany({
+            where: {
+                status: "ACTIVE",
+                type: "Automóvil",
+            }
+        });
+
+        console.log(vehicles.length);
+        let data = [];
+        for (let i = 0; i < vehicles.length; i++) {
+            console.log("pep")
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: vehicles[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch {
+        return null;
+    }
+}
+
+export const obtenerMotocicletasCard = async () => {
+    try {
+        const motos = await db.vehiclePost.findMany({
+            where: {
+                status: "ACTIVE",
+                type: "Motocicleta",
+            }
+        })
+        console.log(motos);
+        let data = [];
+        for (let i = 0; i < motos.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: motos[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+
+}
+
+export const obtenerCamionetasCard = async () => {
+    try {
+        const camionetas = await db.vehiclePost.findMany({
+            where: {
+                status: "ACTIVE",
+                type: "Camioneta",
+            }
+        })
+        console.log(camionetas);
+        let data = [];
+        for (let i = 0; i < camionetas.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: camionetas[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+
+}
+
+export const obtenerLanchasCard = async () => {
+    try {
+        const lanchas = await db.boatPost.findMany({
+            where: {
+                status: "ACTIVE",
+                type: "Lancha",
+            }
+        })
+        console.log(lanchas);
+        let data = [];
+        for (let i = 0; i < lanchas.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: lanchas[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}
+
+export const obtenerCatamaranesCard = async () => {
+    try {
+        const catamaranes = await db.boatPost.findMany({
+            where: {
+                status: "ACTIVE",
+                type: "Catamarán",
+            }
+        })
+        console.log(catamaranes);
+        let data = [];
+        for (let i = 0; i < catamaranes.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: catamaranes[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}
+
+export const obtenerVelerosCard = async () => {
+    try {
+        const veleros = await db.boatPost.findMany({
+            where: {
+                status: "ACTIVE",
+                type: "Velero",
+            }
+        })
+        console.log(veleros);
+        let data = [];
+        for (let i = 0; i < veleros.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: veleros[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}
+
+export const obtenerCrucerosCard = async () => {
+    try {
+        const cruceros = await db.boatPost.findMany({
+            where: {
+                status: "ACTIVE",
+                type: "Crucero",
+            }
+        })
+        console.log(cruceros);
+        let data = [];
+        for (let i = 0; i < cruceros.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: cruceros[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}
+
+
+
+export const obtenerBoatsPorModeloCard = async ({modelo}) => {
+    try {
+        console.log(modelo);
+        const boats = await db.boatPost.findMany({
+            where: {
+                status: "ACTIVE",
+                modelo: modelo,
+            }
+        })
+        console.log(boats);
+        let data = [];
+        for (let i = 0; i < boats.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: boats[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}
+
+
+export const obtenerVehiclesPorModeloCard = async ({modelo}) => {
+    try {
+        console.log(modelo);
+        const vehicles = await db.vehiclePost.findMany({
+            where: {
+                status: "ACTIVE",
+                modelo: modelo,
+            }
+        })
+        console.log(vehicles);
+        let data = [];
+        for (let i = 0; i < vehicles.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: vehicles[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}
+
+export const obtenerBoatsPorPrecio = async ({precio}) => {
+    try {
+        console.log(precio);
+        const BoatsByPrice = await db.boatPost.findMany({
+            where: {
+                status: "ACTIVE",
+                deuda: precio,
+            }
+        })
+        console.log(BoatsByPrice);
+        let data = [];
+        for (let i = 0; i < BoatsByPrice.length; i++) {
+            const card = await db.cardPost.findFirst({
+                where: {
+                    idCompletePost: BoatsByPrice[i].id,
+                }
+            });
+            console.log(card);
+            data.push(card);
+        }
+        console.log(data.length)
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}

@@ -34,7 +34,7 @@ export default function RatingComponent({number=0,format='normal'}) {
         </div>
       ) : (
         <div>
-          <Typography component="legend">Puntuación</Typography>
+          <h1 className='font-semibold'>Puntuación</h1>
           <Rating name="read-only" value={number} readOnly />
         </div>
 
