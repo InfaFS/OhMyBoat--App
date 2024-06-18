@@ -18,7 +18,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { CreateComponent } from "@/components/WorkingComponent";
 import { reanudarPublicaciónBarco } from "../../../../actions/PausarReanudarPost";
 import { pausarPublicaciónBarco } from "../../../../actions/PausarReanudarPost";
-export const BoatView = ({boatPost, userSessionId}) => {
+export const BoatView = ({boatPost, userSessionId, role}) => {
     const router = useRouter();
     
     const handleBack = () => {
@@ -117,7 +117,7 @@ export const BoatView = ({boatPost, userSessionId}) => {
             <CardFooter className="flex justify-center items-center h-full">
             {(userSessionId !== boatPost.idPublisher && userSessionId) && (
                 <div>
-                { boatPost.status === "ACTIVE" && (
+                { (boatPost.status === "ACTIVE" && role === "USER")  && (
                   <Link href={`/viewPosts/view-ship/${boatPost.id}/offer`}>
                     <Button className="bg-sky-500">Ofertar</Button>        
                   </Link>

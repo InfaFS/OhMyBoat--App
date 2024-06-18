@@ -33,7 +33,7 @@ export async function HeaderTincho() {
   return (
     <header className="bg-gradient-to-r from-sky-600 to-sky-100 text-black w-full py-3 shadow-lg bg-cover bg-center">
       <div className="container mx-auto flex items-center justify-between">
-        <Link href="/">
+        <Link href="/viewPosts">
           {session ? (
             <span className="text-slate-200 font-bold hover:text-white" style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
               <img src="/Oh_My_Boat_logo_4.jpg" alt="Logo de Oh My Boat" width={60} height={60} />

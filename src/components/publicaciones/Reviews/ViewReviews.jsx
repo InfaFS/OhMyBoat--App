@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { MoveLeft } from "lucide-react";
+import { MoveLeft, Trash2 } from "lucide-react";
 import RatingComponent from "@/components/profile/RatingComponent";
 import {
   flexRender,
@@ -22,8 +22,10 @@ import {
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { deleteReview } from "../../../../actions/reviewActions";
 
-const columns = [
+const regex = /\bmierda\b/i;
+const columns  = (handleDeleteReviewConfirmation,user) => [
   {
     accessorKey: "idOfertante",
     header: "Reseñador",
@@ -40,9 +42,7 @@ const columns = [
     header: "Título",
     cell: ({ row }) => (
       <div className="flex justify-center">
-        <Link href={`/view-profile/${row.original.idReviewer}`}>
-          <Button variant="link">{row.original.ReviewerFirstName} {row.original.ReviewerLastName}</Button>
-        </Link>
+        {row.original.title}
       </div>
     )
   },
@@ -51,7 +51,14 @@ const columns = [
     header: "Descripción",
     cell: ({ row }) => (
       <div className="text-center">
-        {row.original.description}
+        
+        {(regex.test(row.original.description)) ? (
+          <p className="text-red-500">{row.original.description}</p>
+        ): (
+          <p>{row.original.description}</p>
+        
+        )}
+
       </div>
     )
   },
@@ -62,22 +69,48 @@ const columns = [
       <div className="flex flex-col items-center">
         <div className="flex justify-center">
           <RatingComponent number={row.original.stars} format="table" />
+          {user === "ADMIN" && (
+            <Trash2 size={20} className="ml-2 hover:text-red-500 cursor-pointer" onClick={() => handleDeleteReviewConfirmation({reviewId: row.original.id})} />
+          )}
         </div>
       </div>
     )
   },
 ];
 
-export function ReviewsTable({ data }) {
+export function ReviewsTable({ data, user='USER' }) {
   const router = useRouter();
+  console.log(user);
 
+
+  const handleDeleteReview = async ({reviewId}) => {
+    console.log(reviewId);
+    const res = await deleteReview({reviewId});
+    console.log(res)
+    if (res.success){
+      toast.success(res.success);
+      router.refresh();
+  }
+}
+const handleDeleteReviewConfirmation = ({reviewId}) => {
+  console.log(reviewId)
+  toast.error("Estás seguro de que quieres eliminar esta reseña?", {
+    action: <>
+    <div>
+      <button onClick={() => {handleDeleteReview({reviewId});toast.dismiss()}} className='hover:text-red-800 text-red-500'>Confirmar</button>
+      <button onClick={() => {toast.dismiss()}} className='hover:text-red-800 text-red-500'>Cancelar</button>
+      </div>
+    </> ,
+})
+}
   const table = useReactTable({
     data: data,
-    columns: columns,
+    columns: columns(handleDeleteReviewConfirmation,user),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 5 } } // Set page size to 5
   });
+
 
   const handleBack = () => {
     router.back();

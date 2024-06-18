@@ -20,7 +20,7 @@ import { CreateComponent } from "@/components/WorkingComponent";
 import { useRouter } from "next/navigation";
 import { reanudarPublicaciónVehículo } from "../../../../actions/PausarReanudarPost";
 
-export const VehicleView = ({vehiclePost,userSessionId}) => {
+export const VehicleView = ({vehiclePost,userSessionId,role}) => {
     const router = useRouter();    
     const handleBack = () => {
         router.back();
@@ -120,7 +120,7 @@ export const VehicleView = ({vehiclePost,userSessionId}) => {
             <CardFooter className="flex justify-center items-center h-full">
             {(userSessionId !== vehiclePost.idPublisher && userSessionId) && (
                 <div>
-                  { (vehiclePost.status === "ACTIVE") && (
+                  { (vehiclePost.status === "ACTIVE" && role === "USER") && (
                       <Link href={`/viewPosts/view-vehicle/${vehiclePost.id}/offer`}>
                       <Button className="bg-sky-500">Ofertar</Button>        
                       </Link>

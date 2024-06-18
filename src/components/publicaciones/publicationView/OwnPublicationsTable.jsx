@@ -17,11 +17,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { eliminarPost } from "../../../../data/posts";
+import { eliminarPost, eliminarPostComoDuenio } from "../../../../data/posts";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const columns = (handleDeleteConfirmation) => [
+const columns = (handleDeleteConfirmation,user) => [
   {
     accessorKey: "title",
     header: "Post",
@@ -48,9 +48,12 @@ const columns = (handleDeleteConfirmation) => [
     header: "Acciones",
     cell: ({ row }) => (
       <div className="flex justify-center mt-2">
-        <Link href={`/profile/offer/${row.original.idCompletePost}`}>
-          <Button className="bg-sky-500 text-sm w-full h-full">Ofertas</Button>
-        </Link>
+        {user === 'USER' && (
+            <Link href={`/profile/offer/${row.original.idCompletePost}`}>
+            <Button className="bg-sky-500 text-sm w-full h-full">Ofertas</Button>
+          </Link>
+        )}
+
         { (row.original.status === "HIDDEN" || row.original.status === "ACTIVE") && (
           <Trash2 size={20} className="hover:text-red-500 cursor-pointer ml-2" onClick={() => handleDeleteConfirmation({completePostId: row.original.idCompletePost})}/>
         )}
@@ -78,19 +81,30 @@ const columns = (handleDeleteConfirmation) => [
   },
 ];
 
-export function OwnPublicationsTable({ data }) {
+export function OwnPublicationsTable({ data,user='USER' }) {
   const router = useRouter();
   const handleBack = () => {
     router.back();
   };
   const handleDelete = async ({completePostId}) => {
-    console.log(completePostId)
-    const res = await eliminarPost({completePostId: completePostId});
-    console.log(res);
-    if (res?.success){
-      toast.success(res.success);
-      router.refresh();
+    if( user === "ADMIN"){
+      console.log(completePostId)
+      const res = await eliminarPostComoDuenio({completePostId: completePostId});
+      console.log(res);
+      if (res?.success){
+        toast.success(res.success);
+        router.refresh();
+      }
+    } else {
+      console.log(completePostId)
+      const res = await eliminarPost({completePostId: completePostId});
+      console.log(res);
+      if (res?.success){
+        toast.success(res.success);
+        router.refresh();
+      }
     }
+
   }
 
   const handleDeleteConfirmation = ({completePostId}) => {
@@ -106,7 +120,7 @@ export function OwnPublicationsTable({ data }) {
   }
   const table = useReactTable({
     data: data,
-    columns: columns(handleDeleteConfirmation),
+    columns: columns(handleDeleteConfirmation,user),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 3 } }

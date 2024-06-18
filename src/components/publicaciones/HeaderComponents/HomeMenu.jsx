@@ -38,7 +38,7 @@ export default function HomeMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <Link href="/">
+        <Link href="/viewPosts">
         <MenuItem onClick={handleClose} className="text-sm"> <Milestone  height={20} width={20} className='mr-2' />Ver publicaciones</MenuItem>
         </Link>
       </Menu>

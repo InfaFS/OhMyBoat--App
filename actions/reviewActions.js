@@ -117,3 +117,62 @@ export const getUserReviewsByUserId = async (id) => {
     }
 
 }
+
+export const deleteReview = async ({reviewId}) => {
+    try {
+        console.log(reviewId)
+        const review = await db.review.delete({
+            where: {
+                id: reviewId,
+            },
+        });
+        console.log(review.idReviewed);
+        const usuarioPerjudicado = await getUserById(review.idReviewer);
+        console.log(usuarioPerjudicado);
+        const notifReseniado = await db.notification.create({
+            data: {
+                idEmisor: '???',
+                idReceptor: review.idReviewed,
+                title: 'Reseña eliminada',
+                description: `Una reseña realizada por el usuario ${usuarioPerjudicado.firstname} ${usuarioPerjudicado.lastname} ha sido eliminada debido a que no cumplia con los terminos y condiciones`,
+                seen: false,
+                type: 'REVIEW',
+            }
+        })
+        console.log(notifReseniado);
+        const usuarioReseniado = await getUserById(review.idReviewed);
+        console.log(usuarioReseniado);
+        const notifReseniador = await db.notification.create({
+            data: {
+                idEmisor: '???',
+                idReceptor: review.idReviewer,
+                title: 'Reseña eliminada',
+                description: `Una reseña que realizaste al usuario ${usuarioReseniado.firstname} ${usuarioReseniado.lastname} ha sido eliminada debido a que no cumplia con los terminos y condiciones`,
+                seen: false,
+                type: 'REVIEW',
+            }
+        })
+        console.log(notifReseniador);
+
+        return {success: "Reseña eliminada con éxito!"}
+    } catch(error){
+        console.log(error);
+        return null;
+    }
+
+
+}
+
+export const getAllReviews = async () => {
+    try {
+        const reviews = await db.review.findMany()
+        console.log(reviews);
+        return reviews;
+
+    } catch(error){
+        console.log(error)
+        return null;
+    }
+
+
+}

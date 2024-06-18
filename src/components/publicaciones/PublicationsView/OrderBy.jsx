@@ -1,98 +1,90 @@
 "use client"
-import { useRouter } from "next/navigation"
-import { Poppins } from "next/font/google";
-import { cn } from "@/lib/utils"
-import { CreateComponent } from "@/components/WorkingComponent";
-import { Toaster } from "sonner";
-import {SidebarInfa} from '@/components/SidebarInfa.jsx'
-import { obtenerAutomovilesCard } from "../../../../data/posts";
+import { useState, useEffect } from 'react';
+import Sidebar from "@/components/Sidebar";
+import CardPublicacion from "@/components/publicaciones/CardPublicacion";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
+  PaginationNext,
+} from "@/components/ui/pagination";
 
-import { useEffect, useState } from 'react';
-import CardPublicacion from "@/components/publicaciones/CardPublicacion";
-import { Button } from "@/components/ui/button";
-
-
-
-export default function OrderBy({publicaciones}) {
-  console.log("hola");
-  const [pageNumber, setPageNumber] = useState(1)
-
+export default function OrderBy({ publicaciones }) {
+  const [pageNumber, setPageNumber] = useState(1);
   const publicacionesPerPage = 12;
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(publicacionesPerPage);
+  const [fix,setFix] = useState(false);
+  // function setFixedSideBar(){
+  //   if (window.scrollY >= 500) {
+  //     console.log("entro")
+  //     setFix(true)
+  //   } else {
+  //     console.log("entro")
+  //     setFix(false)
+  //   }
+  // }
 
+  //window.addEventListener("scroll",setFixedSideBar)
   return (
-  <>
-  <main className="flex flex-col items-center bg-blancoahumado min-h-screen"> {/* h-full */}
-    <section className="space-y-6 text-center">
-      <h1 className="text-4xl font-semibold text-black drop-shadow-md mt-10">
-        Publicaciones
-      </h1>
-      <SidebarInfa/>
-      { publicaciones.length === 0 && (
-        <div>
-          <p className="text-black font-semibold">No hay publicaciones por el momento, vuelve más tarde...</p>
-        </div>
-      )}
-      {/*  <div className="flex justify-center mb-6">
-      <Button className="mr-2" onClick={onClickBoat}>Generador Barcos</Button>
-      <Button onClick={onClickVehicle}>Generador Vehiculos</Button>
-      </div> */}
+      <div className="flex">
+        {/* Sidebar */}
+      <Sidebar/>
 
-  
-  
-      <section className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-        {publicaciones.slice(startIndex, endIndex).map((publicacion) => (
-          <CardPublicacion
-            key={publicacion.id}
-            modelo={publicacion.modelo}
-            titulo={publicacion.title}
-            img={publicacion.img}
-            isBoat={publicacion.boat}
-            idCompletePost={publicacion.idCompletePost}
-          />
-        ))}
-      </section>
-      
-    </section>
-    
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              className={
-                startIndex === 0 ? "pointer-events-none opacity-50" : undefined
-              }
-              onClick={() => {
-                setStartIndex(startIndex - publicacionesPerPage);
-                setEndIndex(endIndex - publicacionesPerPage);
-              }} />
-          </PaginationItem>
-
-          <PaginationItem>
-            <PaginationNext
-              className={
-                endIndex >=  publicaciones.length  ? "pointer-events-none opacity-50" : undefined //aca tendria q poner la cant de publicaciones totales dividido la cantidad de publicaciones por pagina pero no se como hacerlo
-              }
-              onClick={() => {
-                setStartIndex(startIndex + publicacionesPerPage); 
-                setEndIndex(endIndex + publicacionesPerPage); 
-              }} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    
-  </main>
-  </>
-);
-
+      {/* Main Content */}
+      <main className="flex-1 ml-64 flex flex-col items-center bg-blancoahumado overflow-y-hidden">
+        <section className="space-y-6 text-center">
+          <h1 className="text-4xl font-semibold text-black drop-shadow-md">
+            Publicaciones
+          </h1>
+          {publicaciones.length === 0 && (
+            <div>
+              <p className="text-black font-semibold">No hay publicaciones por el momento, vuelve más tarde...</p>
+            </div>
+          )}
+          <section className="w-full px-4">
+            <div  className="overflow-y-auto grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3" style={{ maxHeight: 580}} >
+              {publicaciones.slice(startIndex, endIndex).map((publicacion) => (
+                <CardPublicacion
+                  key={publicacion.id}
+                  modelo={publicacion.modelo}
+                  titulo={publicacion.title}
+                  img={publicacion.img}
+                  isBoat={publicacion.boat}
+                  idCompletePost={publicacion.idCompletePost}
+                />
+              ))}
+            </div>
+          </section>
+        </section>
+        <Pagination className="w-full">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                className={
+                  startIndex === 0 ? "pointer-events-none opacity-50" : undefined
+                }
+                onClick={() => {
+                  setStartIndex(startIndex - publicacionesPerPage);
+                  setEndIndex(endIndex - publicacionesPerPage);
+                }}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                className={
+                  endIndex >= publicaciones.length ? "pointer-events-none opacity-50" : undefined
+                }
+                onClick={() => {
+                  setStartIndex(startIndex + publicacionesPerPage);
+                  setEndIndex(endIndex + publicacionesPerPage);
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </main>
+    </div>
+  );
 }

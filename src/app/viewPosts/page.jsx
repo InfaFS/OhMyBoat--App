@@ -1,11 +1,16 @@
-import { CreateComponent } from "@/components/WorkingComponent"
-function viewPosts () {
+import OrderBy from "@/components/publicaciones/PublicationsView/OrderBy";
+import { obtenerPublicaciones } from "../../../actions/publicacion";
+import Sidebar from "@/components/Sidebar";
+async function viewPostsPage() {
+    const publicaciones = await obtenerPublicaciones()
+    console.log(publicaciones);
+    console.log(publicaciones.length)
+  return (
+    <>
+        <OrderBy publicaciones={publicaciones}/>
+    </>
 
-    return (
-        <div>
-            <CreateComponent titulo="Estamos trabajando para que puedas ver todas las publicaciones 🌎" backLink={"/"}/>
-        </div>
-    )
+  );
 }
 
-export default viewPosts
+export default viewPostsPage;

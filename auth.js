@@ -71,4 +71,4 @@ export const { handlers, auth, signIn, signOut} = NextAuth({
   }
 });
 
-//pongo dantos en el token, de ahi lo asigno a la session y de ahi se cara desde u
+//pongo dantos en el token, de ahi lo asigno a la session y de ahi se cara desde up

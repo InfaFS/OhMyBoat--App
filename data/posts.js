@@ -3,6 +3,18 @@ import { db } from "@/lib/db";
 import { getCardPostByCompletePostId } from "./cardPosts";
 import { CancelarOfertas, RechazarOfertas } from "../actions/Offer";
 
+export const getAllPosts = async () => {
+    try{
+        const posts = await db.cardPost.findMany();
+        return posts;
+
+    } catch(error){
+        console.log(error);
+        return null;
+    }
+
+}
+
 export const ocultarEmbarcacion = async ({completePostId}) => {
     try {
         console.log(completePostId)
@@ -214,6 +226,25 @@ export const eliminarPost = async ({completePostId}) => {
     }
 
 
+}
+
+export const eliminarPostComoDuenio = async ({completePostId}) => {
+    const res = await eliminarPost({completePostId});
+    const cardPost = await getCardPostByCompletePostId({completePostId});
+    console.log(cardPost);
+    console.log(res);
+    const notificarUsuario = await db.notification.create({
+        data: {
+            idEmisor: "???",
+            idReceptor: cardPost.idPublisher,
+            description: `Tu publicación ${cardPost.title} ha sido eliminada debido a que no cumplía con los términos y condiciones de la plataforma`,
+            title: "Publicación eliminada",
+            seen: false,
+            type: "POST_DELETED",
+        }
+    });
+    console.log(notificarUsuario)
+    return {success: "El post fue eliminado y se le notifico al usuario"};
 }
 
 export const obtenerAutomovilesCard = async () => {
