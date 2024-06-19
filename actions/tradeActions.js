@@ -641,3 +641,467 @@ export const updateAllTradesByPostId = async ({postId}) => {
     }
 }
 
+
+export const getConfirmedTradesById = async (id) => {
+    try {
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+                status: "TRUEQUE_REALIZADO"
+            }
+        });
+        return trades;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+export const getPendingDateTradesById = async (id) => {
+    try {
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+                status: "FECHA_PENDIENTE"
+            }
+        });
+        return trades;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+export const getConfirmedDateTradesById = async (id) => {
+    try {
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+                status: "FECHA_PACTADA"
+            }
+        });
+        return trades;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+export const getRejectedTradesById = async (id) => {
+    try {
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+                status: "TRUEQUE_NO_REALIZADO"
+            }
+        });
+        return trades;
+
+    } catch {
+        return null;
+    }
+
+}
+
+export const getTradesByDateAndId = async ({id,date}) => {
+    try {
+        console.log(id)
+        console.log(date)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+                OR: [
+                    { proposedDay1: date},
+                    { proposedDay2: date},
+                ]
+            }
+        });
+        return trades;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+export const getTradesByMotorbikeAndId = async (id) => {
+    try {
+        console.log(id)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+            }
+        });
+
+        console.log(trades)
+
+        let data = [];
+        for (let i = 0; i < trades.length; i++) {
+            const post1 = await db.vehiclePost.findFirst({
+                where: {
+                    id: trades[i].idPost1,
+                }
+            })
+            const post2 = await db.vehiclePost.findFirst({
+                where: {
+                    id: trades[i].idPost2,
+                }
+            })
+            console.log(post1)
+            console.log(post2)
+            if (post1 !== null && post1.type === "Motocicleta"){
+                console.log("entra")
+                data.push(trades[i]);
+            } else if (post2 !== null && post2.type === "Motocicleta"){
+                console.log("entra")
+                data.push(trades[i]);
+            }
+
+        }
+        return data;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+export const getTradesByVanAndId = async (id) => {
+    try {
+        console.log(id)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+            }
+        });
+
+        console.log(trades)
+
+        let data = [];
+        for (let i = 0; i < trades.length; i++) {
+            const post1 = await db.vehiclePost.findFirst({
+                where: {
+                    id: trades[i].idPost1,
+                }
+            })
+            const post2 = await db.vehiclePost.findFirst({
+                where: {
+                    id: trades[i].idPost2,
+                }
+            })
+            console.log(post1)
+            console.log(post2)
+            if (post1 !== null && post1.type === "Camioneta"){
+                console.log("entra")
+                data.push(trades[i]);
+            } else if (post2 !== null && post2.type === "Camioneta"){
+                console.log("entra")
+                data.push(trades[i]);
+            }
+
+        }
+        return data;
+
+    } catch {
+        return null;
+    }
+
+}
+
+export const getTradesByCarAndId = async (id) => {
+    try {
+        console.log(id)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+            }
+        });
+
+        console.log(trades)
+
+        let data = [];
+        for (let i = 0; i < trades.length; i++) {
+            const post1 = await db.vehiclePost.findFirst({
+                where: {
+                    id: trades[i].idPost1,
+                }
+            })
+            const post2 = await db.vehiclePost.findFirst({
+                where: {
+                    id: trades[i].idPost2,
+                }
+            })
+            console.log(post1)
+            console.log(post2)
+            if (post1 !== null && post1.type === "Automóvil"){
+                console.log("entra")
+                data.push(trades[i]);
+            } else if (post2 !== null && post2.type === "Automóvil"){
+                console.log("entra")
+                data.push(trades[i]);
+            }
+
+        }
+        return data;
+
+    } catch {
+        return null;
+    }
+
+}
+
+export const getTradesByCatamaranAndId = async (id) => {
+    try {
+        console.log(id)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+            }
+        });
+
+        console.log(trades)
+
+        let data = [];
+        for (let i = 0; i < trades.length; i++) {
+            const post1 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost1,
+                }
+            })
+            const post2 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost2,
+                }
+            })
+            console.log(post1)
+            console.log(post2)
+            if (post1 !== null && post1.type === "Catamarán"){
+                console.log("entra")
+                data.push(trades[i]);
+            } else if (post2 !== null && post2.type === "Catamarán"){
+                console.log("entra")
+                data.push(trades[i]);
+            }
+
+        }
+        return data;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+export const getTradesByCruiseAndId = async (id) => {
+    try {
+        console.log(id)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+            }
+        });
+
+        console.log(trades)
+
+        let data = [];
+        for (let i = 0; i < trades.length; i++) {
+            const post1 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost1,
+                }
+            })
+            const post2 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost2,
+                }
+            })
+            console.log(post1)
+            console.log(post2)
+            if (post1 !== null && post1.type === "Crucero"){
+                console.log("entra")
+                data.push(trades[i]);
+            } else if (post2 !== null && post2.type === "Crucero"){
+                console.log("entra")
+                data.push(trades[i]);
+            }
+
+        }
+        return data;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+
+export const getTradesBySailboatAndId = async (id) => {
+    try {
+        console.log(id)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+            }
+        });
+
+        console.log(trades)
+
+        let data = [];
+        for (let i = 0; i < trades.length; i++) {
+            const post1 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost1,
+                }
+            })
+            const post2 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost2,
+                }
+            })
+            console.log(post1)
+            console.log(post2)
+            if (post1 !== null && post1.type === "Velero"){
+                console.log("entra")
+                data.push(trades[i]);
+            } else if (post2 !== null && post2.type === "Velero"){
+                console.log("entra")
+                data.push(trades[i]);
+            }
+
+        }
+        return data;
+
+    } catch {
+        return null;
+    }
+
+}
+
+
+
+export const getTradesByLanchaAndId = async (id) => {
+    try {
+        console.log(id)
+        const trades = await db.trade.findMany({
+            where: {
+                OR: [
+                    { idUsuario1: id },
+                    { idUsuario2: id },
+                ],
+            }
+        });
+
+        console.log(trades)
+
+        let data = [];
+        for (let i = 0; i < trades.length; i++) {
+            const post1 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost1,
+                }
+            })
+            const post2 = await db.boatPost.findFirst({
+                where: {
+                    id: trades[i].idPost2,
+                }
+            })
+            console.log(post1)
+            console.log(post2)
+            if (post1 !== null && post1.type === "Lancha"){
+                console.log("entra")
+                data.push(trades[i]);
+            } else if (post2 !== null && post2.type === "Lancha"){
+                console.log("entra")
+                data.push(trades[i]);
+            }
+
+        }
+        return data;
+
+    } catch {
+        return null;
+    }
+
+}
+
+export const getAllCheckedTradesByDate = async (date) => {
+
+    try {
+        console.log(date)
+        const checkedTrades = await db.trade.findMany({
+            where: {
+                OR : [
+                    { status: "TRUEQUE_REALIZADO"},
+                    { status: "TRUEQUE_NO_REALIZADO"},
+                ],
+                proposedDay1: date,
+            }
+        });
+        console.log(checkedTrades)
+        return checkedTrades;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export const getAllPendingTradesByDate = async (date) => {
+
+    try {
+        console.log(date)
+        const checkedTrades = await db.trade.findMany({
+            where: {
+                status: "FECHA_PACTADA",
+                proposedDay1: date,
+            }
+        });
+        console.log(checkedTrades)
+        return checkedTrades;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}

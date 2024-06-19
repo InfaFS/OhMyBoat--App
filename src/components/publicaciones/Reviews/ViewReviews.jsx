@@ -1,8 +1,12 @@
 "use client"
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import { MoveLeft, Trash2 } from "lucide-react";
 import RatingComponent from "@/components/profile/RatingComponent";
+import Rating from '@mui/material/Rating';
+import Box from '@mui/material/Box';
+import { Search } from "lucide-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -78,10 +82,30 @@ const columns  = (handleDeleteReviewConfirmation,user) => [
   },
 ];
 
-export function ReviewsTable({ data, user='USER' }) {
+export function ReviewsTable({ data, user='USER',userId,stars = null }) {
   const router = useRouter();
+  const [rating, setRating] = useState(stars);
+  const [starError, setStarError] = useState(false);
   console.log(user);
 
+  const handleSearch = () => {
+
+    if (rating === null){
+      setStarError(true);
+      return;
+    }
+    router.push(`/view-reviews/${userId}/filterByStars/${rating}`);
+
+  }
+  const handleRatingChange = (event, newValue) => {
+    console.log(newValue)
+    if(newValue === null){
+      router.push(`/view-reviews/${userId}`);
+    }
+    setRating(newValue); 
+    setStarError(false);
+    console.log("Selected Rating:", newValue);
+  };
 
   const handleDeleteReview = async ({reviewId}) => {
     console.log(reviewId);
@@ -126,6 +150,23 @@ const handleDeleteReviewConfirmation = ({reviewId}) => {
               <CardTitle className="text-center text-2xl font-semibold text-sky-600">Reseñas</CardTitle>
             </CardHeader>
             <CardContent>
+            {starError && (<span className="text-red-500 text-sm">Selecciona una cantidad de estrellas</span>)}
+            <div className="flex items-center mb-2 space-x-2">
+              <Box sx={{ '& > legend': { mt: 2 } }}>
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={handleRatingChange}
+                  className="text-lg"
+                />
+              </Box>
+              <Search
+                className="hover:text-slate-500 cursor-pointer"
+                height={15}
+                width={15}
+                onClick={handleSearch}
+              />
+          </div>
               <div className="rounded-md border overflow-hidden">
                 <Table>
                   <TableHeader>

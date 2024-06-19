@@ -48,7 +48,7 @@ export const VehicleForm = () => {
     const res = await publicarVehiculo({title, descripcion, patente, modelo, kilometraje, cantpuertas, type,archivo});
     if (res.success) {
       toast.success("¡Publicación creada!");
-      router.push("/");
+      router.push("/viewPosts");
     } else {
       setImageError(res?.error);
     }

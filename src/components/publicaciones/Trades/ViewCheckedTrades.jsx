@@ -1,10 +1,12 @@
 "use client"
+import { useState } from "react";
 import { getBoatPostById } from "../../../../data/posts";
 import { useRouter } from "next/navigation";
 import { ContactPopover } from "./ContactPopover";
 import { toast } from "sonner";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -125,9 +127,12 @@ const columns = (handleAmpliarPublicacion) => [
   },
 ];
 
-
-export function CheckedTradesTable({data}) {
+export function CheckedTradesTable({data,paramDate=""}) {
   const router = useRouter();
+  console.log(paramDate)
+  const [filterDate, setFilterDate] = useState(paramDate);
+  const [filterErorr,setFilterError] = useState(false)
+  console.log(filterDate)
   const handleBack = () => {
     router.back();
   }
@@ -143,6 +148,14 @@ export function CheckedTradesTable({data}) {
     }
   };
 
+  const handleSearch = () => {
+    if (filterDate === "" ){
+      setFilterError(true)
+      return
+    }
+    router.push(`/manager/trueques-revisados/filterBy/date/${filterDate}`)
+
+  }
   const table = useReactTable({
     data: data,
     columns: columns(handleAmpliarPublicacion),
@@ -161,6 +174,18 @@ export function CheckedTradesTable({data}) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques revisados</CardTitle>
             </CardHeader>
             <CardContent>
+            {filterErorr && <div className="text-red-500 text-sm">Por favor ingrese una fecha</div>}
+            <div className="flex items-center mb-2 space-x-2">
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => {setFilterDate(e.target.value); setFilterError(false)}}
+                  className="border p-2 rounded-md"
+                />
+                  <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handleSearch} />
+              </div>
+              
+              
               <div className="rounded-md border">
                 <Table>
                   <TableHeader>

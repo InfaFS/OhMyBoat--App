@@ -8,7 +8,7 @@ async function ViewReviewsPage({params}) {
     console.log(params.userId)
     return (
         <div>
-            <ReviewsTable data={reviews}/>
+            <ReviewsTable data={reviews} userId={params.userId}/>
         </div>
     );
 }

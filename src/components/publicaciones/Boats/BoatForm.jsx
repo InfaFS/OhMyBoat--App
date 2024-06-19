@@ -47,7 +47,7 @@ export const BoatForm = () => {
     const res = await publicarBarco({ title, modelo, descripcion, matricula, eslora, manga, metros, deuda,type, archivo });
     if (res.success) {
       toast.success("¡Publicación creada!");
-      router.push("/");
+      router.push("/viewPosts");
     } else {
       setImageError(res?.error);
     }

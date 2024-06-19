@@ -5,7 +5,15 @@ import { getUserById } from "../../../../data/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getConfirmedOffersByPostId } from "../../../../data/getOffers";
-import { Check, Hourglass, LucideAlignHorizontalSpaceBetween, MoveLeft, X } from "lucide-react";
+import { Check, Hourglass, LucideAlignHorizontalSpaceBetween, MoveLeft, Search, X } from "lucide-react";
+
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
+
 import {
   flexRender,
   getCoreRowModel,
@@ -25,6 +33,7 @@ import {
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const columns = (handleRejectConfirmation,handleConfirmation) => [ 
   {
@@ -145,10 +154,12 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
 
 
 
-export function OffersTable({ data }) {
+export function OffersTable({ data, isBoat,postId,filter=''}) {
+  console.log(isBoat)
+  console.log(postId)
   const router = useRouter()
-
-
+  const [filterValue,setFilterValue] = useState(filter)
+  console.log(filterValue)
   const handleReject = async (offerId) => {
     console.log(offerId)
     const response = await RechazarOferta({ offerId });
@@ -217,6 +228,99 @@ export function OffersTable({ data }) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Ofertas</CardTitle>
             </CardHeader>
             <CardContent>
+              {isBoat === false && (
+              <div className="flex flex-col space-y-2 p-2 bg-white shadow-md rounded-md border border-gray-200">
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label" className="flex">
+                  Filtrar:
+                </FormLabel>
+                <RadioGroup
+                  row
+                  value={filterValue}
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  onChange={(e) => {
+                    setFilterValue(e.target.value);
+                    router.push(`/profile/offer/${postId}/filterBy/boat/${e.target.value}`);
+                  }}
+                >
+                  <FormControlLabel
+                    value="catamaran"
+                    control={<Radio size="small" />}
+                    label="Catamarán"
+                  />
+                  <FormControlLabel
+                    value="cruise"
+                    control={<Radio size="small" />}
+                    label="Crucero"
+                  />
+                  <FormControlLabel
+                    value="lancha"
+                    control={<Radio size="small" />}
+                    label="Lancha"
+                  />
+                  <FormControlLabel
+                    value="sailboat"
+                    control={<Radio size="small" />}
+                    label="Velero"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <div className="flex">
+                <input
+                  type="number"
+                  placeholder="Modelo"
+                  className="border rounded-md p-1"
+                  onChange={(e) => {setFilterValue(e.target.value)}}
+                />
+                <Search
+                  className="hover:text-slate-500 cursor-pointer mt-2"
+                  height={20}
+                  width={20}
+                  onClick={() => router.push(`/profile/offer/${postId}/filterBy/boat/model/${filterValue}`)}
+                />
+
+                <div className="ml-4 flex">
+                <input
+                  type="number"
+                  placeholder="Valor"
+                  className="border rounded-md p-1"
+                  onChange={(e) => {setFilterValue(e.target.value)}}
+                />
+                <Search
+                  className="hover:text-slate-500 cursor-pointer mt-2"
+                  height={20}
+                  width={20}
+                  onClick={() => router.push(`/profile/offer/${postId}/filterBy/boat/price/${filterValue}`)}
+                />
+              </div>
+              </div>
+             
+            </div>
+              )}
+
+            {isBoat === true && (
+               <div className="flex flex-col space-y-2 p-2 bg-white shadow-md rounded-md border border-gray-200">
+               <FormControl>
+                 <FormLabel id="demo-row-radio-buttons-group-label" className="mb-2 font-semibold text-gray-700">Filtrar:</FormLabel>
+                 <RadioGroup
+                   row
+                   value={filterValue}
+                   aria-labelledby="demo-row-radio-buttons-group-label"
+                   name="row-radio-buttons-group"
+                   onChange={(e) => { setFilterValue(e.target.value); router.push(`/profile/offer/${postId}/filterBy/vehicle/${e.target.value}`) }}
+                 >
+                   <FormControlLabel value="van" control={<Radio size="small" />} label="Camioneta" />
+                   <FormControlLabel value="motorbike" control={<Radio size="small" />} label="Motocicleta" />
+                   <FormControlLabel value="automov" control={<Radio size="small" />} label="Automóvil" />
+                 </RadioGroup>
+               </FormControl>
+               <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setFilterValue(e.target.value)}} />
+               <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={() => router.push(`/profile/offer/${postId}/filterBy/vehicle/model/${filterValue}`)} />
+             </div>
+              )}
+
+              
               <div className="rounded-md border">
                 <Table>
                   <TableHeader>

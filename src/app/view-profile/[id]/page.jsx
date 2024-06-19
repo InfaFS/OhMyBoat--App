@@ -6,7 +6,9 @@ async function viewPage ({params}) {
     console.log(params)
     const userData = await getUserById(params.id)
     const stars = await UserRatingProm(params.id);
-    const reviews = (await getUserReviewsByUserId(params.id)).slice(0, 5);
+    const reviews = (await getUserReviewsByUserId(params.id))
+    .filter(review => review.stars === 4 || review.stars === 5)
+    .slice(0, 5);
     console.log(reviews.length)
     console.log(stars)
     console.log(userData)

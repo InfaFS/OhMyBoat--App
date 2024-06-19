@@ -26,29 +26,6 @@ export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,
     beforeChange: (oldIndex, newIndex) => setCurrentSlide(newIndex),
   };
 
-  const fake_reviews = [
-    {
-      id: 1,
-      title: "Excelente",
-      stars: 5,
-      ReviewerFirstName: "Juan",
-      ReviewerLastName: "Perez",
-    },
-    {
-      id: 2,
-      title: "Muy Bueno",
-      stars: 4,
-      ReviewerFirstName: "Pedro",
-      ReviewerLastName: "Gomez",
-    },
-    {
-      id: 3,
-      title: "Bueno",
-      stars: 3,
-      ReviewerFirstName: "Luis",
-      ReviewerLastName: "Lopez",
-    },
-  ]
 
   const router = useRouter();
   let rol = null;
