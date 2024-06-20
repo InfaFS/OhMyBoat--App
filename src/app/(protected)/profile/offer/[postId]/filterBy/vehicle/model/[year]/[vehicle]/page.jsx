@@ -1,8 +1,9 @@
 import { OffersTable } from "@/components/publicaciones/Offers/OffersTable";
-import { getBoatOffersByModelAndPostId, getVehicleOffersByModelAndPostId } from "../../../../../../../../../../data/getOffers";
+import { getVehicleOffersByModelAndPostId } from "../../../../../../../../../../../data/getOffers";
 
 async function offersPage({params}) {
-    const offers = await getVehicleOffersByModelAndPostId({postId: params.postId,year: params.year})
+    
+    const offers = await getVehicleOffersByModelAndPostId({postId: params.postId,year: params.year,vehicle: params.vehicle})
     console.log(offers)
     return (
         <div>

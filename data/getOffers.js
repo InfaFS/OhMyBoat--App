@@ -237,15 +237,42 @@ export const getSailboatOffersByPostId = async ({postId}) => {
     }
 }
 
-export const getBoatOffersByModelAndPostId = async ({postId,year}) => {
+export const getBoatOffersByModelAndPostId = async ({postId,year,boat=""}) => {
     try {
         console.log(year);
+        console.log(boat)
         const offers = await db.offer.findMany({
             where: {
                 idPublicacionPedida: postId
             }
         })
+        if (boat === "catamaran"){
+            boat = "Catamarán"
+        }
+        if (boat === "cruise"){
+            boat = "Crucero"
+        }
+        if (boat === "lancha"){
+            boat = "Lancha"
+        }
+        if (boat === "sailboat"){
+            boat = "Velero"
+        }
         let data = [];
+        if (boat !== "") {
+        for (let i = 0; i < offers.length; i++) {
+            const post = await db.boatPost.findFirst({
+                where: {
+                    id: offers[i].idPublicacionOfrecida,
+                    modelo: year,
+                    type: boat,
+                }
+            })
+            if (post !== null){
+                data.push(offers[i]);
+            }
+        }
+    } else {
         for (let i = 0; i < offers.length; i++) {
             const post = await db.boatPost.findFirst({
                 where: {
@@ -257,35 +284,69 @@ export const getBoatOffersByModelAndPostId = async ({postId,year}) => {
                 data.push(offers[i]);
             }
         }
+
+    }
+            
+
         console.log(data);
         return data;
     }
+
     catch {
         return null
     }
 }
 
-export const getVehicleOffersByModelAndPostId = async ({postId,year}) => {
+export const getVehicleOffersByModelAndPostId = async ({postId,year,vehicle=""}) => {
     try {
         console.log(year);
+        console.log(vehicle)
+        if(vehicle === "automov"){
+            vehicle = "Automóvil"
+        }
+        if(vehicle === "motorbike"){
+            vehicle = "Motocicleta"
+        }
+        if (vehicle === "van"){
+            vehicle = "Camioneta"
+        }
         const offers = await db.offer.findMany({
             where: {
                 idPublicacionPedida: postId
             }
         })
         let data = [];
-        for (let i = 0; i < offers.length; i++) {
-            const post = await db.vehiclePost.findFirst({
-                where: {
-                    id: offers[i].idPublicacionOfrecida,
-                    modelo: year,
+        if (vehicle !== "") {
+            for (let i = 0; i < offers.length; i++) {
+                const post = await db.vehiclePost.findFirst({
+                    where: {
+                        id: offers[i].idPublicacionOfrecida,
+                        modelo: year,
+                        type: vehicle,
+                    }
+                })
+                if (post !== null){
+                    data.push(offers[i]);
                 }
-            })
-            if (post !== null){
-                data.push(offers[i]);
             }
+            console.log(data);
+
+
+        } else {
+            for (let i = 0; i < offers.length; i++) {
+                const post = await db.vehiclePost.findFirst({
+                    where: {
+                        id: offers[i].idPublicacionOfrecida,
+                        modelo: year,
+                    }
+                })
+                if (post !== null){
+                    data.push(offers[i]);
+                }
+            }
+            console.log(data);
         }
-        console.log(data);
+
         return data;
     }
     catch {

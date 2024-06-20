@@ -40,6 +40,17 @@ export const createReview = async ({tradeId,stars,description,title}) => {
                 },
             });
 
+            const notif = await db.notification.create({
+                data: {
+                    idEmisor: '???',
+                    idReceptor: trade.idUsuario2,
+                    title: 'Nueva reseña',
+                    description: `El usuario ${userFound.firstname} ${userFound.lastname} ha realizado una reseña sobre ti`,
+                    seen: false,
+                    type: 'REVIEW',
+                }
+            })
+            console.log(notif);
             console.log(review);
 
 
@@ -68,6 +79,17 @@ export const createReview = async ({tradeId,stars,description,title}) => {
                 },
             });
 
+            const notif = await db.notification.create({
+                data: {
+                    idEmisor: '???',
+                    idReceptor: trade.idUsuario1,
+                    title: 'Nueva reseña',
+                    description: `El usuario ${userFound.firstname} ${userFound.lastname} ha realizado una reseña sobre ti`,
+                    seen: false,
+                    type: 'REVIEW', 
+                }
+            })
+            console.log(notif)
             console.log(review);
         }
 

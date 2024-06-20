@@ -11,7 +11,7 @@ export async function HeaderTincho() {
   let notis;
   let unseenNotisNumber;
   if (session?.user?.id){
-    notis = await getAllNotis(session.user.id);
+    notis = (await getAllNotis(session.user.id));
     console.log(notis);
     unseenNotisNumber = await getUnseenNotis(session.user.id);
     console.log(unseenNotisNumber)

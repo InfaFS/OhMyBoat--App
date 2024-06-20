@@ -465,7 +465,7 @@ export const confirmTrade = async ({tradeId}) => {
                     idEmisor: "???",
                     title: "Trueque realizado",
                     description: `El gerente confirmó que el trueque entre ${res.tituloPublicacionOfrecida} y ${res.tituloPublicacionPedida} se realizó correctamente, ahora
-                    ${res.tituloPublicacionPedida} se encuentra dentro de tus publicaciones!`,
+                    ${res.tituloPublicacionPedida} se encuentra dentro de tus publicaciones y puedes reseñar a ${res.NombreUsuario2} ${res.ApellidoUsuario2}!`,
                     seen: false,
                     type: "TRADE",
                 }
@@ -478,7 +478,7 @@ export const confirmTrade = async ({tradeId}) => {
                     idEmisor: "???",
                     title: "Trueque realizado",
                     description: `El gerente confirmó que el trueque entre ${res.tituloPublicacionOfrecida} y ${res.tituloPublicacionPedida} se realizó correctamente, ahora
-                    ${res.tituloPublicacionOfrecida} se encuentra dentro de tus publicaciones!`,
+                    ${res.tituloPublicacionOfrecida} se encuentra dentro de tus publicaciones y puedes reseñar a ${res.NombreUsuario1} ${res.ApellidoUsuario1}!`,
                     seen: false,
                     type: "TRADE",
                 }

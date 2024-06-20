@@ -34,10 +34,10 @@ export default function OrderBy({ publicaciones }) {
 
       {/* Main Content */}
       <main className="flex-1 ml-64 flex flex-col items-center bg-blancoahumado overflow-y-hidden">
-        <section className="space-y-6 text-center">
-          <h1 className="text-4xl font-semibold text-black drop-shadow-md">
-            Publicaciones
+      <h1 className="text-4xl font-semibold text-black border shadow-xl bg-white p-2 w-full text-center">
+            Publicaciones 
           </h1>
+        <section className="space-y-6 text-center mt-8">
           {publicaciones.length === 0 && (
             <div>
               <p className="text-black font-semibold">No hay publicaciones por el momento, vuelve más tarde...</p>

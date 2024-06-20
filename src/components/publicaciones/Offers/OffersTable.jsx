@@ -157,9 +157,42 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
 export function OffersTable({ data, isBoat,postId,filter=''}) {
   console.log(isBoat)
   console.log(postId)
+  console.log(filter)
   const router = useRouter()
-  const [filterValue,setFilterValue] = useState(filter)
-  console.log(filterValue)
+  const [modelValue, setModelValue] = useState("");
+  const [filterValue, setFilterValue] = useState(""); 
+  console.log(filterValue);
+  console.log(modelValue);
+  
+  const handlePush = () => {
+    if (modelValue === "" && filterValue !== "") {
+      if (filterValue === "catamaran" || filterValue === "cruise" || filterValue === "lancha" || filterValue === "sailboat") {
+      router.push(`/profile/offer/${postId}/filterBy/boat/${filterValue}`)
+    } else {
+      router.push(`/profile/offer/${postId}/filterBy/vehicle/${filterValue}`)
+    
+    }
+  }
+    if (modelValue !== "" && filterValue === "") {
+      if (isBoat === true) {
+        router.push(`/profile/offer/${postId}/filterBy/vehicle/model/${modelValue}`);
+      }
+      if (isBoat === false) {
+        router.push(`/profile/offer/${postId}/filterBy/boat/model/${modelValue}`);
+      }
+    }
+
+    if (modelValue !== "" && filterValue !== "") {
+      if (isBoat === true) {
+        router.push(`/profile/offer/${postId}/filterBy/vehicle/model/${modelValue}/${filterValue}`);
+      }
+      if (isBoat === false) {
+        router.push(`/profile/offer/${postId}/filterBy/boat/model/${modelValue}/${filterValue}`);
+      }
+    }
+
+
+  }
   const handleReject = async (offerId) => {
     console.log(offerId)
     const response = await RechazarOferta({ offerId });
@@ -241,7 +274,6 @@ export function OffersTable({ data, isBoat,postId,filter=''}) {
                   name="row-radio-buttons-group"
                   onChange={(e) => {
                     setFilterValue(e.target.value);
-                    router.push(`/profile/offer/${postId}/filterBy/boat/${e.target.value}`);
                   }}
                 >
                   <FormControlLabel
@@ -265,36 +297,19 @@ export function OffersTable({ data, isBoat,postId,filter=''}) {
                     label="Velero"
                   />
                 </RadioGroup>
+                <Link href={`/profile/offer/${postId}`}>
+              <FormControlLabel value="" control={<Radio size="small" />} label="Sin filtros" />
+              </Link>
               </FormControl>
-              <div className="flex">
-                <input
-                  type="number"
-                  placeholder="Modelo"
-                  className="border rounded-md p-1"
-                  onChange={(e) => {setFilterValue(e.target.value)}}
-                />
-                <Search
-                  className="hover:text-slate-500 cursor-pointer mt-2"
-                  height={20}
-                  width={20}
-                  onClick={() => router.push(`/profile/offer/${postId}/filterBy/boat/model/${filterValue}`)}
-                />
+          
+              <div className="flex items-center">
+              <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setModelValue(e.target.value)}} />
+              <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handlePush} />
 
-                <div className="ml-4 flex">
-                <input
-                  type="number"
-                  placeholder="Valor"
-                  className="border rounded-md p-1"
-                  onChange={(e) => {setFilterValue(e.target.value)}}
-                />
-                <Search
-                  className="hover:text-slate-500 cursor-pointer mt-2"
-                  height={20}
-                  width={20}
-                  onClick={() => router.push(`/profile/offer/${postId}/filterBy/boat/price/${filterValue}`)}
-                />
+
               </div>
-              </div>
+            
+
              
             </div>
               )}
@@ -308,15 +323,22 @@ export function OffersTable({ data, isBoat,postId,filter=''}) {
                    value={filterValue}
                    aria-labelledby="demo-row-radio-buttons-group-label"
                    name="row-radio-buttons-group"
-                   onChange={(e) => { setFilterValue(e.target.value); router.push(`/profile/offer/${postId}/filterBy/vehicle/${e.target.value}`) }}
+                   onChange={(e) => { setFilterValue(e.target.value)}}
                  >
                    <FormControlLabel value="van" control={<Radio size="small" />} label="Camioneta" />
                    <FormControlLabel value="motorbike" control={<Radio size="small" />} label="Motocicleta" />
                    <FormControlLabel value="automov" control={<Radio size="small" />} label="Automóvil" />
                  </RadioGroup>
+              <Link href={`/profile/offer/${postId}`}>
+              <FormControlLabel value="" control={<Radio size="small" />} label="Sin filtros" />
+              </Link>
                </FormControl>
-               <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setFilterValue(e.target.value)}} />
-               <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={() => router.push(`/profile/offer/${postId}/filterBy/vehicle/model/${filterValue}`)} />
+               <div className="flex items-center">
+               <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setModelValue(e.target.value)}} />
+                 <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handlePush}/> 
+               </div>
+       
+               
              </div>
               )}
 

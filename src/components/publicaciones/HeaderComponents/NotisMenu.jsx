@@ -78,7 +78,7 @@ const NotisMenu = ({ notificacionesArray, userId, unseenNotisNumber }) => {
                 No hay notificaciones nuevas por el momento
               </h4>
             ) : null }
-            {notificacionesArray.slice().reverse().map((notif) => 
+            {notificacionesArray.slice((notificacionesArray.length-10),notificacionesArray.length).reverse().map((notif) => 
               (
               <div key={notif.id} className="my-2">
                 { notif.seen === false && (

@@ -1,112 +1,129 @@
-"use client"
-import { useState } from 'react';
+"use client";
+
 import Link from "next/link";
 import { Separator } from "./ui/separator";
-import {useRouter} from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { Button } from "@mui/material";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import { useState } from "react";
+
 export default function Sidebar() {
-  const [searchValueBoat, setSearchValueBoat] = useState(null);
-    const [modelValueVehicle, setModelValueVehicle] = useState(null);
-    const [modelValueBoat, setModelValueBoat] = useState(null);
+  const [modelValue, setModelValue] = useState("");
+  const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
+  console.log(filterValue);
+  console.log(modelValue);
 
-
-
-  const handleSubmitModelBoat = (e) => {
-    e.preventDefault();
-    if(modelValueBoat === null){
-        return;
+  const handlePush = () => {
+    if (modelValue !== "" && filterValue === "") {
+      router.push(`/viewPosts/filterBy/model/${modelValue}`);
     }
-    router.push(`/viewPosts/filterBy/boat/model/${modelValueBoat}`)
-
-  }
-
-  const handleSubmitValueBoat = (e) => {
-    e.preventDefault();
-    if(searchValueBoat === null){
-        return;
+    if (modelValue === "" && filterValue !== "") {
+      if (
+        filterValue === "catamaran" ||
+        filterValue === "cruise" ||
+        filterValue === "lancha" ||
+        filterValue === "sailboat"
+      ) {
+        router.push(`/viewPosts/filterBy/boat/${filterValue}`);
+      }
+      if (
+        filterValue === "automov" ||
+        filterValue === "motorbike" ||
+        filterValue === "van"
+      ) {
+        router.push(`/viewPosts/filterBy/vehicle/${filterValue}`);
+      }
     }
-    router.push(`/viewPosts/filterBy/boat/price/${searchValueBoat}`)
-  }
-
-  const handleSubmitModelVehicle = (e) => {
-    e.preventDefault();
-    if(modelValueVehicle === null){
-        return;
+    if (modelValue !== "" && filterValue !== "") {
+      router.push(`/viewPosts/filterBy/especial/${modelValue}/${filterValue}`);
     }
-    router.push(`/viewPosts/filterBy/vehicle/model/${modelValueVehicle}`)
-  }
-
+  };
   return (
     <div className="fixed h-full w-64 bg-white shadow-xl z-50">
       <div className="p-4">
-        <h1 className="text-center font-bold text-xl-2">Filtrar:</h1>
-        <div className="flex flex-col">
-          <Link href='/viewPosts/filterBy/vehicle/van'>
-            <span>Camioneta</span>
-          </Link>
-          <Link href='/viewPosts/filterBy/vehicle/automov'>
-            <span>Automovil</span>
-          </Link>
-          <Link href='/viewPosts/filterBy/vehicle/motorbike'>
-            <span>Motocicleta</span>
-          </Link>
+        <h1 className="text-center font-bold text-2xl mb-4">Filtrar:</h1>
+        <div className="flex flex-col space-y-4">
+          <FormControl component="fieldset">
+            <FormLabel component="legend" className="text-lg">
+              Categoría
+            </FormLabel>
+            <RadioGroup
+              row
+              value={filterValue}
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              onChange={(e) => {
+                setFilterValue(e.target.value);
+              }}
+            >
+              <FormControlLabel
+                value="catamaran"
+                control={<Radio size="small" />}
+                label="Catamarán"
+              />
+              <FormControlLabel
+                value="cruise"
+                control={<Radio size="small" />}
+                label="Crucero"
+              />
+              <FormControlLabel
+                value="lancha"
+                control={<Radio size="small" />}
+                label="Lancha"
+              />
+              <FormControlLabel
+                value="sailboat"
+                control={<Radio size="small" />}
+                label="Velero"
+              />
+
+            <Separator/>
+              <FormControlLabel
+                value="van"
+                control={<Radio size="small" />}
+                label="Camioneta"
+              />
+              <FormControlLabel
+                value="motorbike"
+                control={<Radio size="small" />}
+                label="Motocicleta"
+              />
+              <FormControlLabel
+                value="automov"
+                control={<Radio size="small" />}
+                label="Automóvil"
+              />
+            </RadioGroup>
+            <Link href={`/viewPosts`}>
+              <FormControlLabel
+                value=""
+                control={<Radio size="small" />}
+                label="Sin filtros"
+              />
+            </Link>
+          </FormControl>
+          <input
+            type="number"
+            placeholder="Buscar por modelo"
+            className="border p-2 rounded-md w-full"
+            value={modelValue}
+            onChange={(e) => setModelValue(e.target.value)}
+          />
         </div>
-        <form onSubmit={handleSubmitModelVehicle}> 
-          <input 
-            type="number" 
-            placeholder="Buscar por modelo" 
-            className="border p-2 rounded-md w-full mt-4" 
-            value={modelValueVehicle}
-            onChange={(e) => setModelValueVehicle(e.target.value)}
-          />
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2">
-            Filtrar
-          </button>
-        </form>
-        <Separator  className="mt-2"/>
-        <div className="flex flex-col">
-          <Link href='/viewPosts/filterBy/boat/lancha'>
-            <span>Lancha</span>
-          </Link>
-          <Link href='/viewPosts/filterBy/boat/sailboat'>
-            <span>Velero</span>
-          </Link>
-          <Link href='/viewPosts/filterBy/boat/cruise'>
-            <span>Crucero</span>
-          </Link>
-          <Link href='/viewPosts/filterBy/boat/catamaran'>
-            <span>Catamaran</span>
-          </Link>
-          <form onSubmit={handleSubmitModelBoat}> 
-          <input 
-            type="number" 
-            placeholder="Buscar por modelo" 
-            className="border p-2 rounded-md w-full mt-4" 
-            value={modelValueBoat}
-            onChange={(e) => setModelValueBoat(e.target.value)}
-          />
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2">
-            Filtrar
-          </button>
-        </form>
-
-        <form onSubmit={handleSubmitValueBoat}> 
-          <input 
-            type="number" 
-            placeholder="Buscar por valor" 
-            className="border p-2 rounded-md w-full mt-4" 
-            value={searchValueBoat}
-            onChange={(e) => setSearchValueBoat(e.target.value)}
-          />
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2">
-            Filtrar
-          </button>
-        </form>
-
-        </div>
-
- 
         <Separator className="mt-4" />
+        <Button
+          variant="contained"
+          color="primary"
+          className="mt-4 w-full"
+          onClick={handlePush}
+        >
+          Buscar
+        </Button>
       </div>
     </div>
   );

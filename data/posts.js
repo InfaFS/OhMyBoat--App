@@ -535,3 +535,20 @@ export const obtenerBoatsPorPrecio = async ({precio}) => {
         return null;
     }
 }
+
+
+export const obtenerCardsPorModelo = async ({modelo}) => {
+    try {
+        console.log(modelo);
+        const data = await db.cardPost.findMany({
+            where: {
+                modelo: modelo,
+            }
+        })
+        return data;
+
+    } catch (error){
+        console.log(error);
+        return null;
+    }
+}
