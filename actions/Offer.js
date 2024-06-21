@@ -635,6 +635,8 @@ export const ConfirmarOferta = async ({offerId}) => {
         const userOfertante = await getUserById(res.idOfertante);
         console.log(userOfertante);
         console.log(userOfertado);
+        const cardPost1 = await getCardPostByCompletePostId({completePostId: res.idPublicacionOfrecida});
+        const cardPost2 = await getCardPostByCompletePostId({completePostId: res.idPublicacionPedida});
         const newTrade = await db.trade.create({ //creo el trade con los datos pedidos
             data: {
                 status: "FECHA_PENDIENTE",
@@ -658,6 +660,8 @@ export const ConfirmarOferta = async ({offerId}) => {
                 imgPublicacionPedida: res.imgPublicacionPedida,
                 ReviewedByUser1: false,
                 ReviewedByUser2: false,
+                typePost1: cardPost1.type,
+                typePost2: cardPost2.type,
             }
         
         })

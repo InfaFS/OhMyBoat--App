@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 import { MapPin } from "lucide-react";
 import { createSede } from "../../../actions/sedes";
 import { toast } from "sonner";
+import Switch from '@mui/material/Switch';
 
 const containerStyle = {
   width: "100%",
@@ -17,6 +18,13 @@ const containerStyle = {
 const defaultCenter = {
   lat:  -34.918961,
   lng: -57.954949,
+};
+
+const mapOptions = {
+  streetViewControl: true,
+  mapTypeControl: false,
+  fullscreenControl: true,
+  zoomControl: false,
 };
 
 export default function Maps() {
@@ -29,6 +37,8 @@ export default function Maps() {
   const [map, setMap] = useState(null);
   const [clickedPosition, setClickedPosition] = useState(null);
   const [clickedError, setClickedError] = useState(false);
+  const [pinOn, setPinOn] = useState(false);
+  console.log(pinOn)
 
   const onLoad = useCallback(function callback(map) {
     setMap(map);
@@ -39,10 +49,14 @@ export default function Maps() {
   }, []);
 
   const handleClick = (event) => {
-    const lat = event.latLng.lat();
-    const lng = event.latLng.lng();
-    setClickedPosition({ lat, lng });
-    setClickedError(false);
+    if (pinOn){
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      setClickedPosition({ lat, lng });
+      setClickedError(false);
+    }
+    return;
+
   };
 
   const submit = async (data) => {
@@ -58,6 +72,15 @@ export default function Maps() {
     }
   }
 
+  const handlePinOn = () => {
+    if(pinOn){
+      setPinOn(false);
+    } else {
+      setPinOn(true);
+    }
+
+  }
+
 
   return isLoaded ? (
     <div>
@@ -70,6 +93,12 @@ export default function Maps() {
             <span>Completa los datos para crear una sede</span>
           </CardHeader>
           <CardContent>
+          <div className="flex items-center">
+          <Switch color="error" onClick={handlePinOn} />
+          <span className={pinOn ? "text-red-500" : "text-slate-500"}>Pin </span>
+          <MapPin className={pinOn ? "text-red-500" : "text-slate-500"} />
+          </div>
+ 
           <div className="p-1 bg-sky-700 rounded-sm drop-shadow-md">
           <div style={containerStyle}>
               <GoogleMap
@@ -79,6 +108,7 @@ export default function Maps() {
                 onClick={handleClick}
                 onLoad={onLoad}
                 onUnmount={onUnmount}
+                options={mapOptions} 
               >
                 {clickedPosition && <Marker position={clickedPosition} />}
               </GoogleMap>
@@ -106,20 +136,20 @@ export default function Maps() {
 
       </div>
       <div className="flex flex-col">
-      <Button type="submit" className="mt-3" variant="direction" endIcon={<MapPin/>}>Crear sede</Button>
+      <Button type="submit" className="mt-3" variant="direction" >Crear sede</Button>
       {(errors.name || errors.address || errors.phone || errors.email || errors.description || clickedError) && (<span className="text-red-500 text-sm">Asegurate de llenar los campos y seleccionar con un pin la ubicación en el mapa</span>)}
 
       </div>
 
       </form>
 
-      {clickedPosition && (
+      {/* {clickedPosition && (
         <div className="text-center mt-4">
           <p className="font-semibold">Clicked Position:</p>
           <p>Latitude: {clickedPosition.lat}</p>
           <p>Longitude: {clickedPosition.lng}</p>
         </div>
-      )}
+      )} */}
 
           </CardContent>
         </Card>

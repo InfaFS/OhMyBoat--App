@@ -66,6 +66,7 @@ model cardPost {
   img                String
   title              String
   modelo             String
+  type               String
   status             String
 }
 
@@ -136,6 +137,8 @@ model Trade {
   ApellidoUsuario2          String
   idUsuario2                String
   idPost1                   String
+  typePost1                 String
+  typePost2                 String
   idPost2                   String
   tituloPublicacionOfrecida String
   tituloPublicacionPedida   String

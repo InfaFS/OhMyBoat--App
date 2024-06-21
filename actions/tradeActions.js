@@ -1105,3 +1105,41 @@ export const getAllPendingTradesByDate = async (date) => {
         return null;
     }
 }
+
+export const getAllConfirmedTrades = async () => {
+    try{
+        const trades = await db.trade.findMany({
+            where: {
+                status: "TRUEQUE_REALIZADO",
+            }
+        })
+        console.log(trades)
+        return (trades.length)
+
+
+    } catch(error){
+        console.log(error)
+        return null;
+    }
+
+}
+
+
+
+export const getAllRejectedTrades = async () => {
+    try{
+        const trades = await db.trade.findMany({
+            where: {
+                status: "TRUEQUE_NO_REALIZADO",
+            }
+        })
+        console.log(trades)
+        return (trades.length)
+
+    } catch(error){
+        console.log(error)
+        return null;
+    }
+
+}
+

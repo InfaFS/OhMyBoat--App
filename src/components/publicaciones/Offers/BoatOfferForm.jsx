@@ -76,7 +76,7 @@ const BoatOfferForm = ({ vehicleId,boatPosts, idOfertante }) => {
     const res = await OfertarEmbarcacion({idOfertante: idOfertante, idPublicacionOfrecida: post, descripcion: data.descripcion,idPublicacionPedida: vehicleId});
     if (res.success) {
       toast.success("¡Oferta realizada!");
-      router.back();
+      router.back()
     }
     console.log(res?.error);
     setPostError(res?.error);

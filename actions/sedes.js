@@ -24,3 +24,13 @@ export const createSede = async (values) => {
     }
 
 }
+
+export const getAllSedes = async () => {
+    try{
+        const sedes = await db.sede.findMany();
+        return sedes;
+    } catch(error){
+        console.log(error)
+        return null;
+    }
+}

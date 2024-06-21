@@ -69,6 +69,7 @@ export const publicarBarco = async (values) => {
           status:"ACTIVE",
           firstNamePublisher: user.firstname,
           lastNamePublisher: user.lastname,
+          type:type,
         }
       
     })
@@ -161,6 +162,7 @@ export const actualizarBarco = async (values) => {
         img: pathUsar,
         title: title,
         modelo:modelo,
+        type: type,
       }
     
   })

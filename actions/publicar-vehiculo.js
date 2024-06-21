@@ -67,6 +67,7 @@ export const publicarVehiculo = async (values) => {
           status: "ACTIVE",
           firstNamePublisher: user.firstname,
           lastNamePublisher: user.lastname,
+          type: type,
         }
       
     })
@@ -156,6 +157,7 @@ export const actualizarVehiculo = async (values) => {
         img: pathUsar,
         title: title,
         modelo:modelo,
+        type: type,
       }
     
   })

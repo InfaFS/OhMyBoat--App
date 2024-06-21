@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Home, Milestone} from 'lucide-react';
+import { Home, MapPinned, Milestone} from 'lucide-react';
 import Link from 'next/link';
 
 export default function HomeMenu() {
@@ -41,6 +41,10 @@ export default function HomeMenu() {
         <Link href="/viewPosts">
         <MenuItem onClick={handleClose} className="text-sm"> <Milestone  height={20} width={20} className='mr-2' />Ver publicaciones</MenuItem>
         </Link>
+        <Link href="/view-sedes">
+        <MenuItem onClick={handleClose} className="text-sm"> <MapPinned height={20} width={20} className='mr-2' />Ver sedes</MenuItem>
+        </Link>
+        
       </Menu>
     </div>
   );
