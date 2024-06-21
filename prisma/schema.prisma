@@ -57,14 +57,16 @@ model PasswordResetToken {
 }
 
 model cardPost {
-  id             String  @id @default(cuid())
-  idPublisher    String
-  idCompletePost String
-  boat           Boolean
-  img            String
-  title          String
-  modelo         String
-  status         String
+  id                 String  @id @default(cuid())
+  idPublisher        String
+  firstNamePublisher String
+  lastNamePublisher  String
+  idCompletePost     String
+  boat               Boolean
+  img                String
+  title              String
+  modelo             String
+  status             String
 }
 
 model VehiclePost {
@@ -163,4 +165,15 @@ model Review {
   ReviewerLastName  String
   title             String
   tradeId           String
+}
+
+model Sede {
+  id          String @id @default(cuid())
+  name        String
+  address     String
+  phone       String
+  email       String
+  description String
+  lat         Float
+  lng         Float
 }

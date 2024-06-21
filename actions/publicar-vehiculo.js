@@ -4,6 +4,7 @@ import { auth } from "../auth"
 import { db } from "@/lib/db"
 import { updateAllOffersByPostId } from "./Offer"
 import { updateAllTradesByPostId } from "./tradeActions"
+import { getUserById } from "../data/user"
 export const publicarVehiculo = async (values) => {
 
     console.log(values)
@@ -53,6 +54,8 @@ export const publicarVehiculo = async (values) => {
         }
       })
 
+    const user = await getUserById(session.user.id)
+    console.log(user)
     const cardPublicacionCreada = await db.cardPost.create({
         data: {
           idCompletePost: publicacionCreada.id,
@@ -62,6 +65,8 @@ export const publicarVehiculo = async (values) => {
           modelo:modelo,
           idPublisher: session.user.id,
           status: "ACTIVE",
+          firstNamePublisher: user.firstname,
+          lastNamePublisher: user.lastname,
         }
       
     })

@@ -22,7 +22,19 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 
 const columns = (handleDeleteConfirmation,user) => [
-
+  {
+      accessorKey: "user",
+      header: "Usuario",
+      cell: ({ row }) => (
+        <div className="flex justify-center">
+          <Link href={`/view-profile/${row.original.idPublisher}`}>
+            <Button variant="link">
+              {row.original.firstNamePublisher} {row.original.lastNamePublisher}
+            </Button>
+          </Link>
+        </div>
+      ),
+    },
   {
     accessorKey: "title",
     header: "Post",
@@ -48,7 +60,7 @@ const columns = (handleDeleteConfirmation,user) => [
     accessorKey: "actions",
     header: "Acciones",
     cell: ({ row }) => (
-      <div className="flex justify-center mt-2 items-center">
+      <div className="flex justify-center mt-2">
         {user === 'USER' && (
             <Link href={`/profile/offer/${row.original.idCompletePost}`}>
             <Button className="bg-sky-500 text-sm w-full h-full">Ofertas</Button>
@@ -82,7 +94,7 @@ const columns = (handleDeleteConfirmation,user) => [
   },
 ];
 
-export function OwnPublicationsTable({ data,user='USER' }) {
+export function AdminPublicationsTable({ data,user='USER' }) {
   const router = useRouter();
   const handleBack = () => {
     router.back();
