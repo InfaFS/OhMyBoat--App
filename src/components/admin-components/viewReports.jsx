@@ -1,66 +1,74 @@
 "use client";
 import React from 'react';
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from 'recharts';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
-export const ViewReportsComponent = ({ pieDataUno, pieDataDos}) => {
+export const ViewReportsComponent = ({ pieDataUno, pieDataDos }) => {
+  const getMaxValue = (data) => {
+    const max = data.reduce((prev, current) => (prev.value > current.value) ? prev : current);
+    return max;
+  };
+
   return (
-    <>
-      {(pieDataUno[0].value === 0 && pieDataUno[1].value === 0) ? (
-        <h1>No hay datos para mostrar</h1>
-      ):  <ResponsiveContainer width="100%" height={400}>
-      <PieChart>
-        <Pie
-          dataKey="value"
-          isAnimationActive={false}
-          data={pieDataUno}
-          cx="50%"
-          cy="50%"
-          outerRadius={80}
-          label
-        />
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer> }
-    {(pieDataUno[0].value === 0 && pieDataUno[1].value === 0) ? (
-        <h1>No hay datos para mostrar</h1>
-      ):  <ResponsiveContainer width="100%" height={400}>
-      <PieChart>
-        <Pie
-          dataKey="value"
-          isAnimationActive={false}
-          data={pieDataDos}
-          cx="50%"
-          cy="50%"
-          outerRadius={80}
-          label
-        />
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer> }
-     
+    <div className="bg-white shadow-lg rounded-lg p-6 ">
+      <h1 className="text-2xl font-semibold mb-4 text-center">Dashboard</h1>
 
-      {/* <ResponsiveContainer width="100%" height={400}>
-        <BarChart
-          data={barData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-          barSize={20}
-        >
-          <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Bar dataKey="pv" fill="#8884d8" background={{ fill: '#eee' }} />
-        </BarChart>
-      </ResponsiveContainer> */}
+      <div className="flex">
+        <div className="w-full">
+          {(pieDataUno[0].value === 0 && pieDataUno[1].value === 0) ? (
+            <h2 className="text-center">No hay datos para mostrar</h2>
+          ) : (
+            <ResponsiveContainer width="100%" height={400}>
+              <PieChart>
+                <Pie
+                  dataKey="value"
+                  data={pieDataUno}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  label={(entry) => `${entry.name}: ${entry.value}`}
+                />
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
+           {/* {pieDataUno.length > 0 && (
+            <p className="text-center mt-2">
+              Intercambio más popular: {getMaxValue(pieDataUno).name} ({getMaxValue(pieDataUno).value} intercambios totales)
+            </p>
+          )} */}
+        </div>
 
-    </>
+        <div className="w-full ">
+          {(pieDataDos[0].value === 0 && pieDataDos[1].value === 0) ? (
+            <h2 className="text-center">No hay datos para mostrar</h2>
+          ) : (
+            <ResponsiveContainer width="100%" height={400}>
+              <PieChart>
+                <Pie
+                  dataKey="value"
+                  data={pieDataDos}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  label={(entry) => `${entry.name}: ${entry.value}`}
+                >
+                  {pieDataDos.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
+          {pieDataDos.length > 0 && (
+            <p className="text-center mt-2">
+              Intercambio más popular: {getMaxValue(pieDataDos).name} ({getMaxValue(pieDataDos).value} intercambios totales)
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
-

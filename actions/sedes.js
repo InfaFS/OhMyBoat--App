@@ -34,3 +34,22 @@ export const getAllSedes = async () => {
         return null;
     }
 }
+
+export const deleteSede = async (id) => {
+    try{
+        const sede = await db.sede.delete({
+            where: {
+                id: id
+            }
+        });
+        console.log(sede)
+        return {success: "La sede fue eliminada con éxito"}
+
+    } catch(error){
+        console.log(error)
+        return null;
+    }
+
+
+
+}
