@@ -129,7 +129,7 @@ async function App () {
   fill: '#B8682E',
   },
   {name : "Lancha - Automóvil",
-  value: 15,
+  value: 15 ,
   fill: '#B148FA',
   },
   {name : "Lancha - Camioneta",
