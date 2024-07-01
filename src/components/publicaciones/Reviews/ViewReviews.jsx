@@ -94,13 +94,22 @@ export function ReviewsTable({ data, user='USER',userId,stars = null }) {
       setStarError(true);
       return;
     }
-    router.push(`/view-reviews/${userId}/filterByStars/${rating}`);
+    if (user === "ADMIN") {
+      router.push(`/admin/reviews/filterByStars/${rating}`);
+    } else {
+      router.push(`/view-reviews/${userId}/filterByStars/${rating}`);
+    }
 
   }
   const handleRatingChange = (event, newValue) => {
     console.log(newValue)
     if(newValue === null){
-      router.push(`/view-reviews/${userId}`);
+      if (user === "ADMIN") {
+        router.push(`/admin/reviews`);
+      } else {
+        router.push(`/view-reviews/${userId}`);
+      }
+      
     }
     setRating(newValue); 
     setStarError(false);
@@ -231,7 +240,29 @@ const handleDeleteReviewConfirmation = ({reviewId}) => {
               <CardTitle className="text-center text-2xl font-semibold text-sky-600">Reseñas</CardTitle>
             </CardHeader>
             <CardContent>
-              Este usuario no tiene reseñas hechas
+            {starError && (<span className="text-red-500 text-sm">Selecciona una cantidad de estrellas</span>)}
+            <div className="flex items-center mb-2 space-x-2">
+              <Box sx={{ '& > legend': { mt: 2 } }}>
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={handleRatingChange}
+                  className="text-lg"
+                />
+              </Box>
+              <Search
+                className="hover:text-slate-500 cursor-pointer"
+                height={15}
+                width={15}
+                onClick={handleSearch}
+              />
+          </div>
+            {user === "ADMIN" && (
+              <p className="text-center text-md text-slate-600">No se encontraron reseñas {stars !== null && (<span className="text-center text-md text-slate-600">con {stars} estrella/s</span>)}</p>
+            )}
+            {user !== "ADMIN" && (
+               <p className="text-center text-md text-slate-600">No se encontraron reseñas {stars !== null && (<span className="text-center text-md text-slate-600">con {stars} estrella/s</span>)} para este usuario</p>
+            )}
             </CardContent>
           </Card>
         )}

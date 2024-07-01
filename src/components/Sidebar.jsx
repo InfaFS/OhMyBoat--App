@@ -19,6 +19,9 @@ export default function Sidebar() {
   console.log(modelValue);
 
   const handlePush = () => {
+    if (filterValue === "sinfiltro") {
+      router.push(`/viewPosts`);
+    }
     if (modelValue !== "" && filterValue === "") {
       router.push(`/viewPosts/filterBy/model/${modelValue}`);
     }
@@ -98,14 +101,16 @@ export default function Sidebar() {
                 control={<Radio size="small" />}
                 label="Automóvil"
               />
-            </RadioGroup>
-            <Link href={`/viewPosts`}>
               <FormControlLabel
-                value=""
+                value="sinfiltro"
+                className="text-slate-500"
                 control={<Radio size="small" />}
                 label="Sin filtros"
               />
-            </Link>
+            </RadioGroup>
+
+
+
           </FormControl>
           <input
             type="number"

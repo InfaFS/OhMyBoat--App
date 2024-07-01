@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation";
 import { rejectTrade } from "../../../../actions/tradeActions";
-import { MoveLeft, Search } from "lucide-react";
+import { MoveLeft, Search, SearchX } from "lucide-react";
 import { confirmTrade } from "../../../../actions/tradeActions";
 import { getBoatPostById } from "../../../../data/posts";
 import { Check, X } from "lucide-react";
@@ -230,6 +230,7 @@ export function PendingTradesTable({ data, paramDate=""}) {
                   className="border p-2 rounded-md"
                 />
                   <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handleSearch} />
+                  <SearchX className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={() => router.push("/manager/trueques-pendientes")} />
               </div>
               <div className="rounded-md border">
                 <Table>
@@ -304,8 +305,19 @@ export function PendingTradesTable({ data, paramDate=""}) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              
-              No hay trueques pendientes 🤝
+            <div className="flex items-center mb-2 space-x-2">
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => {setFilterDate(e.target.value);setFilterError(false)}}
+                  className="border p-2 rounded-md"
+                />
+                  <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handleSearch} />
+                  <SearchX className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={() => router.push("/manager/trueques-pendientes")} />
+              </div>
+              No hay trueques pendientes  {paramDate !== "" && (
+                <span className="text-center text-md"> para la fecha {paramDate}</span>
+              )}🤝
             </CardContent>
           </Card>
         )}

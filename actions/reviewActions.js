@@ -219,3 +219,23 @@ export const getUserReviewsByUserIdAndStars = async ({id,stars}) => {
     }
 
 }
+
+
+export const getUserReviewsByStars = async ({stars}) => {  
+    try{
+
+        console.log(stars)
+        const reviews = await db.review.findMany({
+            where: {
+                stars: stars,
+            },
+        });
+        console.log(reviews);
+        return reviews;
+
+    } catch(error){
+        console.log(error);
+        return null;
+    }
+
+}

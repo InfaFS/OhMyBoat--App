@@ -7,7 +7,7 @@ async function offersPage({params}) {
     
     return (
         <div>
-            <OffersTable data={offers} isBoat={false} postId={params.postId}/>
+            <OffersTable data={offers} isBoat={false} postId={params.postId} filter={params.boat} model={params.year}/>
         </div>
     )
 }

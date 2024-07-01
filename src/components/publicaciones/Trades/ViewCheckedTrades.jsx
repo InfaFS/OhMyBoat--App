@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ContactPopover } from "./ContactPopover";
 import { toast } from "sonner";
 import Link from "next/link";
-import { MoveLeft } from "lucide-react";
+import { MoveLeft, SearchX } from "lucide-react";
 import { Search } from "lucide-react";
 import {
   flexRender,
@@ -183,6 +183,7 @@ export function CheckedTradesTable({data,paramDate=""}) {
                   className="border p-2 rounded-md"
                 />
                   <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handleSearch} />
+                  <SearchX className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={() => router.push("/manager/trueques-revisados")} />
               </div>
               
               
@@ -259,7 +260,20 @@ export function CheckedTradesTable({data,paramDate=""}) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Trueques revisados</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay trueques revisados 🤝
+            {filterErorr && <div className="text-red-500 text-sm">Por favor ingrese una fecha</div>}
+            <div className="flex items-center mb-2 space-x-2">
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => {setFilterDate(e.target.value); setFilterError(false)}}
+                  className="border p-2 rounded-md"
+                />
+                  <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handleSearch} />
+                  <SearchX className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={() => router.push("/manager/trueques-revisados")} />
+              </div>
+            No hay trueques revisados  {paramDate !== "" && (
+                <span className="text-center text-md"> para la fecha {paramDate}</span>
+              )}🤝
             </CardContent>
           </Card>
         )}

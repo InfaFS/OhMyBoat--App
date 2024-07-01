@@ -2,6 +2,7 @@
 import { db } from "@/lib/db"
 import { getBoatPostById, getVehiclePostById } from "../data/posts";
 import { getCardPostByCompletePostId } from "../data/cardPosts";
+import { getUserById } from "../data/user";
 
 export const eraseAllOffers = async (postId) => {
     try {
@@ -325,6 +326,8 @@ const modificarCards = async ({idCompletePost1,idCompletePost2,userId1,userId2})
     try {
         const card1 = await getCardPostByCompletePostId({completePostId: idCompletePost1});
         const card2 = await getCardPostByCompletePostId({completePostId: idCompletePost2});
+        const user1 = await getUserById(userId1);
+        const user2 = await getUserById(userId2);
         if (card1 !== null && card2 !== null) {
             const res1 = await db.cardPost.update({
                 where: {
@@ -332,6 +335,8 @@ const modificarCards = async ({idCompletePost1,idCompletePost2,userId1,userId2})
                 },
                 data: {
                     idPublisher: userId2,
+                    firstNamePublisher: user2.firstname,
+                    lastNamePublisher: user2.lastname,
                 }
             });
             const res2 = await db.cardPost.update({
@@ -340,6 +345,8 @@ const modificarCards = async ({idCompletePost1,idCompletePost2,userId1,userId2})
                 },
                 data: {
                     idPublisher: userId1,
+                    firstNamePublisher: user1.firstname,
+                    lastNamePublisher: user1.lastname,
                 }
             });
             if (res1 && res2) {
@@ -447,6 +454,7 @@ export const confirmTrade = async ({tradeId}) => {
 
             const res1_vehicle = await ocultarVehiculo({completePostId: res.idPost1});
             console.log(res1_vehicle);
+
 
             const res2_boat = await ocultarEmbarcacion({completePostId: res.idPost2});
             console.log(res2_boat);

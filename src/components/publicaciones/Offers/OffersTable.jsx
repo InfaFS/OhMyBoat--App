@@ -154,7 +154,7 @@ const columns = (handleRejectConfirmation,handleConfirmation) => [
 
 
 
-export function OffersTable({ data, isBoat,postId,filter=''}) {
+export function OffersTable({ data, isBoat,postId,filter='',model=''}) {
   console.log(isBoat)
   console.log(postId)
   console.log(filter)
@@ -165,6 +165,11 @@ export function OffersTable({ data, isBoat,postId,filter=''}) {
   console.log(modelValue);
   
   const handlePush = () => {
+    if (filterValue === "sinfiltro") {
+      console.log("sinfiltro")
+      router.push(`/profile/offer/${postId}`);
+      return
+    }
     if (modelValue === "" && filterValue !== "") {
       if (filterValue === "catamaran" || filterValue === "cruise" || filterValue === "lancha" || filterValue === "sailboat") {
       router.push(`/profile/offer/${postId}/filterBy/boat/${filterValue}`)
@@ -296,15 +301,14 @@ export function OffersTable({ data, isBoat,postId,filter=''}) {
                     control={<Radio size="small" />}
                     label="Velero"
                   />
+                  <FormControlLabel value="sinfiltro" control={<Radio size="small" />} label="Sin filtros" />
                 </RadioGroup>
-                <Link href={`/profile/offer/${postId}`}>
-              <FormControlLabel value="" control={<Radio size="small" />} label="Sin filtros" />
-              </Link>
+
               </FormControl>
           
               <div className="flex items-center">
               <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setModelValue(e.target.value)}} />
-              <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handlePush} />
+              <Search className="hover:text-slate-500 cursor-pointer ml-1" height={20} width={20} onClick={handlePush} />
 
 
               </div>
@@ -328,14 +332,12 @@ export function OffersTable({ data, isBoat,postId,filter=''}) {
                    <FormControlLabel value="van" control={<Radio size="small" />} label="Camioneta" />
                    <FormControlLabel value="motorbike" control={<Radio size="small" />} label="Motocicleta" />
                    <FormControlLabel value="automov" control={<Radio size="small" />} label="Automóvil" />
+                   <FormControlLabel value="sinfiltro" control={<Radio size="small" />} label="Sin filtros" />
                  </RadioGroup>
-              <Link href={`/profile/offer/${postId}`}>
-              <FormControlLabel value="" control={<Radio size="small" />} label="Sin filtros" />
-              </Link>
                </FormControl>
                <div className="flex items-center">
                <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setModelValue(e.target.value)}} />
-                 <Search className="hover:text-slate-500 cursor-pointer" height={20} width={20} onClick={handlePush}/> 
+                 <Search className="hover:text-slate-500 cursor-pointer ml-1" height={20} width={20} onClick={handlePush}/> 
                </div>
        
                
@@ -416,7 +418,83 @@ export function OffersTable({ data, isBoat,postId,filter=''}) {
               <CardTitle className="text-center text-xl font-semibold hover:text-sky-600">Ofertas</CardTitle>
             </CardHeader>
             <CardContent>
-              No hay ofertas para esta publicación 💰
+            {isBoat === false && (
+              <div className="flex flex-col space-y-2 p-2 bg-white shadow-md rounded-md border border-gray-200">
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label" className="flex">
+                  Filtrar:
+                </FormLabel>
+                <RadioGroup
+                  row
+                  value={filterValue}
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  onChange={(e) => {
+                    setFilterValue(e.target.value);
+                  }}
+                >
+                  <FormControlLabel
+                    value="catamaran"
+                    control={<Radio size="small" />}
+                    label="Catamarán"
+                  />
+                  <FormControlLabel
+                    value="cruise"
+                    control={<Radio size="small" />}
+                    label="Crucero"
+                  />
+                  <FormControlLabel
+                    value="lancha"
+                    control={<Radio size="small" />}
+                    label="Lancha"
+                  />
+                  <FormControlLabel
+                    value="sailboat"
+                    control={<Radio size="small" />}
+                    label="Velero"
+                  />
+                  <FormControlLabel value="sinfiltro" control={<Radio size="small" />} label="Sin filtros" />
+                </RadioGroup>
+              </FormControl>
+          
+              <div className="flex items-center">
+              <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setModelValue(e.target.value)}} />
+              <Search className="hover:text-slate-500 cursor-pointer ml-1" height={20} width={20} onClick={handlePush} />
+              </div>
+            </div>
+              )}
+
+            {isBoat === true && (
+               <div className="flex flex-col space-y-2 p-2 bg-white shadow-md rounded-md border border-gray-200">
+               <FormControl>
+                 <FormLabel id="demo-row-radio-buttons-group-label" className="mb-2 font-semibold text-gray-700">Filtrar:</FormLabel>
+                 <RadioGroup
+                   row
+                   value={filterValue}
+                   aria-labelledby="demo-row-radio-buttons-group-label"
+                   name="row-radio-buttons-group"
+                   onChange={(e) => { setFilterValue(e.target.value)}}
+                 >
+                   <FormControlLabel value="van" control={<Radio size="small" />} label="Camioneta" />
+                   <FormControlLabel value="motorbike" control={<Radio size="small" />} label="Motocicleta" />
+                   <FormControlLabel value="automov" control={<Radio size="small" />} label="Automóvil" />
+                   <FormControlLabel value="sinfiltro" control={<Radio size="small" />} label="Sin filtros" />
+                 </RadioGroup>
+               </FormControl>
+               <div className="flex items-center">
+               <input type="number" placeholder="Modelo" className="border rounded-md p-1 mt-1 w-1/4" onChange={(e) => {setModelValue(e.target.value)}} />
+                 <Search className="hover:text-slate-500 cursor-pointer ml-1" height={20} width={20} onClick={handlePush}/> 
+               </div>
+       
+               
+             </div>
+              )}
+              {(filter !=='' || model !=='' ) ? (
+                <span>No hay ofertas para el filtro y/o modelo seleccionado 💰</span>
+              ): (
+                <span>No hay ofertas para esta publicación 💰</span>
+              )}
+               
             </CardContent>
           </Card>
         )}

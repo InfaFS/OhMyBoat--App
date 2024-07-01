@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {BookOpenCheck, Contact, MapPin, ShieldCheckIcon,Star,Trash2,UserPlus} from 'lucide-react';
+import {BookOpenCheck, Briefcase, Contact, MapPin, ShieldCheckIcon,Star,Trash2,UserPlus} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { borrarPublicaciones } from '../../../../actions/borrarPublicaciones';
@@ -66,7 +66,7 @@ export default function SpecialActionsMenu() {
       >
 
         <div>
-        <MenuItem onClick={handleConfirmation} className="text-sm"> <Trash2 height={20} width={20} className='mr-2' />Borrar publicaciones</MenuItem>
+        {/* <MenuItem onClick={handleConfirmation} className="text-sm"> <Trash2 height={20} width={20} className='mr-2' />Borrar publicaciones</MenuItem> */}
         <Link href="/admin/view-employees">
         <MenuItem onClick={handleClose} className="text-sm"> <Contact height={20} width={20} className='mr-2' />Ver gerentes</MenuItem>
         </Link>
@@ -77,10 +77,13 @@ export default function SpecialActionsMenu() {
         <MenuItem onClick={handleClose} className="text-sm"> <MapPin height={20} width={20} className='mr-2' />Crear sede</MenuItem>
         </Link>
         <Link href="/admin/posts">
-        <MenuItem onClick={handleClose} className="text-sm"> <BookOpenCheck height={20} width={20} className='mr-2' />Ver publicaciones</MenuItem>
+        <MenuItem onClick={handleClose} className="text-sm"> <BookOpenCheck height={20} width={20} className='mr-2' />Gestionar publicaciones</MenuItem>
         </Link>
         <Link href="/admin/reviews">
         <MenuItem onClick={handleClose} className="text-sm"> <Star height={20} width={20} className='mr-2' />Ver reseñas</MenuItem>
+        </Link>
+        <Link href="/admin/reports">
+        <MenuItem onClick={handleClose} className="text-sm"> <Briefcase height={20} width={20} className='mr-2' />Ver reportes</MenuItem>
         </Link>
         </div>
     
