@@ -41,6 +41,10 @@ const ViewAllTradesComponent = ({ pieDataDos }) => {
     console.log(total)
 
   const obtenerPorcentaje = (data) => {
+    if (total === 0){
+      console.log(data)
+      return 0;
+    }
     console.log(data)
     console.log(data * 100 / total)
     return (data * 100 / total).toFixed(2);
@@ -81,7 +85,7 @@ const ViewAllTradesComponent = ({ pieDataDos }) => {
       foot: [[
         'Total de intercambios', 
         total, 
-        '100%'
+        (total === 0 ? '0%' : '100%'),
       ]]
     });
 
@@ -104,9 +108,10 @@ const ViewAllTradesComponent = ({ pieDataDos }) => {
       <Card className="w-full  bg-white shadow-lg rounded-lg p-6">
       <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
         <h1 className="text-2xl font-semibold mb-4 text-center">Intercambios populares</h1>
-        {total !== 0 && (
+        <Button variant="contained" color="error" endIcon={<Download size={20}/>} onClick={generatePDF}>PDF </Button>
+        {/* {total !== 0 && (
       <Button variant="contained" color="error" endIcon={<Download size={20}/>} onClick={generatePDF}>PDF </Button>
-      )}
+      )} */}
         { total === 0 ? (
           <h2 className="text-center text-gray-600">No hay datos para mostrar</h2>
         ) : (
@@ -133,10 +138,21 @@ const ViewAllTradesComponent = ({ pieDataDos }) => {
             <p className="text-center mt-2 text-gray-700">
               {getTopThreeValues(pieDataDos).length === 1 ? (
                 <>
+                <div className='flex flex-col'>
+                <span className='font-semibold text-lg'>Intercambio más popular</span> 
+                <div>
+                <span className='font-semibold text-blue-800'>
+                    {getMaxValue(pieDataDos).name} ({getMaxValue(pieDataDos).value} intercambio/s):  
+                  </span>
                   <span>
-                    Intercambio más popular: {getMaxValue(pieDataDos).name} ({getMaxValue(pieDataDos).value} intercambio/s)
                     Representa del total ({total} intercambio/s) el {obtenerPorcentaje(getMaxValue(pieDataDos).value)}%
                   </span>
+                </div>
+
+                </div>
+                    
+                   
+
                 
                 </>
               ) : (
@@ -153,14 +169,7 @@ const ViewAllTradesComponent = ({ pieDataDos }) => {
 
             </p>
             )}
-          <button
-              className="mt-4 px-3 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              onClick={generatePDF}
-            >
-              Generar PDF
-            </button>
           </div>
-
         )}
 
       </Card>

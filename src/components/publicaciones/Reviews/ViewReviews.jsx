@@ -28,7 +28,8 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { deleteReview } from "../../../../actions/reviewActions";
 
-const regex = /\bmierda\b/i;
+const regex = /\*/i;
+
 const columns  = (handleDeleteReviewConfirmation,user) => [
   {
     accessorKey: "idOfertante",

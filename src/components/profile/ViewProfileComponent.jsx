@@ -58,6 +58,10 @@ export function ViewProfileComponentInfa({ firstname, lastname, birthday, email,
               {role === "USER" && (
                 <section className="flex items-center space-x-4 space-y-5">
                   <RatingComponent number={estrellas} />
+                  {reviews.length === 0 && (
+                    <span className="text-sm">(Sin reseñas)</span>
+                  )}
+               
                   <Link href={`/view-reviews/${id}`}>
                     <Button variant="ghost" className="hover:text-blue-500">Ver reseñas</Button>
                   </Link>

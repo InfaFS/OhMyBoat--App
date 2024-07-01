@@ -14,6 +14,10 @@ export const ViewDoneTradesComponent = ({pieDataUno}) => {
 
   const total = pieDataUno[0].value + pieDataUno[1].value;
   const obtenerPorcentaje = (data) => {
+    if (total === 0){
+      console.log(data)
+      return 0;
+    }
     console.log(data)
     console.log(data * 100 / total)
     return (data * 100 / total).toFixed(2);
@@ -54,7 +58,7 @@ export const ViewDoneTradesComponent = ({pieDataUno}) => {
       foot: [[
         'Total de intercambios', 
         total, 
-        '100%'
+        (total === 0 ? '0%' : '100%'),
       ]]
     });
     //texto abajo de la tabla
@@ -77,15 +81,17 @@ export const ViewDoneTradesComponent = ({pieDataUno}) => {
     <div className="bg-white shadow-lg rounded-lg p-6 ">
     <button variant="ghost" className="hover:text-sky-500" onClick={handleBack}><MoveLeft height={20} width={20}/></button>
       <h1 className="text-2xl font-semibold mb-4 text-center">Trueques revisados</h1>
-      {(pieDataUno[0].value !== 0 && pieDataUno[1].value !== 0) && (
+      {/* {(pieDataUno[0].value !== 0 && pieDataUno[1].value !== 0) && (
       <Button variant="contained" color="error" endIcon={<Download size={20}/>} onClick={generatePDF}>PDF </Button>
-      )}
+      )} */}
+      <Button variant="contained" color="error" endIcon={<Download size={20}/>} onClick={generatePDF}>PDF </Button>
       
       <div className="flex">
         <div className="w-full">
           {(pieDataUno[0].value === 0 && pieDataUno[1].value === 0) ? (
             <h2 className="text-center">No hay trueques revisados aún</h2>
           ) : (
+            <div>
             <ResponsiveContainer width="100%" height={400}>
               <PieChart>
                 <Pie
@@ -100,13 +106,16 @@ export const ViewDoneTradesComponent = ({pieDataUno}) => {
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
+              <div className='flex flex-col '>
+              <h1 className='text-center text-blue-600 font-semibold text-lg'>Trueques Revisados</h1>
+                <span>
+                De todos los trueques revisados ({total}), <span className='font-semibold text-green-500'>{pieDataUno[0].name} </span> <span className='font-semibold text-green-700'>({pieDataUno[0].value})</span> representa el <span className='font-semibold text-green-500'>{obtenerPorcentaje(pieDataUno[0].value)}%</span> y <span className='text-red-500 font-semibold'>{pieDataUno[1].name} </span> <span className='text-red-700 font-semibold'>({pieDataUno[1].value})</span>  representa el <span className='font-semibold text-red-500'>{obtenerPorcentaje(pieDataUno[1].value)}% </span>
+                </span>
+            </div>
+
+            </div>
           )}
-          <div className='flex flex-col '>
-            <h1 className='text-center text-blue-600 font-semibold text-lg'>Trueques Revisados</h1>
-              <span>
-              De todos los trueques revisados ({total}), <span className='font-semibold text-green-500'>{pieDataUno[0].name} </span> <span className='font-semibold text-green-700'>({pieDataUno[0].value})</span> representa el <span className='font-semibold text-green-500'>{obtenerPorcentaje(pieDataUno[0].value)}%</span> y <span className='text-red-500 font-semibold'>{pieDataUno[1].name} </span> <span className='text-red-700 font-semibold'>({pieDataUno[1].value})</span>  representa el <span className='font-semibold text-red-500'>{obtenerPorcentaje(pieDataUno[1].value)}% </span>
-              </span>
-          </div>
+
            {/* {pieDataUno.length > 0 && (
             <p className="text-center mt-2">
               Intercambio más popular: {getMaxValue(pieDataUno).name} ({getMaxValue(pieDataUno).value} intercambios totales)
