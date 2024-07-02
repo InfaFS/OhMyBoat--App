@@ -32,12 +32,25 @@ export default function SpecialActionsMenu() {
     }
   }
 
-  const handleConfirmation = () => {
+  const handleTotalConfirmation = () => {
     setAnchorEl(null);
-    toast.error("SE BORRARAN TODAS LAS PUBLICACIONES!", {
+    console.log("hola")
+    toast.error("SEGURO?!", {
       action: <>
       <div>
-        <button onClick={handleCloseAndDelete} className='hover:text-rose-600 text-red-900'>Confirmar</button>
+        <button onClick={handleCloseAndDelete} className='hover:text-rose-600 mr-2 text-red-900'>Confirmar</button>
+        <button onClick={() => {toast.dismiss();setAnchorEl(null) }} className='hover:text-rose-600 text-red-900 '>Cancelar</button>
+        </div>
+      </>
+  })
+  }
+
+  const handleConfirmation = () => {
+    setAnchorEl(null);
+    toast.error("Estas a punto de borrar todas las publicaciones!", {
+      action: <>
+      <div>
+        <button onClick={() => {handleTotalConfirmation();toast.dismiss()}} className='hover:text-rose-600 text-red-900'>Confirmar</button>
         <button onClick={() => {toast.dismiss();setAnchorEl(null) }} className='hover:text-rose-600 text-red-900 '>Cancelar</button>
         </div>
       </>
@@ -66,7 +79,7 @@ export default function SpecialActionsMenu() {
       >
 
         <div>
-        {/* <MenuItem onClick={handleConfirmation} className="text-sm"> <Trash2 height={20} width={20} className='mr-2' />Borrar publicaciones</MenuItem> */}
+        <MenuItem onClick={handleConfirmation} className="text-sm text-red-500"> <Trash2 height={20} width={20} className='mr-2' />Borrar publicaciones</MenuItem>
         <Link href="/admin/view-employees">
         <MenuItem onClick={handleClose} className="text-sm"> <Contact height={20} width={20} className='mr-2' />Ver gerentes</MenuItem>
         </Link>

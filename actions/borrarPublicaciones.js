@@ -5,34 +5,11 @@ import { db } from "@/lib/db";
 export const borrarPublicaciones = async () => {
     try {
 
-        const publicaciones = await db.cardPost.findMany();
-        console.log(publicaciones);
-        const cardBorradas = await db.cardPost.deleteMany({
-        where: {
-            id: {
-            in: publicaciones.map((publicacion) => publicacion.id)
-            }
-        }
-        });
+        const cards = await db.cardPost.deleteMany();
+        const boats = await db.boatPost.deleteMany();
+        const vehicles = await db.vehiclePost.deleteMany();
 
-        const boatPostsBorrados = await db.boatPost.deleteMany({
-        where: {
-            id: {
-            in: publicaciones.map((publicacion) => publicacion.idCompletePost)
-            }
-        }
-        });
-
-        const vehiclePostsBorrados = await db.vehiclePost.deleteMany({
-            where: {
-                id: {
-                in: publicaciones.map((publicacion) => publicacion.idCompletePost)
-                }
-            }
-            });
-        
-
-        if( (cardBorradas && boatPostsBorrados && vehiclePostsBorrados) ) {
+        if( (cards && boats && vehicles) ) {
         return { success: "Publicaciones borradas!" }
         }
     } catch (error) {

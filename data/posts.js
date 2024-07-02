@@ -209,6 +209,7 @@ export const eliminarPost = async ({completePostId}) => {
             },
             data: {
                 status: "DELETED",
+
             }
         });
         console.log(deletedCard);
