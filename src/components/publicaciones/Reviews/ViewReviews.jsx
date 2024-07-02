@@ -57,7 +57,7 @@ const columns  = (handleDeleteReviewConfirmation,user) => [
     cell: ({ row }) => (
       <div className="text-center">
         
-        {(regex.test(row.original.description)) ? (
+        {(regex.test(row.original.description) && user === "ADMIN") ? (
           <p className="text-red-500">{row.original.description}</p>
         ): (
           <p>{row.original.description}</p>
