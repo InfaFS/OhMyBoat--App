@@ -1,7 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
 import Sidebar from "@/components/Sidebar";
-import CardPublicacion from "@/components/publicaciones/CardPublicacion";
 import {
   Pagination,
   PaginationContent,
@@ -9,7 +8,9 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/components/ui/pagination";
+import dynamic from 'next/dynamic';
 
+const CardPublicacion = dynamic(() => import("@/components/publicaciones/CardPublicacion"), { ssr: false });
 export default function OrderBy({ publicaciones }) {
   const [pageNumber, setPageNumber] = useState(1);
   const publicacionesPerPage = 12;
